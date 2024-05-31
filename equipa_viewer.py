@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from enum import Enum
 from sys import argv
 
 
@@ -25,10 +26,10 @@ class Equipa:
 
     ext_name: str
     short_name: str
-    country: str = ''
+    country: str = '' # TODO
     #colours: list = list()
-    level: int = 0
-    coach: str = ''
+    level: int = 0 # TODO
+    coach: str = '' # TODO
     #players: list = list()
 
     def __str__(self):
@@ -43,11 +44,18 @@ class Equipa:
 
 class EquipaParser:
 
+    class Offsets(Enum):
+        HEADER_START = 0x00
+        HEADER_END = 0x31
+
     def __init__(self, equipa_file):
         self.file = equipa_file
 
     def has_equipa_header(self, data):
-        return data[0:50] == b'EFa' + b'\x00' * 47
+        start_offs = self.Offsets.HEADER_START.value
+        end_offs = self.Offsets.HEADER_END.value + 1
+
+        return data[start_offs:end_offs] == b'EFa' + b'\x00' * 47
 
     def parse(self):
         with open(self.file, 'rb') as f:
@@ -62,20 +70,23 @@ class EquipaParser:
             return Equipa(ext_name=ext_name, short_name=short_name)
 
     def parse_ext_name(self, data):
-        size = data[50]
+        size = data[self.Offsets.HEADER_END.value + 1]
+        data_offs = self.Offsets.HEADER_END.value + 2
 
-        return self.parse_field(data, 51, size)
+        return self.parse_field(data, data_offs, size)
 
     def parse_short_name(self, data, size_previous):
-        size = data[51 + size_previous]
+        size = data[self.Offsets.HEADER_END.value + 2 + size_previous]
+        data_offs = self.Offsets.HEADER_END.value + 3
 
-        return self.parse_field(data, 52 + size_previous, size)
+        return self.parse_field(data, data_offs + size_previous, size)
 
     def parse_field(self, data, offset, size):
         ret = ''
 
         for i in range(offset, offset + size):
-            char = (data[i] - data[i - 1]) & 0xff
+            char = (data[i] - data[i - 1]) & 0xff # picking only the 8 less
+                                                  # significant bits
             ret += chr(char)
 
         return ret
