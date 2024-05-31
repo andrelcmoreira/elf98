@@ -73,15 +73,15 @@ class EquipaParser:
         size = data[self.Offsets.HEADER_END.value + 1]
         data_offs = self.Offsets.HEADER_END.value + 2
 
-        return self.parse_field(data, data_offs, size)
+        return self.decrypt_field(data, data_offs, size)
 
     def parse_short_name(self, data, size_previous):
         size = data[self.Offsets.HEADER_END.value + 2 + size_previous]
         data_offs = self.Offsets.HEADER_END.value + 3
 
-        return self.parse_field(data, data_offs + size_previous, size)
+        return self.decrypt_field(data, data_offs + size_previous, size)
 
-    def parse_field(self, data, offset, size):
+    def decrypt_field(self, data, offset, size):
         ret = ''
 
         for i in range(offset, offset + size):
