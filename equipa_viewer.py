@@ -26,7 +26,7 @@ class Equipa:
 
     ext_name: str
     short_name: str
-    country: str # TODO
+    country: str
     level: int
     colours: list
     coach: str # TODO
@@ -53,6 +53,7 @@ class EquipaParser:
     class Sizes(Enum):
         COLOUR = 3
         LEVEL = 1
+        COUNTRY = 4
 
     def __init__(self, equipa_file):
         self.file = equipa_file
@@ -68,6 +69,10 @@ class EquipaParser:
 
     def _get_colours_offset(self, ext_len, short_len):
         return self.Offsets.HEADER_END.value + ext_len + short_len + 3
+
+    def _get_country_offset(self, ext_len, short_len):
+        return self.Offsets.HEADER_END.value + ext_len + short_len + \
+            self.Sizes.COLOUR.value + 8
 
     def _get_level_offset(self, ext_len, short_len):
         return self.Offsets.HEADER_END.value + ext_len + short_len + \
@@ -85,7 +90,8 @@ class EquipaParser:
                 self._get_short_name_offset(len(ext_name)))
             colours = self._parse_colours(data,
                 self._get_colours_offset(len(ext_name), len(short_name)))
-            country = ''
+            country = self._parse_country(data,
+                self._get_country_offset(len(ext_name), len(short_name)))
             level = self._parse_level(data,
                 self._get_level_offset(len(ext_name), len(short_name)))
             coach = ''
@@ -107,11 +113,10 @@ class EquipaParser:
         return self._decrypt_field(data, offset + 1, size)
 
     def _parse_colours(self, data, offset):
-        colours = [
-            self._get_field(data, offset, self.Sizes.COLOUR.value).hex(),
-            self._get_field(data, offset + self.Sizes.COLOUR.value + 1,
-                            self.Sizes.COLOUR.value).hex()
-        ]
+        bg = self._get_field(data, offset, self.Sizes.COLOUR.value)
+        txt = self._get_field(data, offset + self.Sizes.COLOUR.value + 1,
+                              self.Sizes.COLOUR.value)
+        colours = '#' + bg.hex().upper() + ', #' + txt.hex().upper()
 
         return colours
 
@@ -119,6 +124,11 @@ class EquipaParser:
         level = self._get_field(data, offset, self.Sizes.LEVEL.value)
 
         return int(level.hex(), 16)
+
+    def _parse_country(self, data, offset):
+        country = self._decrypt_field(data, offset, self.Sizes.COUNTRY.value)
+
+        return country
 
     def _get_field(self, data, offset, size):
         return data[offset:offset+size]
