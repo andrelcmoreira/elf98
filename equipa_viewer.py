@@ -51,7 +51,8 @@ class EquipaParser:
         HEADER_END = 0x31
 
     class Sizes(Enum):
-        COLOUR = 3
+        HEADER = 50
+        COLOUR = 3 # each colour has 3 bytes
         LEVEL = 1
         COUNTRY = 4
 
@@ -65,18 +66,24 @@ class EquipaParser:
         return data[start_offs:end_offs] == b'EFa' + b'\x00' * 47
 
     def _get_short_name_offset(self, ext_len):
-        return self.Offsets.HEADER_END.value + ext_len + 2
+        # +1 to skip the size byte of extended name field
+        return self.Sizes.HEADER.value + ext_len + 1
 
     def _get_colours_offset(self, ext_len, short_len):
-        return self.Offsets.HEADER_END.value + ext_len + short_len + 3
+        # +2 to skip the size bytes of extended and short name fields
+        return self.Sizes.HEADER.value + ext_len + short_len + 2
 
     def _get_country_offset(self, ext_len, short_len):
-        return self.Offsets.HEADER_END.value + ext_len + short_len + \
-            self.Sizes.COLOUR.value + 8
+        # +2 to skip the size bytes of extended and short name fields and +2 to
+        # skip the apparently unused 1 byte on each colour
+        return self.Sizes.HEADER.value + ext_len + short_len + \
+            self.Sizes.COLOUR.value * 2 + 4
 
     def _get_level_offset(self, ext_len, short_len):
-        return self.Offsets.HEADER_END.value + ext_len + short_len + \
-            self.Sizes.COLOUR.value + 12
+        # +2 to skip the size bytes of extended and short name fields, +2 to
+        # skip the apparently unused 1 byte on each colour
+        return self.Sizes.HEADER.value + ext_len + short_len + \
+            self.Sizes.COLOUR.value * 2 + self.Sizes.COUNTRY.value + 4
 
     def parse(self):
         with open(self.file, 'rb') as f:
