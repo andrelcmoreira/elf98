@@ -27,7 +27,7 @@ class Equipa:
     ext_name: str
     short_name: str
     country: str # TODO
-    level: int # TODO
+    level: int
     colours: list
     coach: str # TODO
     players: list # TODO
@@ -52,6 +52,7 @@ class EquipaParser:
 
     class Sizes(Enum):
         COLOUR = 3
+        LEVEL = 1
 
     def __init__(self, equipa_file):
         self.file = equipa_file
@@ -68,6 +69,10 @@ class EquipaParser:
     def _get_colours_offset(self, ext_len, short_len):
         return self.Offsets.HEADER_END.value + ext_len + short_len + 3
 
+    def _get_level_offset(self, ext_len, short_len):
+        return self.Offsets.HEADER_END.value + ext_len + short_len + \
+            self.Sizes.COLOUR.value + 12
+
     def parse(self):
         with open(self.file, 'rb') as f:
             data = f.read()
@@ -81,7 +86,8 @@ class EquipaParser:
             colours = self._parse_colours(data,
                 self._get_colours_offset(len(ext_name), len(short_name)))
             country = ''
-            level = 0
+            level = self._parse_level(data,
+                self._get_level_offset(len(ext_name), len(short_name)))
             coach = ''
             players = []
 
@@ -108,6 +114,11 @@ class EquipaParser:
         ]
 
         return colours
+
+    def _parse_level(self, data, offset):
+        level = self._get_field(data, offset, self.Sizes.LEVEL.value)
+
+        return int(level.hex(), 16)
 
     def _get_field(self, data, offset, size):
         return data[offset:offset+size]
