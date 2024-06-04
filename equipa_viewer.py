@@ -17,8 +17,11 @@ class Player:
     country: str
 
     def __str__(self):
-        return f'name: {self.name}, position: {self.position}, \
-                country: {self.country}'
+        return (
+            f'\tname:\t{self.name}\n'
+            f'\tposition:\t{self.position}\n'
+            f'\tcountry:\t{self.country}\n\n'
+        )
 
 
 @dataclass
@@ -98,6 +101,12 @@ class EquipaParser:
         return self.Sizes.HEADER.value + ext_len + short_len + \
             self.Sizes.COLOUR.value * 2 + self.Sizes.COUNTRY.value + 4
 
+    def _get_players_offset(self, ext_len, short_len):
+        # +2 to skip the size bytes of extended and short name fields, +2 to
+        # skip the apparently unused 1 byte on each colour
+        return self.Sizes.HEADER.value + ext_len + short_len + \
+            self.Sizes.COLOUR.value * 2 + self.Sizes.COUNTRY.value + 7
+
     def parse_ext_name(self, data):
         size = data[self.Offsets.HEADER_END.value + 1]
         data_offs = self.Offsets.HEADER_END.value + 2 # skip the 'size' byte
@@ -115,9 +124,8 @@ class EquipaParser:
         bg = self._get_field(data, offset, self.Sizes.COLOUR.value)
         txt = self._get_field(data, offset + self.Sizes.COLOUR.value + 1,
                               self.Sizes.COLOUR.value)
-        colours = '#' + bg.hex().upper() + ', #' + txt.hex().upper()
 
-        return colours
+        return '#' + bg.hex().upper() + ', #' + txt.hex().upper()
 
     def parse_level(self, data, ext_len, short_len):
         offset = self._get_level_offset(ext_len, short_len)
@@ -131,6 +139,28 @@ class EquipaParser:
 
         return country
 
+    def parse_players(self, data, ext_len, short_len):
+        offset = self._get_players_offset(ext_len, short_len)
+        players = []
+
+        # TODO: improve this
+        while True:
+            try:
+                name_size = data[offset + 4]
+                ret = self._decrypt_field(data, offset, 5 + name_size)
+
+                # TODO: position
+                country = ret[1:4]
+                name = ret[5:]
+
+                players.append(Player(name=name, position='', country=country))
+
+                offset += 7 + name_size
+            except IndexError:
+                break
+
+        return players
+
     def parse(self):
         with open(self.file, 'rb') as f:
             data = f.read()
@@ -143,8 +173,8 @@ class EquipaParser:
             colours = self.parse_colours(data, len(ext_name), len(short_name))
             country = self.parse_country(data, len(ext_name), len(short_name))
             level = self.parse_level(data, len(ext_name), len(short_name))
+            players = self.parse_players(data, len(ext_name), len(short_name))
             coach = ''
-            players = []
 
             return Equipa(ext_name=ext_name, short_name=short_name,
                           country=country, level=level, colours=colours,
