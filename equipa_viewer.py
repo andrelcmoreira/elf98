@@ -62,7 +62,7 @@ class EquipaParser:
     def __init__(self, equipa_file):
         self.file = equipa_file
 
-    def _has_equipa_header(self, data):
+    def has_equipa_header(self, data):
         start_offs = self.Offsets.HEADER_START.value
         end_offs = self.Offsets.HEADER_END.value + 1
 
@@ -165,7 +165,7 @@ class EquipaParser:
         with open(self.file, 'rb') as f:
             data = f.read()
 
-            if not self._has_equipa_header(data):
+            if not self.has_equipa_header(data):
                 raise EquipaHeaderNotFound
 
             ext_name = self.parse_ext_name(data)
