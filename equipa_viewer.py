@@ -95,6 +95,12 @@ class EquipaParser:
         return self.Sizes.HEADER.value + ext_len + short_len + \
             self.Sizes.COLOUR.value * 2 + 4
 
+    def _get_players_number_offset(self, ext_len, short_len):
+        # +2 to skip the size bytes of extended and short name fields, +3 to
+        # skip the apparently unused 1 byte on each colour and the level byte
+        return self.Sizes.HEADER.value + ext_len + short_len + \
+            self.Sizes.COLOUR.value * 2 + self.Sizes.COUNTRY.value + 5
+
     def _get_level_offset(self, ext_len, short_len):
         # +2 to skip the size bytes of extended and short name fields, +2 to
         # skip the apparently unused 1 byte on each colour
@@ -140,24 +146,23 @@ class EquipaParser:
         return country
 
     def parse_players(self, data, ext_len, short_len):
-        offset = self._get_players_offset(ext_len, short_len)
+        player_offset = self._get_players_offset(ext_len, short_len)
+        count_offset = self._get_players_number_offset(ext_len, short_len)
+        number_players = data[count_offset]
         players = []
 
-        # TODO: improve this
-        while True:
-            try:
-                name_size = data[offset + 4]
-                ret = self._decrypt_field(data, offset, 5 + name_size)
+        for _ in range(0, number_players):
+            entry_len = data[player_offset + self.Sizes.COLOUR.value + 1]
+            ret = self._decrypt_field(data, player_offset,
+                                      self.Sizes.COLOUR.value + entry_len + 2)
 
-                # TODO: position
-                country = ret[1:4]
-                name = ret[5:]
+            # TODO: position
+            country = ret[1:4]
+            name = ret[5:]
 
-                players.append(Player(name=name, position='', country=country))
+            players.append(Player(name=name, position='', country=country))
 
-                offset += 7 + name_size
-            except IndexError:
-                break
+            player_offset += self.Sizes.COLOUR.value + entry_len + 4
 
         return players
 
@@ -174,7 +179,7 @@ class EquipaParser:
             country = self.parse_country(data, len(ext_name), len(short_name))
             level = self.parse_level(data, len(ext_name), len(short_name))
             players = self.parse_players(data, len(ext_name), len(short_name))
-            coach = ''
+            coach = '' # TODO: the last field
 
             return Equipa(ext_name=ext_name, short_name=short_name,
                           country=country, level=level, colours=colours,
