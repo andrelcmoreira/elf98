@@ -32,17 +32,17 @@ class Equipa:
     country: str
     level: int
     colours: list
-    coach: str # TODO
-    players: list # TODO
+    coach: str
+    players: list
 
     def __str__(self):
         return (
             f'extended name:\t{self.ext_name}\n'
             f'short name:\t{self.short_name}\n'
             f'country:\t{self.country}\n'
-            f'level:\t\t{self.level}\n'
-            f'coach:\t{self.coach}\n'
             f'colours:\t{self.colours} (text, background)\n'
+            f'level:\t\t{self.level}\n'
+            f'coach:\t\t{self.coach}\n'
             f'players:\t{self.players}'
         )
 
@@ -113,6 +113,18 @@ class EquipaParser:
         return self.Sizes.HEADER.value + ext_len + short_len + \
             self.Sizes.COLOUR.value * 2 + self.Sizes.COUNTRY.value + 7
 
+    def _get_coach_offset(self, data, ext_len, short_len):
+        offset = self._get_players_offset(ext_len, short_len)
+        count_offset = self._get_players_number_offset(ext_len, short_len)
+        number_players = data[count_offset]
+
+        for _ in range(0, number_players):
+            entry_len = data[offset + self.Sizes.COLOUR.value + 1]
+
+            offset += self.Sizes.COLOUR.value + entry_len + 4
+
+        return offset
+
     def parse_ext_name(self, data):
         size = data[self.Offsets.HEADER_END.value + 1]
         data_offs = self.Offsets.HEADER_END.value + 2 # skip the 'size' byte
@@ -166,6 +178,12 @@ class EquipaParser:
 
         return players
 
+    def parse_coach(self, data, ext_len, short_len):
+        offset = self._get_coach_offset(data, ext_len, short_len) + 1
+        coach = self._decrypt_field(data, offset, len(data) - offset)
+
+        return coach
+
     def parse(self):
         with open(self.file, 'rb') as f:
             data = f.read()
@@ -179,7 +197,7 @@ class EquipaParser:
             country = self.parse_country(data, len(ext_name), len(short_name))
             level = self.parse_level(data, len(ext_name), len(short_name))
             players = self.parse_players(data, len(ext_name), len(short_name))
-            coach = '' # TODO: the last field
+            coach = self.parse_coach(data, len(ext_name), len(short_name))
 
             return Equipa(ext_name=ext_name, short_name=short_name,
                           country=country, level=level, colours=colours,
