@@ -16,12 +16,8 @@ class Player:
     position: str
     country: str
 
-    def __str__(self):
-        return (
-            f'\tname:\t{self.name}\n'
-            f'\tposition:\t{self.position}\n'
-            f'\tcountry:\t{self.country}\n\n'
-        )
+    def __repr__(self):
+        return f'{self.name} - {self.country}'
 
 
 @dataclass
