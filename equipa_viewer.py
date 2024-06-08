@@ -17,7 +17,15 @@ class Player:
     country: str
 
     def __repr__(self):
-        return f'{self.name} - {self.country}'
+        pos = ''
+
+        match self.position:
+            case 0: pos = 'G'
+            case 1: pos = 'Z'
+            case 2: pos = 'M'
+            case 3: pos = 'A'
+
+        return f'{pos}: {self.name} - {self.country}'
 
 
 @dataclass
@@ -56,9 +64,9 @@ class EquipaParser:
         COUNTRY = 4
 
     def __init__(self, equipa_file):
-        self.file = equipa_file
+        self._file = equipa_file
 
-    def has_equipa_header(self, data):
+    def _has_equipa_header(self, data):
         start_offs = self.Offsets.HEADER_START.value
         end_offs = self.Offsets.HEADER_END.value + 1
 
@@ -91,21 +99,22 @@ class EquipaParser:
         return self.Sizes.HEADER.value + ext_len + short_len + \
             self.Sizes.COLOUR.value * 2 + 4
 
-    def _get_players_number_offset(self, ext_len, short_len):
-        # +2 to skip the size bytes of extended and short name fields, +3 to
-        # skip the apparently unused 1 byte on each colour and the level byte
-        return self.Sizes.HEADER.value + ext_len + short_len + \
-            self.Sizes.COLOUR.value * 2 + self.Sizes.COUNTRY.value + 5
-
     def _get_level_offset(self, ext_len, short_len):
         # +2 to skip the size bytes of extended and short name fields, +2 to
         # skip the apparently unused 1 byte on each colour
         return self.Sizes.HEADER.value + ext_len + short_len + \
             self.Sizes.COLOUR.value * 2 + self.Sizes.COUNTRY.value + 4
 
+    def _get_players_number_offset(self, ext_len, short_len):
+        # +2 to skip the size bytes of extended and short name fields, +3 to
+        # skip the apparently unused 1 byte on each colour and the level byte
+        return self.Sizes.HEADER.value + ext_len + short_len + \
+            self.Sizes.COLOUR.value * 2 + self.Sizes.COUNTRY.value + 5
+
     def _get_players_offset(self, ext_len, short_len):
-        # +2 to skip the size bytes of extended and short name fields, +2 to
-        # skip the apparently unused 1 byte on each colour
+        # +2 to skip the size bytes of extended and short name fields, +5 to
+        # skip the apparently unused 1 byte on each colour, the level byte and
+        # the players number byte # TODO
         return self.Sizes.HEADER.value + ext_len + short_len + \
             self.Sizes.COLOUR.value * 2 + self.Sizes.COUNTRY.value + 7
 
@@ -115,25 +124,25 @@ class EquipaParser:
         number_players = data[count_offset]
 
         for _ in range(0, number_players):
-            entry_len = data[offset + self.Sizes.COLOUR.value + 1]
+            entry_len = data[offset + self.Sizes.COUNTRY.value]
 
-            offset += self.Sizes.COLOUR.value + entry_len + 4
+            offset += self.Sizes.COUNTRY.value + entry_len + 3
 
         return offset
 
-    def parse_ext_name(self, data):
+    def _parse_ext_name(self, data):
         size = data[self.Offsets.HEADER_END.value + 1]
         data_offs = self.Offsets.HEADER_END.value + 2 # skip the 'size' byte
 
         return self._decrypt_field(data, data_offs, size)
 
-    def parse_short_name(self, data, ext_len):
+    def _parse_short_name(self, data, ext_len):
         offset = self._get_short_name_offset(ext_len)
         size = data[offset]
 
         return self._decrypt_field(data, offset + 1, size)
 
-    def parse_colours(self, data, ext_len, short_len):
+    def _parse_colours(self, data, ext_len, short_len):
         offset = self._get_colours_offset(ext_len, short_len)
         bg = self._get_field(data, offset, self.Sizes.COLOUR.value)
         txt = self._get_field(data, offset + self.Sizes.COLOUR.value + 1,
@@ -141,59 +150,59 @@ class EquipaParser:
 
         return '#' + bg.hex().upper() + ', #' + txt.hex().upper()
 
-    def parse_level(self, data, ext_len, short_len):
+    def _parse_level(self, data, ext_len, short_len):
         offset = self._get_level_offset(ext_len, short_len)
         level = self._get_field(data, offset, self.Sizes.LEVEL.value)
 
         return int(level.hex(), 16)
 
-    def parse_country(self, data, ext_len, short_len):
+    def _parse_country(self, data, ext_len, short_len):
         offset = self._get_country_offset(ext_len, short_len)
         country = self._decrypt_field(data, offset, self.Sizes.COUNTRY.value)
 
         return country
 
-    def parse_players(self, data, ext_len, short_len):
+    def _parse_players(self, data, ext_len, short_len):
         player_offset = self._get_players_offset(ext_len, short_len)
         count_offset = self._get_players_number_offset(ext_len, short_len)
         number_players = data[count_offset]
         players = []
 
         for _ in range(0, number_players):
-            entry_len = data[player_offset + self.Sizes.COLOUR.value + 1]
+            entry_len = data[player_offset + self.Sizes.COUNTRY.value]
             ret = self._decrypt_field(data, player_offset,
-                                      self.Sizes.COLOUR.value + entry_len + 2)
+                                      self.Sizes.COUNTRY.value + entry_len + 1)
 
-            # TODO: position
             country = ret[1:4]
             name = ret[5:]
+            pos = data[player_offset + self.Sizes.COUNTRY.value + 1 + entry_len]
 
-            players.append(Player(name=name, position='', country=country))
+            players.append(Player(name=name, position=pos, country=country))
 
-            player_offset += self.Sizes.COLOUR.value + entry_len + 4
+            player_offset += self.Sizes.COUNTRY.value + entry_len + 3
 
         return players
 
-    def parse_coach(self, data, ext_len, short_len):
+    def _parse_coach(self, data, ext_len, short_len):
         offset = self._get_coach_offset(data, ext_len, short_len) + 1
         coach = self._decrypt_field(data, offset, len(data) - offset)
 
         return coach
 
     def parse(self):
-        with open(self.file, 'rb') as f:
+        with open(self._file, 'rb') as f:
             data = f.read()
 
-            if not self.has_equipa_header(data):
+            if not self._has_equipa_header(data):
                 raise EquipaHeaderNotFound
 
-            ext_name = self.parse_ext_name(data)
-            short_name = self.parse_short_name(data, len(ext_name))
-            colours = self.parse_colours(data, len(ext_name), len(short_name))
-            country = self.parse_country(data, len(ext_name), len(short_name))
-            level = self.parse_level(data, len(ext_name), len(short_name))
-            players = self.parse_players(data, len(ext_name), len(short_name))
-            coach = self.parse_coach(data, len(ext_name), len(short_name))
+            ext_name = self._parse_ext_name(data)
+            short_name = self._parse_short_name(data, len(ext_name))
+            colours = self._parse_colours(data, len(ext_name), len(short_name))
+            country = self._parse_country(data, len(ext_name), len(short_name))
+            level = self._parse_level(data, len(ext_name), len(short_name))
+            players = self._parse_players(data, len(ext_name), len(short_name))
+            coach = self._parse_coach(data, len(ext_name), len(short_name))
 
             return Equipa(ext_name=ext_name, short_name=short_name,
                           country=country, level=level, colours=colours,
