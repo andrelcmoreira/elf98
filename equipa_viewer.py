@@ -17,15 +17,7 @@ class Player:
     country: str
 
     def __repr__(self):
-        pos = ''
-
-        match self.position:
-            case 0: pos = 'G'
-            case 1: pos = 'Z'
-            case 2: pos = 'M'
-            case 3: pos = 'A'
-
-        return f'{pos}: {self.name} - {self.country}'
+        return f'{self.position}: {self.name} - {self.country}'
 
 
 @dataclass
@@ -170,18 +162,30 @@ class EquipaParser:
 
         for _ in range(0, number_players):
             entry_len = data[player_offset + self.Sizes.COUNTRY.value]
+            pos_offs = player_offset + self.Sizes.COUNTRY.value + 1 + entry_len
             ret = self._decrypt_field(data, player_offset,
                                       self.Sizes.COUNTRY.value + entry_len + 1)
 
             country = ret[1:4]
             name = ret[5:]
-            pos = data[player_offset + self.Sizes.COUNTRY.value + 1 + entry_len]
+            pos = self._get_player_pos(data[pos_offs])
 
             players.append(Player(name=name, position=pos, country=country))
 
             player_offset += self.Sizes.COUNTRY.value + entry_len + 3
 
         return players
+
+    def _get_player_pos(self, pos_code):
+        pos = ''
+
+        match pos_code:
+            case 0: pos = 'G'
+            case 1: pos = 'Z'
+            case 2: pos = 'M'
+            case 3: pos = 'A'
+
+        return pos
 
     def _parse_coach(self, data, ext_len, short_len):
         offset = self._get_coach_offset(data, ext_len, short_len) + 1
