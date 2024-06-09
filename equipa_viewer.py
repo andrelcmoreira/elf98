@@ -18,8 +18,8 @@ class Sizes(Enum):
 
 class EquipaHeaderNotFound(Exception):
 
-    def __init__(self):
-        super().__init__('equipa header not found!')
+    def __init__(self, input_file):
+        super().__init__(f"equipa header not found on '{input_file}'!")
 
 
 @dataclass
@@ -57,6 +57,11 @@ class Equipa:
 
 
 class OffsetCalculator:
+
+    @staticmethod
+    def get_extended_name():
+        # +1 to skip the size byte
+        return Sizes.HEADER.value + 1
 
     @staticmethod
     def get_short_name(ext_len):
@@ -146,8 +151,8 @@ class EquipaParser(BaseParser):
         return data[start_offs:end_offs] == b'EFa' + b'\x00' * 47
 
     def _parse_ext_name(self, data):
+        offs = OffsetCalculator.get_extended_name()
         size = data[Sizes.HEADER.value]
-        offs = Sizes.HEADER.value + 1 # skip the 'size' byte
 
         return self.decrypt_field(data, offs, size)
 
@@ -195,7 +200,7 @@ class EquipaParser(BaseParser):
             data = f.read()
 
             if not self._has_equipa_header(data):
-                raise EquipaHeaderNotFound
+                raise EquipaHeaderNotFound(self._file)
 
             ext_name = self._parse_ext_name(data)
             short_name = self._parse_short_name(data, len(ext_name))
@@ -234,7 +239,7 @@ class PlayersParser(BaseParser):
 
         for _ in range(0, number_players):
             entry_len = self._data[self._players_offs + Sizes.COUNTRY.value]
-            pos_offs = self._players_offs + Sizes.COUNTRY.value + 1 + entry_len
+            pos_offs = self._players_offs + Sizes.COUNTRY.value + entry_len + 1
             ret = self.decrypt_field(self._data, self._players_offs,
                                      Sizes.COUNTRY.value + entry_len + 1)
 
@@ -252,9 +257,12 @@ class PlayersParser(BaseParser):
 
 
 def main(equipa_file):
-    ep = EquipaParser(equipa_file)
+    try:
+        ep = EquipaParser(equipa_file)
 
-    print(ep.parse())
+        print(ep.parse())
+    except EquipaHeaderNotFound as e:
+        print(e)
 
 
 if __name__ == "__main__":
