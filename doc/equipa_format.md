@@ -37,16 +37,17 @@ following format:
 |                               |     level     |  players qty  |               |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-
 2.1 the efa header
 
 2.2 the short name/extendend name
 
 2.3 the colours
 
-2.4 the level
+2.5 the country
 
-2.5 the player list
+2.6 the level
+
+2.7 the player list
 
 2.6 the coach
 
