@@ -19,8 +19,8 @@ focusing on how the team data is arranged into the file and how it is interpred 
 2. The equipa format
 
 The equipa is a binary file and as you can guess, it contains all the team data (which will be
-discussed in the following sub topics), stored as sequential chunks of information across the file.
-It has the following format:
+discussed in the following sub topics), that are stored as sequential chunks of information
+across the file. It has the following format:
 
  0               1               2               3
  0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7
@@ -72,9 +72,10 @@ It has the following format:
 
 2.1 The efa header
 
-The efa header doesn't contain any useful information, it just acts as an identifier for the equipa
-file and it can be found at the beginning of the file until the offset 0x31. It's composed by the
-'EFa' string followed by 47 zero bytes.
+The efa header doesn't contain any special information, it just acts as an identifier for the equipa
+file and without it, the file is not recognized as a valid equipa by the game. The header occupies
+the offset range 0x00-0x31, having 50 bytes of size. It's composed by the 'EFa' ascii string
+followed by 47 zero bytes.
 
 2.2 The short name/extendend name
 
