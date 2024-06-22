@@ -13,8 +13,8 @@
 
 1. Introduction
 
-This document aims to give a full technical description of the equipa's file format of elifoot98,
-focusing on how the team data is arranged into the file and how it is interpred by the game.
+This document aims to provide a technical description of the equipa's file format of elifoot98,
+focusing on how the team data is arranged into the file and how it's interpred by the game.
 
 2. The equipa format
 
@@ -59,10 +59,6 @@ across the file. It has the following format:
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |   field size  | player 1 name (variable size) |    position   |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                        player 2 country                       |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   field size  | player 2 name (variable size) |    position   |
-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |                        player n country                       |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |   field size  | player n name (variable size) |    position   |
@@ -74,10 +70,14 @@ across the file. It has the following format:
 
 The efa header doesn't contain any special information, it just acts as an identifier for the equipa
 file and without it, the file is not recognized as a valid equipa by the game. The header occupies
-the offset range 0x00-0x31, having 50 bytes of size. It's composed by the 'EFa' ascii string
-followed by 47 zero bytes.
+the offset range 0x00-0x31, having 50 bytes of size. Its content is composed by the 'EFa' ascii
+string followed by 47 zero bytes.
 
 2.2 The short name/extendend name
+
+The short and extended name fields shares the same structure: both starts with 1 byte containing the
+field size, followed by the field value itself. The field value is encrypted and how the encryption
+algorithm works will be discussed in section 3.
 
 2.3 The colours
 
@@ -90,10 +90,6 @@ followed by 47 zero bytes.
 2.6 The coach
 
 3. The encryptiong algorithm
-
-TODO
-
-4. Glossary
 
 TODO
 ```
