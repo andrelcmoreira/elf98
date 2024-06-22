@@ -74,7 +74,7 @@ It has the following format:
 
 The efa header doesn't contain any useful information, it just acts as an identifier for the equipa
 file and it can be found at the beginning of the file until the offset 0x31. It's composed by the
-'EFa' string, followed by 37 zero bytes.
+'EFa' string followed by 47 zero bytes.
 
 2.2 The short name/extendend name
 
