@@ -11,16 +11,16 @@
                          \___|\__, |\__,_|_| .__/ \__,_| |_|  \___/|_|  |_| |_| |_|\__,_|\__|
                                  |_|       |_|
 
-1. introduction
+1. Introduction
 
-this document aims to give a full technical description of the equipa's file format of elifoot98,
+This document aims to give a full technical description of the equipa's file format of elifoot98,
 focusing on how the team data is arranged into the file and how it is interpred by the game.
 
-2. the equipa format
+2. The equipa format
 
-the equipa is a binary file and contains all the team data (whose will be discussed in the
-following sub topics), stored as sequential chunks of information across the file. it has the
-following format:
+The equipa is a binary file and as you can guess, it contains all the team data (which will be
+discussed in the following sub topics), stored as sequential chunks of information across the file.
+It has the following format:
 
  0               1               2               3
  0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7 0 1 2 3 4 5 6 7
@@ -47,7 +47,7 @@ following format:
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |            team foreground colour             |     unused    |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                           team country                        |
+|                         team country                          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |   team level  |   team size   |XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX|
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -70,25 +70,29 @@ following format:
 |                  coach name (variable size)                   |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-2.1 the efa header
+2.1 The efa header
 
-2.2 the short name/extendend name
+The efa header doesn't contain any useful information, it just acts as an identifier for the equipa
+file and it can be found at the beginning of the file until the offset 0x31. It's composed by the
+'EFa' string, followed by 37 zero bytes.
 
-2.3 the colours
+2.2 The short name/extendend name
 
-2.5 the country
+2.3 The colours
 
-2.6 the level
+2.5 The country
 
-2.7 the player list
+2.6 The level
 
-2.6 the coach
+2.7 The player list
 
-3. the encryptiong algorithm
+2.6 The coach
+
+3. The encryptiong algorithm
 
 TODO
 
-4. glossary
+4. Glossary
 
 TODO
 ```
