@@ -47,7 +47,7 @@ across the file. It has the following format:
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |            team foreground colour             |     unused    |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                         team country                          |
+|   field size  |                 team country                  |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |   team level  |   team size   |XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX|
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -82,6 +82,10 @@ algorithm works will be discussed in section 3.
 2.3 The colours
 
 2.5 The country
+
+The country field represents the country of the equipa and has 4 bytes, the first one containing
+the country size (which usually is 3) and the last 3 bytes containing the encrypted initials of the
+country (which must match the entries of FLAGS directory).
 
 2.6 The level
 
