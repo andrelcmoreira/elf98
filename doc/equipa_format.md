@@ -83,9 +83,12 @@ algorithm works will be discussed in section 3.
 
 2.5 The country
 
-The country field represents the country of the equipa and has 4 bytes, the first one containing
-the country size (which usually is 3) and the last 3 bytes containing the encrypted initials of the
-country (which must match the entries of FLAGS directory).
+The country field contains the initial letters (in portuguese) of the equipa's country and has 4
+bytes of size. The first byte contains the field size (which usually is 3) and the last 3 bytes
+contains the encrypted initial letters. This information is used by the game to group the equipas
+according to its country and show the equipa's country flag correctly. Thus, the value of this
+field must to correspond to a bitmap entry on "FLAGS" directory, placed at the root directory of
+the game.
 
 2.6 The level
 
