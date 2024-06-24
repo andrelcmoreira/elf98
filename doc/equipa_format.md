@@ -85,7 +85,7 @@ algorithm works will be discussed in section 3.
 
 The country field contains the initial letters (in portuguese) of the equipa's country and has 4
 bytes of size. The first byte contains the field size (which usually is 3) and the last 3 bytes
-contains the encrypted initial letters. This information is used by the game to group the equipas
+contains the encrypted initial letters. This information is used by elifoot to group the equipas
 according to its country and show the equipa's country flag correctly. Thus, the value of this
 field must to correspond to a bitmap entry on "FLAGS" directory, placed at the root directory of
 the game.
@@ -96,7 +96,7 @@ the game.
 
 2.6 The coach
 
-3. The encryptiong algorithm
+3. The encryption algorithm
 
 TODO
 ```
