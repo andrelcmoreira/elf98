@@ -75,7 +75,7 @@ string followed by 47 zero bytes.
 
 2.2 The short name/extendend name
 
-The short and extended name fields shares the same structure: both starts with 1 byte containing the
+The 'short' and 'extended name' fields shares the same structure: both starts with 1 byte containing the
 field size, followed by the field value itself. The field value is encrypted and how the encryption
 algorithm works will be discussed in section 3.
 
@@ -83,7 +83,7 @@ algorithm works will be discussed in section 3.
 
 2.5 The country
 
-The country field contains the initial letters (in portuguese) of the equipa's country and has 4
+The 'country' field contains the initial letters (in portuguese) of the equipa's country and has 4
 bytes of size. The first byte contains the field size (which usually is 3) and the last 3 bytes
 contains the encrypted initial letters. This information is used by elifoot to group the equipas
 according to its country and show the equipa's country flag correctly. Thus, the value of this
@@ -92,9 +92,16 @@ the game.
 
 2.6 The level
 
-2.7 The player list
+The 'level' field contains 1 byte of size and defines the level of equipa in hex format.
 
-2.6 The coach
+2.7 The number of players
+
+This field contains 1 byte of size and defines the number of players who composes the equipa, in
+hex format.
+
+2.8 The player list
+
+2.9 The coach
 
 3. The encryption algorithm
 
