@@ -112,7 +112,8 @@ forward.
 
 2.9 The coach
 
-TODO
+The 'coach' field defines the equipa's coach and unlike the other fields with variable size, it
+doesn't have a size byte, being composed only by the encrypted coach's name itself.
 
 3. The encryption algorithm
 
