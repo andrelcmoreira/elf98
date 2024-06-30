@@ -81,8 +81,8 @@ algorithm works will be discussed in section 3.
 
 2.3 The colors
 
-The 'colors' field has 8 bytes of size. Both background and text colors has the same structure: 3
-bytes for the color itself (in RGB format) followed by 1 unused byte.
+The 'colors' field has 8 bytes of size, 4 bytes for each color. Both background and text colors has
+the same structure: 3 bytes for the color itself (in RGB format) followed by 1 unused byte.
 
 2.5 The country
 
@@ -104,7 +104,11 @@ hex format.
 
 2.8 The player list
 
-TODO
+The 'player list' field defines the list of players who composes the equipa and has 'n' entries,
+where 'n' is defined according to the prior field. Each entry of the list starts with 1 byte
+containing the player's name size, followed by the encrypted player's name itself. The last byte
+defines the player's position code: 0 to goalkeeper, 1 to defender, 2 to midfielder and 3 to
+forward.
 
 2.9 The coach
 
