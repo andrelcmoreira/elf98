@@ -43,9 +43,9 @@ across the file. It has the following format:
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |   field size  |      team short name (variable size)          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|            team background colour             |     unused    |
+|              team background color            |     unused    |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|            team foreground colour             |     unused    |
+|              team foreground color            |     unused    |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |   field size  |                 team country                  |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -79,7 +79,10 @@ The 'short' and 'extended name' fields shares the same structure: both starts wi
 field size, followed by the field value itself. The field value is encrypted and how the encryption
 algorithm works will be discussed in section 3.
 
-2.3 The colours
+2.3 The colors
+
+The 'colors' field has 8 bytes of size. Both background and text colors has the same structure: 3
+bytes for the color itself (in RGB format) followed by 1 unused byte.
 
 2.5 The country
 
@@ -101,7 +104,11 @@ hex format.
 
 2.8 The player list
 
+TODO
+
 2.9 The coach
+
+TODO
 
 3. The encryption algorithm
 
