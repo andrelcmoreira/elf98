@@ -106,10 +106,10 @@ hex format.
 
 The 'player list' field defines the list of players who composes the equipa and has 'n' entries,
 where 'n' is defined according to the prior field. The first 4 bytes of each entry of the list
-defines the player's country, according to the format described on section 2.5. The next 1 byte
-contains the player's name size followed by the encrypted player's name itself. The last byte
-defines the player's position code: 0 to goalkeeper, 1 to defender, 2 to midfielder and 3 to
-forward.
+defines the player's nationality, according to the format described on section 2.5. The next 1
+byte contains the player's name size followed by the encrypted player's name itself. The last
+byte defines the player's position code: 0 to goalkeeper, 1 to defender, 2 to midfielder and 3
+to forward.
 
 2.9 The coach
 
