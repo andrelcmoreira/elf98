@@ -49,7 +49,7 @@ class Equipa:
             f'extended name:\t{self.ext_name}\n'
             f'short name:\t{self.short_name}\n'
             f'country:\t{self.country}\n'
-            f'colors:\t{self.colors} (text, background)\n'
+            f'colors:\t\t{self.colors} (text, background)\n'
             f'level:\t\t{self.level}\n'
             f'coach:\t\t{self.coach}\n'
             f'players:\t{self.players}'
