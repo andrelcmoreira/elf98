@@ -1,5 +1,106 @@
 from sys import argv
 from dataclasses import dataclass
+from enum import Enum
+
+
+class Offsets(Enum):
+    HEADER_START = 0x00
+    HEADER_END = 0x31
+
+
+class Sizes(Enum):
+    HEADER = 50
+    COLOR = 3 # each color has 3 bytes
+    LEVEL = 1
+    COUNTRY = 4 # encrypted size
+    EQUIPA_SIZE = 1
+
+
+class OffsetCalculator:
+
+    @staticmethod
+    def get_extended_name():
+        # +1 to skip the size byte
+        return Sizes.HEADER.value + 1
+
+    @staticmethod
+    def get_short_name(ext_len):
+        # +1 to skip the size byte of extended name field
+        return Sizes.HEADER.value + ext_len + 1
+
+    @staticmethod
+    def get_colors(ext_len, short_len):
+        # +1 to skip the size byte of extended field
+        # +1 to skip the size byte of short name field
+        return Sizes.HEADER.value + ext_len + short_len + 2
+
+    @staticmethod
+    def get_country(ext_len, short_len):
+        # +1 to skip the size byte of extended field
+        # +1 to skip the size byte of short name field
+        # +2 to skip the apparently unused 1 byte on each color
+        return Sizes.HEADER.value + ext_len + short_len + \
+            Sizes.COLOR.value * 2 + 4
+
+    @staticmethod
+    def get_level(ext_len, short_len):
+        # +1 to skip the size byte of extended field
+        # +1 to skip the size byte of short name field
+        # +2 to skip the apparently unused 1 byte on each color
+        return Sizes.HEADER.value + ext_len + short_len + \
+            Sizes.COLOR.value * 2 + Sizes.COUNTRY.value + 4
+
+    @staticmethod
+    def get_players_number(ext_len, short_len):
+        # +2 to skip the size bytes of extended and short name fields
+        # +2 to skip the apparently unused 1 byte on each color
+        return Sizes.HEADER.value + ext_len + short_len + \
+            Sizes.COLOR.value * 2 + Sizes.COUNTRY.value + \
+            Sizes.LEVEL.value + 4
+
+    @staticmethod
+    def get_players(ext_len, short_len):
+        # +2 to skip the size bytes of extended and short name fields
+        # +2 to skip the apparently unused 1 byte on each color
+        # +1 to skip to the player nationality
+        return Sizes.HEADER.value + ext_len + short_len + \
+            Sizes.COLOR.value * 2 + Sizes.COUNTRY.value + \
+            Sizes.LEVEL.value + Sizes.EQUIPA_SIZE.value + 5
+
+    @staticmethod
+    def get_coach(data, ext_len, short_len):
+        offs = OffsetCalculator.get_players(ext_len, short_len)
+        count_offs = OffsetCalculator.get_players_number(ext_len, short_len)
+        number_players = data[count_offs]
+
+        for _ in range(0, number_players):
+            entry_len = data[offs + Sizes.COUNTRY.value]
+            # +1 to skip the 'name size' byte
+            # +1 to skip the position byte
+            # +1 to jump to the next entry
+            offs += Sizes.COUNTRY.value + entry_len + 3
+
+        return offs
+
+
+class EquipaParser:
+
+    def __init__(self, equipa_file):
+        self._file = equipa_file
+
+    @staticmethod
+    def parse_ext_name(data):
+        offs = OffsetCalculator.get_extended_name()
+        size = data[Sizes.HEADER.value]
+
+        return decrypt(data, offs, size)
+
+    @staticmethod
+    def parse_short_name(data, ext_len):
+        offs = OffsetCalculator.get_short_name(ext_len)
+        size = data[offs]
+
+        return decrypt(data, offs + 1, size)
 
 
 @dataclass
@@ -55,25 +156,47 @@ def to_pos_code(pos):
 def encrypt(text):
     out = []
 
-    out.append(len(text))
+    out.append(len(text).to_bytes())
 
     for i in range(0, len(text)):
-        out.append((ord(text[i]) + out[i]) & 0xff)
+        out.append(((ord(text[i]) + int.from_bytes(out[i])) & 0xff).to_bytes())
 
     return out
 
 
-def encrypt_players():
-    for player in PLAYERS:
-        pass # TODO
+def update_players(file):
+    with open(file, 'ab') as f:
+        for player in PLAYERS:
+            country = encrypt(player.country)
+            name = encrypt(player.name)
+
+            f.write(int(0).to_bytes())
+            for ch in country:
+                f.write(ch)
+
+            for ch in name:
+                f.write(ch)
+
+            f.write(to_pos_code(player.position).to_bytes())
 
 
-def main(text_input):
-    print(f'text to be encrypted: {text_input}')
-    encrypted = encrypt(text_input)
-    print(f'encrypted text: {' '.join([hex(x) for x in encrypted])}')
-    decrypted = decrypt(encrypted, 1, len(encrypted) - 1)
-    print(f'decrypted text: {decrypted}')
+def update_player_number(file):
+    with open(file, 'r+b') as f:
+        data = f.read()
+
+        ext_name = EquipaParser.parse_ext_name(data)
+        short_name = EquipaParser.parse_short_name(data, len(ext_name))
+
+        offs = OffsetCalculator.get_players_number(len(ext_name),
+                                                   len(short_name))
+
+        f.seek(offs)
+        f.write(len(PLAYERS).to_bytes())
+
+
+def main(file):
+    update_player_number(file)
+    update_players(file)
 
 
 main(argv[1])
