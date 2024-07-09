@@ -123,16 +123,21 @@ PLAYERS = [
     Player(name='Robert Arboleda', position='Z', country='EQU'),
     Player(name='Wellington', position='Z', country='BRA'),
     Player(name='Alan Franco', position='Z', country='ARG'),
+    Player(name='Nahuel Ferraresi', position='Z', country='VNZ'),
     Player(name='Michel Araújo', position='M', country='URU'),
     Player(name='Giuliano Galoppo', position='M', country='ARG'),
     Player(name='Rodrigo Nestor', position='M', country='BRA'),
     Player(name='Luiz Gustavo', position='M', country='BRA'),
+    Player(name='Alisson', position='M', country='BRA'),
+    Player(name='Welington Rato', position='M', country='BRA'),
+    Player(name='James Rodriguez', position='M', country='COL'),
     Player(name='Lucas Moura', position='A', country='BRA'),
     Player(name='Jonathan Calleri', position='A', country='ARG'),
     Player(name='Luciano', position='A', country='BRA'),
     Player(name='Ferreira', position='A', country='BRA'),
     Player(name='Juan', position='A', country='BRA'),
     Player(name='Erick', position='A', country='BRA'),
+    Player(name='André Silva', position='A', country='BRA'),
 ]
 COACH = 'Luis Zubeldia'
 
