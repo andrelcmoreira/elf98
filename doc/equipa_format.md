@@ -63,7 +63,7 @@ across the file. It has the following format:
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |   field size  | player n name (variable size) |    position   |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|                  coach name (variable size)                   |
+|   field size  |           coach name (variable size)          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
 2.1 The efa header
@@ -113,8 +113,8 @@ to forward.
 
 2.9 The coach
 
-The 'coach' field defines the equipa's coach and unlike the other fields with variable size, it
-doesn't have a size byte, being composed only by the encrypted coach's name itself.
+The 'coach' field defines the equipa's coach and has the same structure of the other fields with
+variable size, starting with 1 size byte followed by the encrypted coach's name itself.
 
 3. The encryption algorithm
 

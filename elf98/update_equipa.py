@@ -160,12 +160,11 @@ def to_pos_code(pos):
 
 
 def encrypt(text):
-    out = []
+    out = bytearray()
 
-    out.append(len(text).to_bytes())
-
+    out.append(len(text))
     for i in range(0, len(text)):
-        out.append(((ord(text[i]) + int.from_bytes(out[i])) & 0xff).to_bytes())
+        out.append((ord(text[i]) + out[i]) & 0xff)
 
     return out
 
@@ -173,26 +172,24 @@ def encrypt(text):
 def update_players(file):
     with open(file, 'ab') as f:
         for player in PLAYERS:
-            country = encrypt(player.country)
-            name = encrypt(player.name)
+            entry = bytearray()
 
-            f.write(int(0).to_bytes())
-            for ch in country:
-                f.write(ch)
+            entry.append(int(0))
+            entry += encrypt(player.country)
+            entry += encrypt(player.name)
+            entry.append(to_pos_code(player.position))
 
-            for ch in name:
-                f.write(ch)
-
-            f.write(to_pos_code(player.position).to_bytes())
+            f.write(entry)
 
 
 def update_coach(file):
     with open(file, 'ab') as f:
-        name = encrypt(COACH)
+        coach = bytearray()
 
-        f.write(int(0).to_bytes())
-        for ch in name:
-            f.write(ch)
+        coach.append(int(0))
+        coach += encrypt(COACH)
+
+        f.write(coach)
 
 
 def update_player_number(file):
@@ -209,10 +206,14 @@ def update_player_number(file):
         f.write(len(PLAYERS).to_bytes())
 
 
-def main(file):
+def update_equipa(file):
     update_player_number(file)
     update_players(file)
     update_coach(file)
+
+
+def main(file):
+    update_equipa(file)
 
 
 main(argv[1])
