@@ -219,5 +219,6 @@ def main(in_file, out_file):
     update_equipa(in_file, out_file)
 
 
+# TODO: fetch the player list
 # TODO: remove duplicated codes
 main(argv[1], argv[2])
