@@ -134,6 +134,7 @@ PLAYERS = [
     Player(name='Juan', position='A', country='BRA'),
     Player(name='Erick', position='A', country='BRA'),
 ]
+COACH = 'Luis Zubeldia'
 
 
 def decrypt(data, offset, size):
@@ -180,6 +181,15 @@ def update_players(file):
             f.write(to_pos_code(player.position).to_bytes())
 
 
+def update_coach(file):
+    with open(file, 'ab') as f:
+        name = encrypt(COACH)
+
+        f.write(int(0).to_bytes())
+        for ch in name:
+            f.write(ch)
+
+
 def update_player_number(file):
     with open(file, 'r+b') as f:
         data = f.read()
@@ -197,6 +207,7 @@ def update_player_number(file):
 def main(file):
     update_player_number(file)
     update_players(file)
+    update_coach(file)
 
 
 main(argv[1])
