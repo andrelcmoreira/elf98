@@ -190,8 +190,9 @@ class EquipaParser(BaseParser):
         return pp.parse()
 
     def _parse_coach(self, data, ext_len, short_len):
-        offs = OffsetCalculator.get_coach(data, ext_len, short_len) + 1
-        coach = self.decrypt_field(data, offs, len(data) - offs)
+        offs = OffsetCalculator.get_coach(data, ext_len, short_len)
+        size = data[offs]
+        coach = self.decrypt_field(data, offs + 1, size)
 
         return coach
 
