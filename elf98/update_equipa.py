@@ -114,6 +114,7 @@ class Player:
         return f'{self.position}: {self.name} - {self.country}'
 
 
+COACH = 'Luis Zubeldia'
 # https://www.espn.com.br/futebol/time/elenco/_/id/2026/bra.sao_paulo
 PLAYERS = [
     Player(name='Rafael', position='G', country='BRA'),
@@ -139,7 +140,6 @@ PLAYERS = [
     Player(name='Erick', position='A', country='BRA'),
     Player(name='André Silva', position='A', country='BRA'),
 ]
-COACH = 'Luis Zubeldia'
 
 
 def decrypt(data, offset, size):
@@ -169,51 +169,55 @@ def encrypt(text):
     return out
 
 
-def update_players(file):
-    with open(file, 'ab') as f:
-        for player in PLAYERS:
-            entry = bytearray()
+def add_players(file):
+    player = bytearray()
 
-            entry.append(int(0))
-            entry += encrypt(player.country)
-            entry += encrypt(player.name)
-            entry.append(to_pos_code(player.position))
+    for entry in PLAYERS:
+        player.append(int(0))
+        player += encrypt(entry.country)
+        player += encrypt(entry.name)
+        player.append(to_pos_code(entry.position))
 
-            f.write(entry)
+        file.write(player)
 
-
-def update_coach(file):
-    with open(file, 'ab') as f:
-        coach = bytearray()
-
-        coach.append(int(0))
-        coach += encrypt(COACH)
-
-        f.write(coach)
+        player.clear()
 
 
-def update_player_number(file):
-    with open(file, 'r+b') as f:
+def add_coach(file):
+    coach = bytearray()
+
+    coach.append(int(0))
+    coach += encrypt(COACH)
+
+    file.write(coach)
+
+
+def add_player_number(file):
+    file.write(len(PLAYERS).to_bytes())
+
+
+def create_base_equipa(in_file, out_file):
+    with open(in_file, 'r+b') as f:
         data = f.read()
 
         ext_name = EquipaParser.parse_ext_name(data)
         short_name = EquipaParser.parse_short_name(data, len(ext_name))
+        offs = OffsetCalculator.get_level(len(ext_name), len(short_name))
 
-        offs = OffsetCalculator.get_players_number(len(ext_name),
-                                                   len(short_name))
-
-        f.seek(offs)
-        f.write(len(PLAYERS).to_bytes())
+        out_file.write(data[:offs + 1])
 
 
-def update_equipa(file):
-    update_player_number(file)
-    update_players(file)
-    update_coach(file)
+def update_equipa(in_file, out_file):
+    with open(out_file, 'ab') as f:
+        create_base_equipa(in_file, f)
+        add_player_number(f)
+        add_players(f)
+        add_coach(f)
 
 
-def main(file):
-    update_equipa(file)
+def main(in_file, out_file):
+    update_equipa(in_file, out_file)
 
 
-main(argv[1])
+# TODO: remove duplicated codes
+main(argv[1], argv[2])
