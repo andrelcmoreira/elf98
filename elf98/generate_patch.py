@@ -219,7 +219,7 @@ def create_base_equipa(in_file, out_file):
 
 
 def update_equipa(in_file, out_file):
-    players = download_equipa_data()
+    players = fetch_equipa_data()
 
     with open(out_file, 'ab') as f:
         create_base_equipa(in_file, f)
@@ -228,13 +228,13 @@ def update_equipa(in_file, out_file):
         add_coach(f)
 
 
-def download_equipa_data():
+def fetch_equipa_data():
+    base_url = 'https://www.espn.com.br/futebol/time/elenco/_/id'
     headers = {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) \
                        AppleWebKit/537.36 (KHTML, like Gecko) \
                        Chrome/50.0.2661.102 Safari/537.36'
     }
-    base_url = 'https://www.espn.com.br/futebol/time/elenco/_/id'
     reply = get(base_url + '/2026/bra.sao_paulo',
                 headers=headers,
                 timeout=5)
@@ -244,7 +244,12 @@ def download_equipa_data():
     goalkeepers = loads('{' + ret[0] + '}')
     others = loads('{' + ret[1] + '}')
 
+    return parse_players(goalkeepers, others)
+
+
+def parse_players(goalkeepers, others):
     players = []
+
     for player in goalkeepers['athletes']:
         players.append(
             Player(
@@ -269,7 +274,32 @@ def download_equipa_data():
             )
         )
 
-    #players.sort(key=lambda player: int(player.appearances), reverse=True)
+    return select_players(players)
+
+
+def select_players(player_list):
+    players = []
+    gk = []
+    df = []
+    mf = []
+    fw = []
+
+    for player in player_list:
+        match player.position:
+            case 'G': gk.append(player)
+            case 'D': df.append(player)
+            case 'M': mf.append(player)
+            case 'A': fw.append(player)
+
+    gk.sort(key=lambda p: int(p.appearances), reverse=True)
+    df.sort(key=lambda p: int(p.appearances), reverse=True)
+    mf.sort(key=lambda p: int(p.appearances), reverse=True)
+    fw.sort(key=lambda p: int(p.appearances), reverse=True)
+
+    players.extend(gk[0:3])
+    players.extend(df[0:6])
+    players.extend(mf[0:6])
+    players.extend(fw[0:6])
 
     return players
 
@@ -279,5 +309,4 @@ def main(in_file, out_file):
 
 
 # TODO: remove duplicated codes
-# TODO: sort player list
 main(argv[1], argv[2])
