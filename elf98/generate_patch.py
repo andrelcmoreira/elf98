@@ -1,6 +1,10 @@
 from sys import argv
 from dataclasses import dataclass
 from enum import Enum
+from bs4 import BeautifulSoup
+from requests import get
+from json import loads
+from re import search, findall
 
 
 class Offsets(Enum):
@@ -142,6 +146,13 @@ PLAYERS = [
 ]
 
 
+class PlayerPosition(Enum):
+    GOALKEEPER = 0
+    DEFENDER = 1
+    MIDFIELDER = 2
+    FORWARD = 3
+
+
 def decrypt(data, offset, size):
     ret = ''
 
@@ -153,10 +164,10 @@ def decrypt(data, offset, size):
 
 def to_pos_code(pos):
     match pos:
-        case 'G': return 0
-        case 'Z': return 1
-        case 'M': return 2
-        case 'A': return 3
+        case 'G': return PlayerPosition.GOALKEEPER.value
+        case 'Z': return PlayerPosition.DEFENDER.value
+        case 'M': return PlayerPosition.MIDFIELDER.value
+        case 'A': return PlayerPosition.FORWARD.value
 
 
 def encrypt(text):
@@ -173,7 +184,7 @@ def add_players(file):
     player = bytearray()
 
     for entry in PLAYERS:
-        player.append(int(0))
+        player.append(0)
         player += encrypt(entry.country)
         player += encrypt(entry.name)
         player.append(to_pos_code(entry.position))
@@ -186,7 +197,7 @@ def add_players(file):
 def add_coach(file):
     coach = bytearray()
 
-    coach.append(int(0))
+    coach.append(0)
     coach += encrypt(COACH)
 
     file.write(coach)
@@ -215,8 +226,51 @@ def update_equipa(in_file, out_file):
         add_coach(f)
 
 
+def download_equipa_data():
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) \
+                       AppleWebKit/537.36 (KHTML, like Gecko) \
+                       Chrome/50.0.2661.102 Safari/537.36'
+    }
+    reply = get(
+        'https://www.espn.com.br/futebol/time/elenco/_/id/2026/bra.sao_paulo',
+        headers=headers,
+        timeout=5
+    )
+
+    soup = BeautifulSoup(reply.text, 'html.parser')
+    script_text = soup.find_all('script')
+
+    entry = ''
+    for i in script_text:
+        txt = i.get_text()
+        if '\"athletes\":[{' in txt:
+            entry = txt
+
+    ret = findall(r'(\"athletes\":[[{"\w:,\/\.\d~\-\s\}ãáâéêíóôú]+])', entry)
+    g = loads('{' + ret[0] + '}')
+    o = loads('{' + ret[1] + '}')
+
+    for gk in g['athletes']:
+        name = gk['shortName']
+        pos = gk['position']
+        country = gk['ctz']
+        appearances = gk.get('appearances')
+
+        print(f'{name}, {pos}, {country}, {appearances}')
+
+    for p in o['athletes']:
+        name = p['shortName']
+        pos = p['position']
+        country = p['ctz']
+        appearances = p.get('appearances')
+
+        print(f'{name}, {pos}, {country}, {appearances}')
+
+
 def main(in_file, out_file):
-    update_equipa(in_file, out_file)
+    #update_equipa(in_file, out_file)
+    download_equipa_data()
 
 
 # TODO: fetch the player list
