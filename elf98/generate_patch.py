@@ -1,10 +1,9 @@
 from sys import argv
 from dataclasses import dataclass
 from enum import Enum
-from bs4 import BeautifulSoup
 from requests import get
 from json import loads
-from re import search, findall
+from re import findall
 
 
 class Offsets(Enum):
@@ -232,22 +231,12 @@ def download_equipa_data():
                        AppleWebKit/537.36 (KHTML, like Gecko) \
                        Chrome/50.0.2661.102 Safari/537.36'
     }
-    reply = get(
-        'https://www.espn.com.br/futebol/time/elenco/_/id/2026/bra.sao_paulo',
-        headers=headers,
-        timeout=5
-    )
+    reply = get('https://www.espn.com.br/futebol/time/elenco/_/id/2026/bra.sao_paulo',
+                headers=headers,
+                timeout=5)
 
-    soup = BeautifulSoup(reply.text, 'html.parser')
-    script_text = soup.find_all('script')
-
-    entry = ''
-    for i in script_text:
-        txt = i.get_text()
-        if '\"athletes\":[{' in txt:
-            entry = txt
-
-    ret = findall(r'(\"athletes\":[[{"\w:,\/\.\d~\-\s\}ãáâéêíóôú]+])', entry)
+    ret = findall(r'(\"athletes\":[\[\{"\w:,\/\.\d~\-\s\}\\p{L}]+\])',
+                  reply.text)
     g = loads('{' + ret[0] + '}')
     o = loads('{' + ret[1] + '}')
 
@@ -255,17 +244,17 @@ def download_equipa_data():
         name = gk['shortName']
         pos = gk['position']
         country = gk['ctz']
-        appearances = gk.get('appearances')
+        appearances = gk.get('appearances') if gk.get('appearances') is not None else 0
 
-        print(f'{name}, {pos}, {country}, {appearances}')
+        print(f'{pos}: {name}, {country}, {appearances}')
 
     for p in o['athletes']:
         name = p['shortName']
         pos = p['position']
         country = p['ctz']
-        appearances = p.get('appearances')
+        appearances = p.get('appearances') if p.get('appearances') is not None else 0
 
-        print(f'{name}, {pos}, {country}, {appearances}')
+        print(f'{pos}: {name}, {country}, {appearances}')
 
 
 def main(in_file, out_file):
