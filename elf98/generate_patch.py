@@ -112,6 +112,7 @@ class Player:
     name: str
     position: str
     country: str
+    appearances: int
 
     def __repr__(self):
         return f'{self.position}: {self.name} - {self.country}'
@@ -119,30 +120,30 @@ class Player:
 
 COACH = 'Luis Zubeldia'
 # https://www.espn.com.br/futebol/time/elenco/_/id/2026/bra.sao_paulo
-PLAYERS = [
-    Player(name='Rafael', position='G', country='BRA'),
-    Player(name='Jandrei', position='G', country='BRA'),
-    Player(name='Igor', position='Z', country='BRA'),
-    Player(name='Diego Costa', position='Z', country='BRA'),
-    Player(name='Robert Arboleda', position='Z', country='EQU'),
-    Player(name='Wellington', position='Z', country='BRA'),
-    Player(name='Alan Franco', position='Z', country='ARG'),
-    Player(name='Nahuel Ferraresi', position='Z', country='VNZ'),
-    Player(name='Michel Araújo', position='M', country='URU'),
-    Player(name='Giuliano Galoppo', position='M', country='ARG'),
-    Player(name='Rodrigo Nestor', position='M', country='BRA'),
-    Player(name='Luiz Gustavo', position='M', country='BRA'),
-    Player(name='Alisson', position='M', country='BRA'),
-    Player(name='Welington Rato', position='M', country='BRA'),
-    Player(name='James Rodriguez', position='M', country='COL'),
-    Player(name='Lucas Moura', position='A', country='BRA'),
-    Player(name='Jonathan Calleri', position='A', country='ARG'),
-    Player(name='Luciano', position='A', country='BRA'),
-    Player(name='Ferreira', position='A', country='BRA'),
-    Player(name='Juan', position='A', country='BRA'),
-    Player(name='Erick', position='A', country='BRA'),
-    Player(name='André Silva', position='A', country='BRA'),
-]
+#PLAYERS = [
+#    Player(name='Rafael', position='G', country='BRA'),
+#    Player(name='Jandrei', position='G', country='BRA'),
+#    Player(name='Igor', position='Z', country='BRA'),
+#    Player(name='Diego Costa', position='Z', country='BRA'),
+#    Player(name='Robert Arboleda', position='Z', country='EQU'),
+#    Player(name='Wellington', position='Z', country='BRA'),
+#    Player(name='Alan Franco', position='Z', country='ARG'),
+#    Player(name='Nahuel Ferraresi', position='Z', country='VNZ'),
+#    Player(name='Michel Araújo', position='M', country='URU'),
+#    Player(name='Giuliano Galoppo', position='M', country='ARG'),
+#    Player(name='Rodrigo Nestor', position='M', country='BRA'),
+#    Player(name='Luiz Gustavo', position='M', country='BRA'),
+#    Player(name='Alisson', position='M', country='BRA'),
+#    Player(name='Welington Rato', position='M', country='BRA'),
+#    Player(name='James Rodriguez', position='M', country='COL'),
+#    Player(name='Lucas Moura', position='A', country='BRA'),
+#    Player(name='Jonathan Calleri', position='A', country='ARG'),
+#    Player(name='Luciano', position='A', country='BRA'),
+#    Player(name='Ferreira', position='A', country='BRA'),
+#    Player(name='Juan', position='A', country='BRA'),
+#    Player(name='Erick', position='A', country='BRA'),
+#    Player(name='André Silva', position='A', country='BRA'),
+#]
 
 
 class PlayerPosition(Enum):
@@ -164,7 +165,7 @@ def decrypt(data, offset, size):
 def to_pos_code(pos):
     match pos:
         case 'G': return PlayerPosition.GOALKEEPER.value
-        case 'Z': return PlayerPosition.DEFENDER.value
+        case 'D': return PlayerPosition.DEFENDER.value
         case 'M': return PlayerPosition.MIDFIELDER.value
         case 'A': return PlayerPosition.FORWARD.value
 
@@ -179,10 +180,10 @@ def encrypt(text):
     return out
 
 
-def add_players(file):
+def add_players(file, players):
     player = bytearray()
 
-    for entry in PLAYERS:
+    for entry in players:
         player.append(0)
         player += encrypt(entry.country)
         player += encrypt(entry.name)
@@ -202,8 +203,8 @@ def add_coach(file):
     file.write(coach)
 
 
-def add_player_number(file):
-    file.write(len(PLAYERS).to_bytes())
+def add_player_number(file, players):
+    file.write(len(players).to_bytes())
 
 
 def create_base_equipa(in_file, out_file):
@@ -218,10 +219,12 @@ def create_base_equipa(in_file, out_file):
 
 
 def update_equipa(in_file, out_file):
+    players = download_equipa_data()
+
     with open(out_file, 'ab') as f:
         create_base_equipa(in_file, f)
-        add_player_number(f)
-        add_players(f)
+        add_player_number(f, players)
+        add_players(f, players)
         add_coach(f)
 
 
@@ -231,37 +234,50 @@ def download_equipa_data():
                        AppleWebKit/537.36 (KHTML, like Gecko) \
                        Chrome/50.0.2661.102 Safari/537.36'
     }
-    reply = get('https://www.espn.com.br/futebol/time/elenco/_/id/2026/bra.sao_paulo',
+    base_url = 'https://www.espn.com.br/futebol/time/elenco/_/id'
+    reply = get(base_url + '/2026/bra.sao_paulo',
                 headers=headers,
                 timeout=5)
 
     ret = findall(r'(\"athletes\":[\[\{"\w:,\/\.\d~\-\s\}\\p{L}]+\])',
                   reply.text)
-    g = loads('{' + ret[0] + '}')
-    o = loads('{' + ret[1] + '}')
+    goalkeepers = loads('{' + ret[0] + '}')
+    others = loads('{' + ret[1] + '}')
 
-    for gk in g['athletes']:
-        name = gk['shortName']
-        pos = gk['position']
-        country = gk['ctz']
-        appearances = gk.get('appearances') if gk.get('appearances') is not None else 0
+    players = []
+    for player in goalkeepers['athletes']:
+        players.append(
+            Player(
+                name=player['shortName'],
+                position=player['position'],
+                country=player['ctz'][0:3].upper(),
+                appearances=player.get('appearances') \
+                    if player.get('appearances') is not None \
+                    else 0
+            )
+        )
 
-        print(f'{pos}: {name}, {country}, {appearances}')
+    for player in others['athletes']:
+        players.append(
+            Player(
+                name=player['shortName'],
+                position=player['position'],
+                country=player['ctz'][0:3].upper(),
+                appearances=player.get('appearances') \
+                    if player.get('appearances') is not None \
+                    else 0
+            )
+        )
 
-    for p in o['athletes']:
-        name = p['shortName']
-        pos = p['position']
-        country = p['ctz']
-        appearances = p.get('appearances') if p.get('appearances') is not None else 0
+    #players.sort(key=lambda player: int(player.appearances), reverse=True)
 
-        print(f'{pos}: {name}, {country}, {appearances}')
+    return players
 
 
 def main(in_file, out_file):
-    #update_equipa(in_file, out_file)
-    download_equipa_data()
+    update_equipa(in_file, out_file)
 
 
-# TODO: fetch the player list
 # TODO: remove duplicated codes
+# TODO: sort player list
 main(argv[1], argv[2])
