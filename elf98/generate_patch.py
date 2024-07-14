@@ -1,9 +1,9 @@
 from sys import argv
 from dataclasses import dataclass
 from enum import Enum
-from requests import get
 from json import loads
 from re import findall
+from requests import get
 
 
 class Offsets(Enum):
@@ -230,11 +230,7 @@ def update_equipa(in_file, out_file):
 
 def fetch_equipa_data():
     base_url = 'https://www.espn.com.br/futebol/time/elenco/_/id'
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_5) \
-                       AppleWebKit/537.36 (KHTML, like Gecko) \
-                       Chrome/50.0.2661.102 Safari/537.36'
-    }
+    headers = { 'User-Agent': 'elf98' }
     reply = get(base_url + '/2026/bra.sao_paulo',
                 headers=headers,
                 timeout=5)
@@ -318,4 +314,7 @@ def main(in_file, out_file):
 
 
 # TODO: remove duplicated code
+# TODO: remove the hardcoded coach name
+# TODO: receive the equipa by parameter
+# TODO: test the regex
 main(argv[1], argv[2])
