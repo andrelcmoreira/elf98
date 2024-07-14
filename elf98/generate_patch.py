@@ -247,15 +247,24 @@ def fetch_equipa_data():
     return parse_players(goalkeepers, others)
 
 
+def get_country(country):
+    cnt = country[0:3].upper()
+
+    if cnt == 'VEN':
+        return 'VNZ'
+
+    return cnt
+
+
 def parse_players(goalkeepers, others):
     players = []
 
     for player in goalkeepers['athletes']:
         players.append(
             Player(
-                name=player['shortName'],
+                name=player['name'],
                 position=player['position'],
-                country=player['ctz'][0:3].upper(),
+                country=get_country(player['ctz']),
                 appearances=player.get('appearances') \
                     if player.get('appearances') is not None \
                     else 0
@@ -265,9 +274,9 @@ def parse_players(goalkeepers, others):
     for player in others['athletes']:
         players.append(
             Player(
-                name=player['shortName'],
+                name=player['name'],
                 position=player['position'],
-                country=player['ctz'][0:3].upper(),
+                country=get_country(player['ctz']),
                 appearances=player.get('appearances') \
                     if player.get('appearances') is not None \
                     else 0
@@ -308,5 +317,5 @@ def main(in_file, out_file):
     update_equipa(in_file, out_file)
 
 
-# TODO: remove duplicated codes
+# TODO: remove duplicated code
 main(argv[1], argv[2])
