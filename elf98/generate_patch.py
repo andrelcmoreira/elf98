@@ -4,6 +4,7 @@ from enum import Enum
 from json import loads
 from re import findall
 from requests import get
+from unidecode import unidecode
 
 
 class Offsets(Enum):
@@ -229,9 +230,9 @@ def update_equipa(in_file, out_file):
 
 
 def fetch_equipa_data():
-    base_url = 'https://www.espn.com.br/futebol/time/elenco/_/id'
+    base_url = 'https://www.espn.com.br/futebol/time/elenco/_/id/'
     headers = { 'User-Agent': 'elf98' }
-    reply = get(base_url + '/2026/bra.sao_paulo',
+    reply = get(base_url + '111/juventus',
                 headers=headers,
                 timeout=5)
 
@@ -246,10 +247,11 @@ def fetch_equipa_data():
 def get_country(country):
     cnt = country[0:3].upper()
 
-    if cnt == 'VEN':
-        return 'VNZ'
+    match cnt:
+        case 'VEN': return 'VNZ'
+        case 'REP': return 'RCH'
 
-    return cnt
+    return unidecode(cnt)
 
 
 def parse_players(goalkeepers, others):
@@ -316,5 +318,5 @@ def main(in_file, out_file):
 # TODO: remove duplicated code
 # TODO: remove the hardcoded coach name
 # TODO: receive the equipa by parameter
-# TODO: test the regex
+# TODO: test the regex with more teams
 main(argv[1], argv[2])
