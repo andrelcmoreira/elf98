@@ -3,6 +3,8 @@ from dataclasses import dataclass
 from enum import Enum
 from json import loads
 from re import findall
+
+from argparse import ArgumentParser
 from requests import get
 from unidecode import unidecode
 
@@ -219,8 +221,8 @@ def create_base_equipa(in_file, out_file):
         out_file.write(data[:offs + 1])
 
 
-def update_equipa(in_file, out_file):
-    players = fetch_equipa_data()
+def update_equipa(in_file, team_id, out_file):
+    players = fetch_equipa_data(team_id)
 
     with open(out_file, 'ab') as f:
         create_base_equipa(in_file, f)
@@ -229,12 +231,10 @@ def update_equipa(in_file, out_file):
         add_coach(f)
 
 
-def fetch_equipa_data():
+def fetch_equipa_data(team_id):
     base_url = 'https://www.espn.com.br/futebol/time/elenco/_/id/'
     headers = { 'User-Agent': 'elf98' }
-    reply = get(base_url + '111/juventus',
-                headers=headers,
-                timeout=5)
+    reply = get(base_url + team_id, headers=headers, timeout=5)
 
     ret = findall(r'(\"athletes\":[\[\{"\w:,\/\.\d~\-\s\}\\p{L}]+\])',
                   reply.text)
@@ -311,12 +311,35 @@ def select_players(player_list):
     return players
 
 
-def main(in_file, out_file):
-    update_equipa(in_file, out_file)
+def main():
+    args = parse_args()
+
+    if args:
+        update_equipa(args.equipa_file,
+                      args.team_id,
+                      args.output_file)
+
+
+def parse_args():
+    parser = ArgumentParser(prog=argv[0])
+
+    parser.add_argument('-e', '--equipa-file', metavar='file',
+                        help='Elifoot equipa file name')
+    parser.add_argument('-o', '--output-file', metavar='file',
+                        help='Output file name')
+    parser.add_argument('-i', '--team-id', metavar='ID',
+                        help='Team ID (extracted from ESPN site)')
+
+    # no arguments provided
+    if len(argv) == 1:
+        parser.print_help()
+        return None
+
+    return parser.parse_args()
 
 
 # TODO: remove duplicated code
 # TODO: remove the hardcoded coach name
-# TODO: receive the equipa by parameter
 # TODO: test the regex with more teams
-main(argv[1], argv[2])
+if __name__ == "__main__":
+    main()
