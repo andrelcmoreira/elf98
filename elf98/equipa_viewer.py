@@ -3,6 +3,13 @@ from enum import Enum
 from sys import argv
 
 
+class PlayerPosition(Enum):
+    G = 0
+    D = 1
+    M = 2
+    A = 3 # forward ('atacante' in portuguese)
+
+
 class Offsets(Enum):
     HEADER_START = 0x00
     HEADER_END = 0x31
@@ -178,9 +185,8 @@ class EquipaParser(BaseParser):
 
     def _parse_country(self, data, ext_len, short_len):
         offs = OffsetCalculator.get_country(ext_len, short_len)
-        country = self.decrypt_field(data, offs, Sizes.COUNTRY.value)
 
-        return country
+        return self.decrypt_field(data, offs, Sizes.COUNTRY.value)
 
     def _parse_players(self, data, ext_len, short_len):
         players_offs = OffsetCalculator.get_players(ext_len, short_len)
@@ -192,9 +198,8 @@ class EquipaParser(BaseParser):
     def _parse_coach(self, data, ext_len, short_len):
         offs = OffsetCalculator.get_coach(data, ext_len, short_len)
         size = data[offs]
-        coach = self.decrypt_field(data, offs + 1, size)
 
-        return coach
+        return self.decrypt_field(data, offs + 1, size)
 
     def parse(self):
         with open(self._file, 'rb') as f:
@@ -227,10 +232,10 @@ class PlayersParser(BaseParser):
         pos = ''
 
         match pos_code:
-            case 0: pos = 'G'
-            case 1: pos = 'Z'
-            case 2: pos = 'M'
-            case 3: pos = 'A'
+            case PlayerPosition.G.value: pos = PlayerPosition.G.name
+            case PlayerPosition.D.value: pos = PlayerPosition.D.name
+            case PlayerPosition.M.value: pos = PlayerPosition.M.name
+            case PlayerPosition.A.value: pos = PlayerPosition.A.name
 
         return pos
 
