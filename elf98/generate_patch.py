@@ -22,6 +22,25 @@ class Sizes(Enum):
     EQUIPA_SIZE = 1
 
 
+class PlayerPosition(Enum):
+    G = 0
+    D = 1
+    M = 2
+    A = 3 # forward ('atacante' in portuguese)
+
+
+@dataclass
+class Player:
+
+    name: str
+    position: str
+    country: str
+    appearances: int
+
+    def __repr__(self):
+        return f'{self.position}: {self.name} - {self.country}'
+
+
 class OffsetCalculator:
 
     @staticmethod
@@ -109,53 +128,6 @@ class EquipaParser:
         return decrypt(data, offs + 1, size)
 
 
-@dataclass
-class Player:
-
-    name: str
-    position: str
-    country: str
-    appearances: int
-
-    def __repr__(self):
-        return f'{self.position}: {self.name} - {self.country}'
-
-
-COACH = 'Luis Zubeldia'
-# https://www.espn.com.br/futebol/time/elenco/_/id/2026/bra.sao_paulo
-#PLAYERS = [
-#    Player(name='Rafael', position='G', country='BRA'),
-#    Player(name='Jandrei', position='G', country='BRA'),
-#    Player(name='Igor', position='Z', country='BRA'),
-#    Player(name='Diego Costa', position='Z', country='BRA'),
-#    Player(name='Robert Arboleda', position='Z', country='EQU'),
-#    Player(name='Wellington', position='Z', country='BRA'),
-#    Player(name='Alan Franco', position='Z', country='ARG'),
-#    Player(name='Nahuel Ferraresi', position='Z', country='VNZ'),
-#    Player(name='Michel Araújo', position='M', country='URU'),
-#    Player(name='Giuliano Galoppo', position='M', country='ARG'),
-#    Player(name='Rodrigo Nestor', position='M', country='BRA'),
-#    Player(name='Luiz Gustavo', position='M', country='BRA'),
-#    Player(name='Alisson', position='M', country='BRA'),
-#    Player(name='Welington Rato', position='M', country='BRA'),
-#    Player(name='James Rodriguez', position='M', country='COL'),
-#    Player(name='Lucas Moura', position='A', country='BRA'),
-#    Player(name='Jonathan Calleri', position='A', country='ARG'),
-#    Player(name='Luciano', position='A', country='BRA'),
-#    Player(name='Ferreira', position='A', country='BRA'),
-#    Player(name='Juan', position='A', country='BRA'),
-#    Player(name='Erick', position='A', country='BRA'),
-#    Player(name='André Silva', position='A', country='BRA'),
-#]
-
-
-class PlayerPosition(Enum):
-    GOALKEEPER = 0
-    DEFENDER = 1
-    MIDFIELDER = 2
-    FORWARD = 3
-
-
 def decrypt(data, offset, size):
     ret = ''
 
@@ -167,10 +139,10 @@ def decrypt(data, offset, size):
 
 def to_pos_code(pos):
     match pos:
-        case 'G': return PlayerPosition.GOALKEEPER.value
-        case 'D': return PlayerPosition.DEFENDER.value
-        case 'M': return PlayerPosition.MIDFIELDER.value
-        case 'A': return PlayerPosition.FORWARD.value
+        case PlayerPosition.G.name: return PlayerPosition.G.value
+        case PlayerPosition.D.name: return PlayerPosition.D.value
+        case PlayerPosition.M.name: return PlayerPosition.M.value
+        case PlayerPosition.A.name: return PlayerPosition.A.value
 
 
 def encrypt(text):
@@ -193,7 +165,6 @@ def add_players(file, players):
         player.append(to_pos_code(entry.position))
 
         file.write(player)
-
         player.clear()
 
 
@@ -201,7 +172,7 @@ def add_coach(file):
     coach = bytearray()
 
     coach.append(0)
-    coach += encrypt(COACH)
+    coach += encrypt('Luis Zubeldia') # TODO: remove the hardcoded coach name
 
     file.write(coach)
 
@@ -221,8 +192,11 @@ def create_base_equipa(in_file, out_file):
         out_file.write(data[:offs + 1])
 
 
-def update_equipa(in_file, team_id, out_file):
-    players = fetch_equipa_data(team_id)
+def update_equipa(in_file, espn_id, out_file):
+    players = fetch_team_data(espn_id)
+
+    if not players:
+        return
 
     with open(out_file, 'ab') as f:
         create_base_equipa(in_file, f)
@@ -231,17 +205,21 @@ def update_equipa(in_file, team_id, out_file):
         add_coach(f)
 
 
-def fetch_equipa_data(team_id):
+def fetch_team_data(espn_id):
     base_url = 'https://www.espn.com.br/futebol/time/elenco/_/id/'
     headers = { 'User-Agent': 'elf98' }
-    reply = get(base_url + team_id, headers=headers, timeout=5)
+    reply = get(base_url + espn_id, headers=headers, timeout=5)
 
     ret = findall(r'(\"athletes\":[\[\{"\w:,\/\.\d~\-\s\}\\p{L}]+\])',
                   reply.text)
-    goalkeepers = loads('{' + ret[0] + '}')
-    others = loads('{' + ret[1] + '}')
 
-    return parse_players(goalkeepers, others)
+    try:
+        goalkeepers = loads('{' + ret[0] + '}')
+        others = loads('{' + ret[1] + '}')
+
+        return parse_players(goalkeepers, others)
+    except IndexError:
+        return None
 
 
 def get_country(country):
@@ -293,10 +271,10 @@ def select_players(player_list):
 
     for player in player_list:
         match player.position:
-            case 'G': gk.append(player)
-            case 'D': df.append(player)
-            case 'M': mf.append(player)
-            case 'A': fw.append(player)
+            case PlayerPosition.G.name: gk.append(player)
+            case PlayerPosition.D.name: df.append(player)
+            case PlayerPosition.M.name: mf.append(player)
+            case PlayerPosition.A.name: fw.append(player)
 
     gk.sort(key=lambda p: int(p.appearances), reverse=True)
     df.sort(key=lambda p: int(p.appearances), reverse=True)
@@ -316,7 +294,7 @@ def main():
 
     if args:
         update_equipa(args.equipa_file,
-                      args.team_id,
+                      args.espn_id,
                       args.output_file)
 
 
@@ -325,10 +303,10 @@ def parse_args():
 
     parser.add_argument('-e', '--equipa-file', metavar='file',
                         help='Elifoot equipa file name')
+    parser.add_argument('-i', '--espn-id', metavar='ID',
+                        help='Team ID (extracted from ESPN site)')
     parser.add_argument('-o', '--output-file', metavar='file',
                         help='Output file name')
-    parser.add_argument('-i', '--team-id', metavar='ID',
-                        help='Team ID (extracted from ESPN site)')
 
     # no arguments provided
     if len(argv) == 1:
@@ -339,7 +317,6 @@ def parse_args():
 
 
 # TODO: remove duplicated code
-# TODO: remove the hardcoded coach name
 # TODO: test the regex with more teams
 if __name__ == "__main__":
     main()
