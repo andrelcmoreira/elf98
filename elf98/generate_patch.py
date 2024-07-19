@@ -1,6 +1,4 @@
 from sys import argv
-from dataclasses import dataclass
-from enum import Enum
 from json import loads
 from re import findall
 
@@ -8,133 +6,13 @@ from argparse import ArgumentParser
 from requests import get
 from unidecode import unidecode
 
-
-class Offsets(Enum):
-    HEADER_START = 0x00
-    HEADER_END = 0x31
-
-
-class Sizes(Enum):
-    HEADER = 50
-    COLOR = 3 # each color has 3 bytes
-    LEVEL = 1
-    COUNTRY = 4 # encrypted size
-    EQUIPA_SIZE = 1
-
-
-class PlayerPosition(Enum):
-    G = 0
-    D = 1
-    M = 2
-    A = 3 # forward ('atacante' in portuguese)
-
-
-@dataclass
-class Player:
-
-    name: str
-    position: str
-    country: str
-    appearances: int
-
-    def __repr__(self):
-        return f'{self.position}: {self.name} - {self.country}'
-
-
-class OffsetCalculator:
-
-    @staticmethod
-    def get_extended_name():
-        # +1 to skip the size byte
-        return Sizes.HEADER.value + 1
-
-    @staticmethod
-    def get_short_name(ext_len):
-        # +1 to skip the size byte of extended name field
-        return Sizes.HEADER.value + ext_len + 1
-
-    @staticmethod
-    def get_colors(ext_len, short_len):
-        # +1 to skip the size byte of extended field
-        # +1 to skip the size byte of short name field
-        return Sizes.HEADER.value + ext_len + short_len + 2
-
-    @staticmethod
-    def get_country(ext_len, short_len):
-        # +1 to skip the size byte of extended field
-        # +1 to skip the size byte of short name field
-        # +2 to skip the apparently unused 1 byte on each color
-        return Sizes.HEADER.value + ext_len + short_len + \
-            Sizes.COLOR.value * 2 + 4
-
-    @staticmethod
-    def get_level(ext_len, short_len):
-        # +1 to skip the size byte of extended field
-        # +1 to skip the size byte of short name field
-        # +2 to skip the apparently unused 1 byte on each color
-        return Sizes.HEADER.value + ext_len + short_len + \
-            Sizes.COLOR.value * 2 + Sizes.COUNTRY.value + 4
-
-    @staticmethod
-    def get_players_number(ext_len, short_len):
-        # +2 to skip the size bytes of extended and short name fields
-        # +2 to skip the apparently unused 1 byte on each color
-        return Sizes.HEADER.value + ext_len + short_len + \
-            Sizes.COLOR.value * 2 + Sizes.COUNTRY.value + \
-            Sizes.LEVEL.value + 4
-
-    @staticmethod
-    def get_players(ext_len, short_len):
-        # +2 to skip the size bytes of extended and short name fields
-        # +2 to skip the apparently unused 1 byte on each color
-        # +1 to skip to the player nationality
-        return Sizes.HEADER.value + ext_len + short_len + \
-            Sizes.COLOR.value * 2 + Sizes.COUNTRY.value + \
-            Sizes.LEVEL.value + Sizes.EQUIPA_SIZE.value + 5
-
-    @staticmethod
-    def get_coach(data, ext_len, short_len):
-        offs = OffsetCalculator.get_players(ext_len, short_len)
-        count_offs = OffsetCalculator.get_players_number(ext_len, short_len)
-        number_players = data[count_offs]
-
-        for _ in range(0, number_players):
-            entry_len = data[offs + Sizes.COUNTRY.value]
-            # +1 to skip the 'name size' byte
-            # +1 to skip the position byte
-            # +1 to jump to the next entry
-            offs += Sizes.COUNTRY.value + entry_len + 3
-
-        return offs
-
-
-class EquipaParser:
-
-    def __init__(self, equipa_file):
-        self._file = equipa_file
-
-    @staticmethod
-    def parse_ext_name(data):
-        offs = OffsetCalculator.get_extended_name()
-        size = data[Sizes.HEADER.value]
-
-        return decrypt(data, offs, size)
-
-    @staticmethod
-    def parse_short_name(data, ext_len):
-        offs = OffsetCalculator.get_short_name(ext_len)
-        size = data[offs]
-
-        return decrypt(data, offs + 1, size)
-
-
-def decrypt(data, offset, size):
-    ret = ''
-
-    for i in range(offset, offset + size):
-        ret += chr((data[i] - data[i - 1]) & 0xff)
-
-    return ret
+from data.offsets import Offsets
+from data.sizes import Sizes
+from data.player_position import PlayerPosition
+from decoder.player import PlayersParser
+from decoder.equipa import (EquipaParser, OffsetCalculator)
+from entity.player import Player
+from encoder.serializer import Serializer
 
 
 def to_pos_code(pos):
@@ -145,23 +23,13 @@ def to_pos_code(pos):
         case PlayerPosition.A.name: return PlayerPosition.A.value
 
 
-def encrypt(text):
-    out = bytearray()
-
-    out.append(len(text))
-    for i in range(0, len(text)):
-        out.append((ord(text[i]) + out[i]) & 0xff)
-
-    return out
-
-
 def add_players(file, players):
     player = bytearray()
 
     for entry in players:
         player.append(0)
-        player += encrypt(entry.country)
-        player += encrypt(entry.name)
+        player += Serializer.encrypt(entry.country)
+        player += Serializer.encrypt(entry.name)
         player.append(to_pos_code(entry.position))
 
         file.write(player)
@@ -172,7 +40,7 @@ def add_coach(file):
     coach = bytearray()
 
     coach.append(0)
-    coach += encrypt('Luis Zubeldia') # TODO: remove the hardcoded coach name
+    coach += Serializer.encrypt('Luis Zubeldia') # TODO: remove the hardcoded coach name
 
     file.write(coach)
 
@@ -182,11 +50,13 @@ def add_player_number(file, players):
 
 
 def create_base_equipa(in_file, out_file):
+    ep = EquipaParser(in_file)
+
     with open(in_file, 'r+b') as f:
         data = f.read()
 
-        ext_name = EquipaParser.parse_ext_name(data)
-        short_name = EquipaParser.parse_short_name(data, len(ext_name))
+        ext_name = ep.parse_ext_name(data)
+        short_name = ep.parse_short_name(data, len(ext_name))
         offs = OffsetCalculator.get_level(len(ext_name), len(short_name))
 
         out_file.write(data[:offs + 1])
@@ -318,5 +188,6 @@ def parse_args():
 
 # TODO: remove duplicated code
 # TODO: test the regex with more teams
+# TODO: gui interface?
 if __name__ == "__main__":
     main()
