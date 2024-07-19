@@ -6,10 +6,7 @@ from argparse import ArgumentParser
 from requests import get
 from unidecode import unidecode
 
-from data.offsets import Offsets
-from data.sizes import Sizes
 from data.player_position import PlayerPosition
-from decoder.player import PlayersParser
 from decoder.equipa import (EquipaParser, OffsetCalculator)
 from entity.player import Player
 from encoder.serializer import Serializer
