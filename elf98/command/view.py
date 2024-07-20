@@ -5,11 +5,12 @@ from command.command import Command
 
 class ViewEquipa(Command):
 
-    def execute(self, **kwargs):
-        equipa_file = kwargs.get('equipa_file')
+    def __init__(self, equipa_file):
+        self._equipa = equipa_file
 
+    def execute(self):
         try:
-            ep = EquipaParser(equipa_file)
+            ep = EquipaParser(self._equipa)
 
             print(ep.parse())
         except EquipaHeaderNotFound as e:

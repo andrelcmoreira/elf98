@@ -7,17 +7,17 @@ from decoder.equipa import EquipaParser
 from decoder.equipa import OffsetCalculator
 from encoder.serializer import Serializer
 from entity.player import Player
-from provider.espn import EspnProvider
+from provider.factory import ProviderFactory
 
 
 class UpdateEquipa(Command):
 
-    def __init__(self):
-        self._prov = EspnProvider()
+    def __init__(self, equipa_file, provider):
+        self._equipa = equipa_file
+        self._prov = ProviderFactory.create(provider)
 
-    def execute(self, **kwargs):
-        equipa_file_path = kwargs.get('equipa_file')
-        equipa_file = equipa_file_path.split(sep)[-1]
+    def execute(self):
+        equipa_file = self._equipa.split(sep)[-1]
         out_file = equipa_file + '.PATCHED'
         team_id = self._prov.get_team_id(equipa_file)
         players = self._prov.fetch_team_data(team_id)
@@ -26,7 +26,7 @@ class UpdateEquipa(Command):
             return
 
         with open(out_file, 'ab') as f:
-            self._create_base_equipa(equipa_file_path, f)
+            self._create_base_equipa(self._equipa, f)
             self._add_player_number(f, players)
             self._add_players(f, players)
             self._add_coach(f)

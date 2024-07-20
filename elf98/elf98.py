@@ -15,6 +15,8 @@ def parse_args():
                         help='Update all the game equipas')
     parser.add_argument('-f', '--equipa-file', metavar='file',
                         help='Elifoot equipa file name')
+    parser.add_argument('-p', '--provider', metavar='provider',
+                        help='Team data provider')
 
     # no arguments provided
     if len(argv) == 1:
@@ -29,7 +31,7 @@ def main():
 
     cmd = CommandFactory.create(args)
     if cmd:
-        cmd.execute(equipa_file=args.equipa_file)
+        cmd.execute()
 
 
 if __name__ == "__main__":

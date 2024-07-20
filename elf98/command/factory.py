@@ -7,9 +7,9 @@ class CommandFactory:
     @staticmethod
     def create(args):
         if args.view:
-            return ViewEquipa()
+            return ViewEquipa(args.equipa_file)
         if args.update:
-            return UpdateEquipa()
+            return UpdateEquipa(args.equipa_file, args.provider)
         if args.bulk_update:
             return None # TODO
 
