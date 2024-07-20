@@ -28,7 +28,7 @@ def main():
     args = parse_args()
 
     cmd = CommandFactory.create(args)
-    if not cmd:
+    if cmd:
         cmd.execute(equipa_file=args.equipa_file)
 
 
