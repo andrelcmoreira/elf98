@@ -1,31 +1,21 @@
-from provider.base import Base
-from entity.player import Player
-from util.country import get_country
-
-from json import load, loads
+from json import loads
 from re import findall
 from requests import get
 
+from provider.base_provider import BaseProvider
+from entity.player import Player
+from util.country import get_country
 
-class EspnProvider(Base):
 
-    def parse_mapping(self):
-        pass
+class EspnProvider(BaseProvider):
 
-    def get_team_id(self, equipa_file):
-        with open('data/espn.json') as f:
-            mapping = load(f)
-
-            for entry in mapping:
-                if entry['file'] == equipa_file:
-                    return entry['id']
-
-            return ''
+    def __init__(self):
+        super().__init__('espn',
+                         'https://www.espn.com.br/futebol/time/elenco/_/id/')
 
     def fetch_team_data(self, team_id):
-        base_url = 'https://www.espn.com.br/futebol/time/elenco/_/id/'
         headers = { 'User-Agent': 'elf98' }
-        reply = get(base_url + team_id, headers=headers, timeout=5)
+        reply = get(self._base_url + team_id, headers=headers, timeout=5)
 
         ret = findall(r'(\"athletes\":[\[\{"\w:,\/\.\d~\-\s\}\\p{L}]+\])',
                       reply.text)
@@ -65,4 +55,4 @@ class EspnProvider(Base):
                 )
             )
 
-        return self.select_players(players)
+        return players

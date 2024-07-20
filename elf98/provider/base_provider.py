@@ -1,21 +1,34 @@
 from abc import abstractmethod, ABC
+from json import load
 
 from data.player_position import PlayerPosition
 
 
-class Base(ABC):
+class BaseProvider(ABC):
+
+    def __init__(self, provider_name, base_url):
+        self._prov_name = provider_name
+        self._base_url = base_url
 
     @abstractmethod
     def fetch_team_data(self, team_id):
         pass
 
-    @abstractmethod
-    def parse_mapping(self):
-        pass
-
-    @abstractmethod
     def get_team_id(self, equipa_file):
-        pass
+        with open(f'data/{self._prov_name}.json', encoding='utf-8') as f:
+            mapping = load(f)
+
+            for entry in mapping:
+                if entry['file'] == equipa_file:
+                    return entry['id']
+
+            return ''
+
+    def get_players(self, equipa_file):
+        team_id = self.get_team_id(equipa_file)
+        players = self.fetch_team_data(team_id)
+
+        return self.select_players(players)
 
     def select_players(self, player_list):
         players = []

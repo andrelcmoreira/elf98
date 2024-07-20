@@ -19,8 +19,7 @@ class UpdateEquipa(Command):
     def execute(self):
         equipa_file = self._equipa.split(sep)[-1]
         out_file = equipa_file + '.PATCHED'
-        team_id = self._prov.get_team_id(equipa_file)
-        players = self._prov.fetch_team_data(team_id)
+        players = self._prov.get_players(equipa_file)
 
         if not players:
             return
