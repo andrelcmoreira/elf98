@@ -10,6 +10,7 @@ from entity.player import Player
 from provider.factory import ProviderFactory
 from error.not_provided import EquipaNotProvided
 from error.data_not_available import EquipaDataNotAvailable
+from error.unknown_provider import UnknownProvider
 
 
 class UpdateEquipa(Command):
@@ -17,6 +18,9 @@ class UpdateEquipa(Command):
     def __init__(self, equipa_file, provider):
         self._equipa = equipa_file
         self._prov = ProviderFactory.create(provider)
+
+        if not self._prov:
+            raise UnknownProvider(provider)
 
     def run(self):
         equipa_file = self._equipa.split(sep)[-1]

@@ -2,8 +2,8 @@ from json import loads
 from re import findall
 from requests import get
 
-from provider.base_provider import BaseProvider
 from entity.player import Player
+from provider.base_provider import BaseProvider
 from util.country import get_country
 
 
@@ -15,7 +15,9 @@ class EspnProvider(BaseProvider):
 
     def fetch_team_data(self, team_id):
         headers = { 'User-Agent': 'elf98' }
-        reply = get(self._base_url + team_id, headers=headers, timeout=5)
+        reply = get(self._base_url + team_id,
+                    headers=headers,
+                    timeout=5)
 
         ret = findall(r'(\"athletes\":[\[\{"\w:,\/\.\d~\-\s\}\\p{L}\(\)]+\])',
                       reply.text)

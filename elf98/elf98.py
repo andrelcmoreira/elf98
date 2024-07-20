@@ -2,6 +2,8 @@ from sys import argv
 from argparse import ArgumentParser
 
 from command.factory import CommandFactory
+from error.unknown_provider import UnknownProvider
+from error.not_found import EquipaNotFound
 
 
 def parse_args():
@@ -14,7 +16,7 @@ def parse_args():
     parser.add_argument('-b', '--bulk-update', action='store_true',
                         help='Update all the game equipas')
     parser.add_argument('-f', '--equipa-file', metavar='file',
-                        help='Elifoot equipa file name')
+                        required=True, help='Elifoot equipa file name')
     parser.add_argument('-p', '--provider', metavar='provider',
                         help='Team data provider')
 
@@ -29,9 +31,14 @@ def parse_args():
 def main():
     args = parse_args()
 
-    cmd = CommandFactory.create(args)
-    if cmd:
-        cmd.run()
+    try:
+        cmd = CommandFactory.create(args)
+        if cmd:
+            cmd.run()
+    except UnknownProvider as e:
+        print(e)
+    except EquipaNotFound as e:
+        print(e)
 
 
 if __name__ == "__main__":
