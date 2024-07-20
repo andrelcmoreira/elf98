@@ -8,7 +8,7 @@ class ViewEquipa(Command):
     def __init__(self, equipa_file):
         self._equipa = equipa_file
 
-    def execute(self):
+    def run(self):
         try:
             ep = EquipaParser(self._equipa)
 

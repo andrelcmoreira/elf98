@@ -7,9 +7,9 @@ from command.factory import CommandFactory
 def parse_args():
     parser = ArgumentParser(prog=argv[0])
 
-    parser.add_argument('-v', '--view', action='store_true',
+    parser.add_argument('-v', '--view-equipa', action='store_true',
                         help="Print the equipa's data")
-    parser.add_argument('-u', '--update', action='store_true',
+    parser.add_argument('-u', '--update-equipa', action='store_true',
                         help="Update an equipa specified by '-f' option")
     parser.add_argument('-b', '--bulk-update', action='store_true',
                         help='Update all the game equipas')
@@ -31,7 +31,7 @@ def main():
 
     cmd = CommandFactory.create(args)
     if cmd:
-        cmd.execute()
+        cmd.run()
 
 
 if __name__ == "__main__":

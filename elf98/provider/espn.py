@@ -17,7 +17,7 @@ class EspnProvider(BaseProvider):
         headers = { 'User-Agent': 'elf98' }
         reply = get(self._base_url + team_id, headers=headers, timeout=5)
 
-        ret = findall(r'(\"athletes\":[\[\{"\w:,\/\.\d~\-\s\}\\p{L}]+\])',
+        ret = findall(r'(\"athletes\":[\[\{"\w:,\/\.\d~\-\s\}\\p{L}\(\)]+\])',
                       reply.text)
 
         try:

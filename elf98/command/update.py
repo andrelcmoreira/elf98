@@ -8,6 +8,8 @@ from decoder.equipa import OffsetCalculator
 from encoder.serializer import Serializer
 from entity.player import Player
 from provider.factory import ProviderFactory
+from error.not_provided import EquipaNotProvided
+from error.data_not_available import EquipaDataNotAvailable
 
 
 class UpdateEquipa(Command):
@@ -16,19 +18,22 @@ class UpdateEquipa(Command):
         self._equipa = equipa_file
         self._prov = ProviderFactory.create(provider)
 
-    def execute(self):
+    def run(self):
         equipa_file = self._equipa.split(sep)[-1]
         out_file = equipa_file + '.PATCHED'
-        players = self._prov.get_players(equipa_file)
 
-        if not players:
-            return
+        try:
+            players = self._prov.get_players(equipa_file)
 
-        with open(out_file, 'ab') as f:
-            self._create_base_equipa(self._equipa, f)
-            self._add_player_number(f, players)
-            self._add_players(f, players)
-            self._add_coach(f)
+            with open(out_file, 'ab') as f:
+                self._create_base_equipa(self._equipa, f)
+                self._add_player_number(f, len(players))
+                self._add_players(f, players)
+                self._add_coach(f)
+        except EquipaNotProvided as e:
+            print(e)
+        except EquipaDataNotAvailable as e:
+            print(e)
 
     def _add_players(self, file, players):
         player = bytearray()
@@ -57,8 +62,8 @@ class UpdateEquipa(Command):
 
         file.write(coach)
 
-    def _add_player_number(self, file, players):
-        file.write(len(players).to_bytes())
+    def _add_player_number(self, file, players_number):
+        file.write(players_number.to_bytes())
 
     def _create_base_equipa(self, in_file, out_file):
         ep = EquipaParser(in_file)

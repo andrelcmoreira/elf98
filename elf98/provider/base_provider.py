@@ -2,6 +2,8 @@ from abc import abstractmethod, ABC
 from json import load
 
 from data.player_position import PlayerPosition
+from error.not_provided import EquipaNotProvided
+from error.data_not_available import EquipaDataNotAvailable
 
 
 class BaseProvider(ABC):
@@ -26,11 +28,16 @@ class BaseProvider(ABC):
 
     def get_players(self, equipa_file):
         team_id = self.get_team_id(equipa_file)
+        if team_id == '':
+            raise EquipaNotProvided(equipa_file)
+
         players = self.fetch_team_data(team_id)
+        if not players:
+            raise EquipaDataNotAvailable(team_id)
 
-        return self.select_players(players)
+        return self._select_players(players)
 
-    def select_players(self, player_list):
+    def _select_players(self, player_list):
         players = []
         gk = []
         df = []

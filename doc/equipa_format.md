@@ -66,8 +66,8 @@ across the file. It has the following format:
 |   field size  |           coach name (variable size)          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-NOTE: The 'XXXXX' bytes are placed above just for alignment purposes and they're not present in a
-real equipa file.
+NOTE: The 'XXXXX' bytes placed in some fields of the diagram above just for alignment purposes and
+they're not present in a real equipa file.
 
 2.1 The efa header
 
