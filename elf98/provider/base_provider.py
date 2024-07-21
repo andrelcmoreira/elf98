@@ -1,7 +1,7 @@
 from abc import abstractmethod, ABC
 from json import load
 
-from data.player_position import PlayerPosition
+from util.player_position import PlayerPosition
 from error.not_provided import EquipaNotProvided
 from error.data_not_available import EquipaDataNotAvailable
 

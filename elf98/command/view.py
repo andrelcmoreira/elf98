@@ -1,5 +1,5 @@
 from error.header_not_found import EquipaHeaderNotFound
-from decoder.equipa import EquipaParser
+from parser.equipa import EquipaParser
 from command.command import Command
 
 
