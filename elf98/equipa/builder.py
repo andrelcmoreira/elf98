@@ -6,8 +6,11 @@ from util.offset import OffsetCalculator
 
 class EquipaBuilder:
 
-    @staticmethod
-    def create_base_equipa(in_file, out_file):
+    def __init__(self, equipa_file):
+        self._equipa = equipa_file
+        self._data = bytearray()
+
+    def create_base_equipa(self, in_file):
         ep = EquipaParser(in_file)
 
         with open(in_file, 'r+b') as f:
@@ -17,21 +20,25 @@ class EquipaBuilder:
             short_name = ep.parse_short_name(data, len(ext_name))
             offs = OffsetCalculator.get_level(len(ext_name), len(short_name))
 
-            out_file.write(data[:offs + 1])
+            self._data += data[:offs + 1]
 
-    @staticmethod
-    def add_players(file, players):
+        return self
+
+    def add_players(self, players):
         for player in players:
-            data = PlayerSerializer.serialize(player)
+            self._data += PlayerSerializer.serialize(player)
 
-            file.write(data)
+        return self
 
-    @staticmethod
-    def add_coach(file):
-        data = CoachSerializer.serialize('Luis Zubeldia') # TODO: remove the hardcoded coach name
+    def add_coach(self):
+        self._data += CoachSerializer.serialize('Luis Zubeldia') # TODO: remove the hardcoded coach name
 
-        file.write(data)
+        return self
 
-    @staticmethod
-    def add_player_number(file, players_number):
-        file.write(players_number.to_bytes())
+    def add_player_number(self, players_number):
+        self._data += players_number.to_bytes()
+
+        return self
+
+    def build(self):
+        return self._data

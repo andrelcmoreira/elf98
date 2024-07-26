@@ -20,15 +20,19 @@ class UpdateEquipa(Command):
     def run(self):
         equipa_file = self._equipa.split(sep)[-1]
         out_file = equipa_file + '.PATCHED'
+        builder = EquipaBuilder(out_file)
 
         try:
             players = self._prov.get_players(equipa_file)
 
             with open(out_file, 'ab') as f:
-                EquipaBuilder.create_base_equipa(self._equipa, f)
-                EquipaBuilder.add_player_number(f, len(players))
-                EquipaBuilder.add_players(f, players)
-                EquipaBuilder.add_coach(f)
+                data = builder.create_base_equipa(self._equipa) \
+                    .add_player_number(len(players)) \
+                    .add_players(players) \
+                    .add_coach() \
+                    .build()
+
+                f.write(data)
         except EquipaNotProvided as e:
             print(e)
         except EquipaDataNotAvailable as e:
