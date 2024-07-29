@@ -13,7 +13,7 @@ class EquipaBuilder:
     def create_base_equipa(self, in_file):
         ep = EquipaParser(in_file)
 
-        with open(in_file, 'r+b') as f:
+        with open(in_file, 'rb') as f:
             data = f.read()
 
             ext_name = ep.parse_ext_name(data)

@@ -10,6 +10,8 @@ from equipa.builder import EquipaBuilder
 
 class UpdateEquipa(Command):
 
+    PATCH_SULFIX = '.PATCHED'
+
     def __init__(self, equipa_file, provider):
         self._equipa = equipa_file
         self._prov = ProviderFactory.create(provider)
@@ -19,13 +21,13 @@ class UpdateEquipa(Command):
 
     def run(self):
         equipa_file = self._equipa.split(sep)[-1]
-        out_file = equipa_file + '.PATCHED'
+        out_file = equipa_file + self.PATCH_SULFIX
         builder = EquipaBuilder(out_file)
 
         try:
             players = self._prov.get_players(equipa_file)
 
-            with open(out_file, 'ab') as f:
+            with open(out_file, 'wb') as f:
                 data = builder.create_base_equipa(self._equipa) \
                     .add_player_number(len(players)) \
                     .add_players(players) \
@@ -33,7 +35,5 @@ class UpdateEquipa(Command):
                     .build()
 
                 f.write(data)
-        except EquipaNotProvided as e:
-            print(e)
-        except EquipaDataNotAvailable as e:
+        except (EquipaNotProvided, EquipaDataNotAvailable) as e:
             print(e)

@@ -16,7 +16,7 @@ def parse_args():
     parser.add_argument('-b', '--bulk-update', action='store_true',
                         help='Update all the game equipas')
     parser.add_argument('-f', '--equipa-file', metavar='file',
-                        required=True, help='Elifoot equipa file name')
+                        help='Elifoot equipa file name')
     parser.add_argument('-p', '--provider', metavar='provider',
                         help='Team data provider')
 
