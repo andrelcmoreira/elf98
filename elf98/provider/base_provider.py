@@ -9,7 +9,7 @@ from error.data_not_available import EquipaDataNotAvailable
 class BaseProvider(ABC):
 
     def __init__(self, provider_name, base_url):
-        self._prov_name = provider_name
+        self.name = provider_name
         self._base_url = base_url
 
     @abstractmethod
@@ -17,7 +17,7 @@ class BaseProvider(ABC):
         pass
 
     def get_team_id(self, equipa_file):
-        with open(f'data/{self._prov_name}.json', encoding='utf-8') as f:
+        with open(f'data/{self.name}.json', encoding='utf-8') as f:
             mapping = load(f)
 
             for entry in mapping:
@@ -25,6 +25,12 @@ class BaseProvider(ABC):
                     return entry['id']
 
             return ''
+
+    def get_teams(self):
+        with open(f'data/{self.name}.json', encoding='utf-8') as f:
+            mapping = load(f)
+
+            return mapping
 
     def get_players(self, equipa_file):
         team_id = self.get_team_id(equipa_file)

@@ -17,6 +17,8 @@ def parse_args():
                         help='Update all the game equipas')
     parser.add_argument('-f', '--equipa-file', metavar='file',
                         help='Elifoot equipa file name')
+    parser.add_argument('-d', '--equipas-dir', metavar='directory',
+                        help="Elifoot equipa's directory")
     parser.add_argument('-p', '--provider', metavar='provider',
                         help='Team data provider')
 
@@ -39,6 +41,10 @@ def main():
         print(e)
     except EquipaNotFound as e:
         print(e)
+
+
+# TODO: improve error handling
+# TODO: fix crash to decode/encode some equipas
 
 
 if __name__ == "__main__":

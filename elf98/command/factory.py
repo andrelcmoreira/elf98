@@ -1,5 +1,6 @@
 from command.view import ViewEquipa
 from command.update import UpdateEquipa
+from command.bulk_update import BulkUpdate
 
 
 class CommandFactory:
@@ -11,6 +12,6 @@ class CommandFactory:
         if args.update_equipa:
             return UpdateEquipa(args.equipa_file, args.provider)
         if args.bulk_update:
-            return None # TODO
+            return BulkUpdate(args.provider, args.equipas_dir)
 
         return None
