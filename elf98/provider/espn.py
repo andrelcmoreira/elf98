@@ -19,7 +19,7 @@ class EspnProvider(BaseProvider):
                     headers=headers,
                     timeout=5)
 
-        ret = findall(r'(\"athletes\":[\[\{"\w:,\/\.\d~\-\s\}\\p{L}\(\)]+\])',
+        ret = findall(r'(\"athletes\":[\'\[\{"\w:,\/\.\d~\-\s\}\\p{L}\(\)]+\])',
                       reply.text)
 
         try:
