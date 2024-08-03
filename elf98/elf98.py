@@ -44,7 +44,7 @@ def main():
 
 
 # TODO: improve error handling
-# TODO: fix crash to decode/encode some equipas
+# TODO: fetch coach name
 
 
 if __name__ == "__main__":

@@ -34,6 +34,9 @@ class EspnProvider(BaseProvider):
         players = []
 
         for player in goalkeepers['athletes']:
+            if not player['ctz']: # ignore players with unknown country
+                continue
+
             players.append(
                 Player(
                     name=player['name'],
@@ -46,6 +49,9 @@ class EspnProvider(BaseProvider):
             )
 
         for player in others['athletes']:
+            if not player['ctz']: # ignore players with unknown country
+                continue
+
             players.append(
                 Player(
                     name=player['name'],
