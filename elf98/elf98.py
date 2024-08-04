@@ -37,9 +37,7 @@ def main():
         cmd = CommandFactory.create(args)
         if cmd:
             cmd.run()
-    except UnknownProvider as e:
-        print(e)
-    except EquipaNotFound as e:
+    except (UnknownProvider, EquipaNotFound) as e:
         print(e)
 
 
