@@ -28,10 +28,11 @@ class UpdateEquipa(Command):
             players = self._prov.get_players(equipa_file)
 
             with open(out_file, 'wb') as f:
+                # TODO: remove the hardcoded coach name
                 data = builder.create_base_equipa(self._equipa) \
                     .add_player_number(len(players)) \
                     .add_players(players) \
-                    .add_coach() \
+                    .add_coach('fulano de tal') \
                     .build()
 
                 f.write(data)

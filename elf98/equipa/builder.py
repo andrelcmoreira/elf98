@@ -30,8 +30,8 @@ class EquipaBuilder:
 
         return self
 
-    def add_coach(self):
-        self._data += CoachSerializer.serialize('Luis Zubeldia') # TODO: remove the hardcoded coach name
+    def add_coach(self, coach):
+        self._data += CoachSerializer.serialize(coach)
 
         return self
 

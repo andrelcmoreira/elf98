@@ -39,9 +39,9 @@ across the file. It has the following format:
 |                                                               |
 |                                 |XXXXXXXXXXXXXXXXXXXXXXXXXXXXX|
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   field size  |    team extended name (variable size)         |
+|   field size  |      team extended name (variable size)       |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   field size  |      team short name (variable size)          |
+|   field size  |        team short name (variable size)        |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |              team background color            |     unused    |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
@@ -53,21 +53,21 @@ across the file. It has the following format:
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |   field size  |               player 0 country                |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   field size  | player 0 name (variable size) |    position   |
+|   field size  | player 0 name (variable size) |player position|
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |   field size  |               player 1 country                |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   field size  | player 1 name (variable size) |    position   |
+|   field size  | player 1 name (variable size) |player position|
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |   field size  |               player n country                |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-|   field size  | player n name (variable size) |    position   |
+|   field size  | player n name (variable size) |player position|
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 |   field size  |           coach name (variable size)          |
 +-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
 
-NOTE: The 'XXXXX' bytes placed in some fields of the diagram above just for alignment purposes and
-they're not present in a real equipa file.
+NOTE: The 'X' bits placed in certain fields of the diagram above are just for alignment purposes and
+aren't present on a real equipa file.
 
 2.1 The efa header
 
@@ -78,9 +78,9 @@ string followed by 47 zero bytes.
 
 2.2 The short name/extendend name
 
-The 'short' and 'extended name' fields shares the same structure: both starts with 1 byte containing the
-field size, followed by the field value itself. The field value is encrypted and how the encryption
-algorithm works will be discussed in section 3.
+The 'short' and 'extended' name fields shares the same structure: both starts with 1 byte containing
+the field size, followed by the field value itself. The field value is encrypted and the encryption
+algorithm will be discussed in section 3.
 
 2.3 The colors
 
@@ -107,12 +107,12 @@ hex format.
 
 2.8 The player list
 
-The 'player list' field defines the list of players who composes the equipa and has 'n' entries,
-where 'n' is defined according to the prior field. The first 4 bytes of each entry of the list
-defines the player's nationality, according to the format described on section 2.5. The next 1
-byte contains the player's name size followed by the encrypted player's name itself. The last
-byte defines the player's position code: 0 to goalkeeper, 1 to defender, 2 to midfielder and 3
-to forward.
+The 'player list' field defines the list of players who composes the equipa. This field has 'n'
+entries, where 'n' is defined according to the prior field (2.7). The first 4 bytes of each entry
+of the list defines the player's nationality, according to the format described on section 2.5. The
+next 1 byte contains the player's name size followed by the encrypted player's name itself. The last
+byte defines the player's position code: 0 to goalkeeper, 1 to defender, 2 to midfielder and 3 to
+forward.
 
 2.9 The coach
 
