@@ -5,8 +5,8 @@ def get_country(country):
     cnt = country[0:3].upper()
 
     match cnt:
-        # TODO: missing iraq flag on 'FLAGS' dir
-        case 'AFR': return 'AFS'
+        # TODO: missing ira flag on 'FLAGS' dir
+        case 'ÁFR': return 'AFS'
         case 'CAP': return 'CAV'
         case 'CHA': return 'CHD'
         case 'CHI': return 'CHL'

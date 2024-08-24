@@ -43,6 +43,8 @@ def main():
 
 # TODO: improve error handling
 # TODO: fetch coach name
+# TODO: fix country mapping
+# TODO: improve UI
 
 
 if __name__ == "__main__":
