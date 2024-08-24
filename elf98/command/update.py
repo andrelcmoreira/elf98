@@ -10,7 +10,7 @@ from equipa.builder import EquipaBuilder
 
 class UpdateEquipa(Command):
 
-    PATCH_SULFIX = '.PATCHED'
+    PATCH_PREFIX = 'PATCHED_'
 
     def __init__(self, equipa_file, provider):
         self._equipa = equipa_file
@@ -21,7 +21,7 @@ class UpdateEquipa(Command):
 
     def run(self):
         equipa_file = self._equipa.split(sep)[-1]
-        out_file = equipa_file + self.PATCH_SULFIX
+        out_file = self.PATCH_PREFIX + equipa_file
         builder = EquipaBuilder(out_file)
 
         try:
