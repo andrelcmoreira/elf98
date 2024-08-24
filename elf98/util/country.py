@@ -1,19 +1,21 @@
 from unidecode import unidecode
 
 
+# TODO: missing 'ira' flag on 'FLAGS' dir
+_COUNTRIES = {
+    'AFR': 'AFS',
+    'CAP': 'CAV',
+    'CHA': 'CHD',
+    'CHI': 'CHL',
+    'EGI': 'EGT',
+    'ESL': 'EVN',
+    'GAN': 'GNA',
+    'VEN': 'VNZ',
+    'REP': 'RCH'
+}
+
+
 def get_country(country):
-    cnt = country[0:3].upper()
+    cnt = unidecode(country[0:3]).upper()
 
-    match cnt:
-        # TODO: missing ira flag on 'FLAGS' dir
-        case 'ÁFR': return 'AFS'
-        case 'CAP': return 'CAV'
-        case 'CHA': return 'CHD'
-        case 'CHI': return 'CHL'
-        case 'EGI': return 'EGT'
-        case 'ESL': return 'EVN'
-        case 'GAN': return 'GNA'
-        case 'VEN': return 'VNZ'
-        case 'REP': return 'RCH'
-
-    return unidecode(cnt)
+    return _COUNTRIES[cnt] if cnt in _COUNTRIES else cnt
