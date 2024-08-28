@@ -1,15 +1,22 @@
 from unidecode import unidecode
 
 
-# TODO: missing 'ira' flag on 'FLAGS' dir
+# TODO: use full country name as key
 _COUNTRIES = {
     'AFR': 'AFS',
     'CAP': 'CAV',
     'CHA': 'CHD',
+    'CON': 'CNG',
+    'COS': 'CMF',
     'CHI': 'CHL',
+    'CZE': 'RCH',
+    'COR': 'CRS',
+    'IRA': '', # ira
     'EGI': 'EGT',
     'ESL': 'EVN',
     'GAN': 'GNA',
+    'PAI': '', # walles
+    'USA': 'EUA',
     'VEN': 'VNZ',
     'REP': 'RCH'
 }
