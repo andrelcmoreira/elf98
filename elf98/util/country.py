@@ -10,11 +10,11 @@ _COUNTRIES = {
     'Chile': 'CHL',
     'Czechia': 'RCH',
     'Coreia do Sul': 'CRS',
-    'IRA': '', # ira
+    'Irã': '',
     'Egito': 'EGT',
     'Eslovênia': 'EVN',
     'Gana': 'GNA',
-    'PAI': '', # walles
+    'País de Gales': '',
     'USA': 'EUA',
     'Venezuela': 'VNZ',
     'República da Sérvia': 'SER'
