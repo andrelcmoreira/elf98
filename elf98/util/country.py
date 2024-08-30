@@ -7,6 +7,7 @@ _COUNTRIES = {
     'Chade': 'CHD',
     'Congo (Brazavile)': 'CNG',
     'Costa do Marfim': 'CMF',
+    'Costa Rica': 'CRC',
     'Chile': 'CHL',
     'Czechia': 'RCH',
     'Coreia do Sul': 'CRS',
