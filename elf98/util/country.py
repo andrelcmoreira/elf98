@@ -1,6 +1,7 @@
 from unidecode import unidecode
 
 
+# FIXME: the name of the countries are provider specific
 _COUNTRIES = {
     'África do Sul': 'AFS',
     'Cape Verde Islands': 'CAV',
@@ -12,12 +13,15 @@ _COUNTRIES = {
     'Czechia': 'RCH',
     'Coreia do Sul': 'CRS',
     'Irã': '',
+    'Kosovo': '',
     'Egito': 'EGT',
     'Eslovênia': 'EVN',
     'Gana': 'GNA',
+    'Gâmbia': 'GMB',
     'País de Gales': '',
     'USA': 'EUA',
     'Venezuela': 'VNZ',
+    'Republic of Ireland': 'IRL',
     'República da Sérvia': 'SER'
 }
 
