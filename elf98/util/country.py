@@ -12,9 +12,11 @@ _COUNTRIES = {
     'Chile': 'CHL',
     'Czechia': 'RCH',
     'Coreia do Sul': 'CRS',
+    'Curaçao': '',
     'Irã': '',
     'Kosovo': '',
     'Egito': 'EGT',
+    'Eslováquia': 'EVQ',
     'Eslovênia': 'EVN',
     'Gana': 'GNA',
     'Gâmbia': 'GMB',
@@ -22,7 +24,8 @@ _COUNTRIES = {
     'USA': 'EUA',
     'Venezuela': 'VNZ',
     'Republic of Ireland': 'IRL',
-    'República da Sérvia': 'SER'
+    'República da Sérvia': 'SER',
+    'República Dominicana': 'RDO'
 }
 
 
