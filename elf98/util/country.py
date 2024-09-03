@@ -20,11 +20,14 @@ _COUNTRIES = {
     'Eslovênia': 'EVN',
     'Gana': 'GNA',
     'Gâmbia': 'GMB',
+    'Namíbia': 'NMI',
+    'Nova Zelândia': 'NZE',
     'País de Gales': '',
     'USA': 'EUA',
     'Venezuela': 'VNZ',
     'Republic of Ireland': 'IRL',
     'República da Sérvia': 'SER',
+    'República Centro-Africana': 'RCA',
     'República Dominicana': 'RDO'
 }
 
