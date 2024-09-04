@@ -22,11 +22,12 @@ _COUNTRIES = {
     'Gâmbia': 'GMB',
     'Namíbia': 'NMI',
     'Nova Zelândia': 'NZE',
-    'País de Gales': '',
+    'País de Gales': 'WAL',
     'USA': 'EUA',
     'Venezuela': 'VNZ',
     'Republic of Ireland': 'IRL',
     'República da Sérvia': 'SER',
+    'República Democrática do Congo': 'CNG',
     'República Centro-Africana': 'RCA',
     'República Dominicana': 'RDO'
 }
