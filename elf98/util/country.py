@@ -22,6 +22,7 @@ _COUNTRIES = {
     'Eslovênia': 'EVN',
     'Gana': 'GNA',
     'Gâmbia': 'GMB',
+    'Granada': 'GRN',
     'Namíbia': 'NMI',
     'Nova Zelândia': 'NZE',
     'País de Gales': 'WAL',
