@@ -62,6 +62,7 @@ class BaseProvider(ABC):
         mf.sort(key=lambda p: int(p.appearances), reverse=True)
         fw.sort(key=lambda p: int(p.appearances), reverse=True)
 
+        # TODO: check the maximum number of players allowed by the game
         players.extend(gk[0:3])
         players.extend(df[0:6])
         players.extend(mf[0:6])

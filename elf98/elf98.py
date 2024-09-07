@@ -45,6 +45,7 @@ def main():
 # TODO: fetch coach name
 # TODO: fix country mapping
 # TODO: improve UI
+# TODO: improve the code quality
 
 
 if __name__ == "__main__":

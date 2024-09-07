@@ -9,6 +9,8 @@ from util.country import get_country
 
 class EspnProvider(BaseProvider):
 
+    MAX_NAME_SIZE = 18
+
     def __init__(self):
         super().__init__('espn',
                          'https://www.espn.com.br/futebol/time/elenco/_/id/')
@@ -30,6 +32,16 @@ class EspnProvider(BaseProvider):
         except IndexError:
             return None
 
+    def _get_player_name(self, player):
+        return player['name'] \
+            if len(player['name']) <= self.MAX_NAME_SIZE \
+            else player['shortName']
+
+    def _get_player_appearances(self, player):
+        return player.get('appearances') \
+            if player.get('appearances') is not None \
+            else 0
+
     def _parse_players(self, goalkeepers, others):
         players = []
 
@@ -39,13 +51,10 @@ class EspnProvider(BaseProvider):
 
             players.append(
                 Player(
-                    name=player['name'],
+                    name=self._get_player_name(player),
                     position=player['position'],
                     country=get_country(player['ctz']),
-                    appearances=player.get('appearances') \
-                        if player.get('appearances') is not None \
-                        else 0
-                )
+                    appearances=self._get_player_appearances(player)                )
             )
 
         for player in others['athletes']:
@@ -54,12 +63,10 @@ class EspnProvider(BaseProvider):
 
             players.append(
                 Player(
-                    name=player['name'],
+                    name=self._get_player_name(player),
                     position=player['position'],
                     country=get_country(player['ctz']),
-                    appearances=player.get('appearances') \
-                        if player.get('appearances') is not None \
-                        else 0
+                    appearances=self._get_player_appearances(player)
                 )
             )
 
