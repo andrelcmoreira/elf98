@@ -1,6 +1,11 @@
 from unidecode import unidecode
 
 
+# the countries below are not mapped by the game:
+# - Curaçao
+# - Eritreia
+# - Irã
+# - Kosovo
 # FIXME: the name of the countries are provider specific
 _COUNTRIES = {
     'África do Sul': 'AFS',
@@ -13,10 +18,6 @@ _COUNTRIES = {
     'Chipre': 'CHP',
     'Czechia': 'RCH',
     'Coreia do Sul': 'CRS',
-    'Curaçao': '',
-    'Eritreia': '',
-    'Irã': '',
-    'Kosovo': '',
     'Egito': 'EGT',
     'Eslováquia': 'EVQ',
     'Eslovênia': 'EVN',

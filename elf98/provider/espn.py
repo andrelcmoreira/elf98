@@ -28,7 +28,8 @@ class EspnProvider(BaseProvider):
             goalkeepers = loads('{' + ret[0] + '}')
             others = loads('{' + ret[1] + '}')
 
-            return self._parse_players(goalkeepers, others)
+            return self._parse_players(goalkeepers['athletes'] + \
+                                       others['athletes'])
         except IndexError:
             return None
 
@@ -42,10 +43,10 @@ class EspnProvider(BaseProvider):
             if player.get('appearances') is not None \
             else 0
 
-    def _parse_players(self, goalkeepers, others):
+    def _parse_players(self, data):
         players = []
 
-        for player in goalkeepers['athletes']:
+        for player in data:
             if not player['ctz']: # ignore players with unknown country
                 continue
 
@@ -55,19 +56,6 @@ class EspnProvider(BaseProvider):
                     position=player['position'],
                     country=get_country(player['ctz']),
                     appearances=self._get_player_appearances(player)                )
-            )
-
-        for player in others['athletes']:
-            if not player['ctz']: # ignore players with unknown country
-                continue
-
-            players.append(
-                Player(
-                    name=self._get_player_name(player),
-                    position=player['position'],
-                    country=get_country(player['ctz']),
-                    appearances=self._get_player_appearances(player)
-                )
             )
 
         return players

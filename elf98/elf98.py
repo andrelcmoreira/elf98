@@ -43,7 +43,6 @@ def main():
 
 # TODO: improve error handling
 # TODO: fetch coach name
-# TODO: fix country mapping
 # TODO: improve UI
 # TODO: improve the code quality
 
