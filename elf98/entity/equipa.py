@@ -12,7 +12,7 @@ class Equipa:
     coach: str
     players: list
 
-    def __str__(self):
+    def __str__(self) -> str:
         return (
             f'extended name:\t{self.ext_name}\n'
             f'short name:\t{self.short_name}\n'

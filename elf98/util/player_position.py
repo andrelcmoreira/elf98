@@ -8,7 +8,7 @@ class PlayerPosition(Enum):
     A = 3 # forward ('atacante' in portuguese)
 
     @staticmethod
-    def to_pos_code(pos):
+    def to_pos_code(pos: str) -> int:
         match pos:
             case PlayerPosition.G.name: return PlayerPosition.G.value
             case PlayerPosition.D.name: return PlayerPosition.D.value
@@ -16,7 +16,7 @@ class PlayerPosition(Enum):
             case PlayerPosition.A.name: return PlayerPosition.A.value
 
     @staticmethod
-    def to_pos_name(pos_code):
+    def to_pos_name(pos_code: int) -> str:
         match pos_code:
             case PlayerPosition.G.value: return PlayerPosition.G.name
             case PlayerPosition.D.value: return PlayerPosition.D.name

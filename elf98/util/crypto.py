@@ -1,5 +1,5 @@
 
-def encrypt(text):
+def encrypt(text: str) -> bytearray:
     out = bytearray()
 
     out.append(len(text))
@@ -9,7 +9,7 @@ def encrypt(text):
     return out
 
 
-def decrypt(data, offset, size):
+def decrypt(data: bytes, offset: int, size: int) -> str:
     ret = ''
 
     for i in range(offset, offset + size):

@@ -37,7 +37,7 @@ _COUNTRIES = {
 }
 
 
-def get_country(country):
+def get_country(country: str) -> str:
     return _COUNTRIES[country] \
         if country in _COUNTRIES \
         else unidecode(country[0:3]).upper()
