@@ -8,7 +8,7 @@ class Equipa:
     short_name: str
     country: str
     level: int
-    colors: list
+    colors: str
     coach: str
     players: list
 

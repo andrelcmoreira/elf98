@@ -6,11 +6,11 @@ from util.offset import OffsetCalculator
 
 class EquipaBuilder:
 
-    def __init__(self, equipa_file):
+    def __init__(self, equipa_file: str):
         self._equipa = equipa_file
         self._data = bytearray()
 
-    def create_base_equipa(self, in_file):
+    def create_base_equipa(self, in_file: str):
         ep = EquipaParser(in_file)
 
         with open(in_file, 'rb') as f:
@@ -24,21 +24,21 @@ class EquipaBuilder:
 
         return self
 
-    def add_players(self, players):
+    def add_players(self, players: list):
         for player in players:
             self._data += PlayerSerializer.serialize(player)
 
         return self
 
-    def add_coach(self, coach):
+    def add_coach(self, coach: str):
         self._data += CoachSerializer.serialize(coach)
 
         return self
 
-    def add_player_number(self, players_number):
+    def add_player_number(self, players_number: int):
         self._data += players_number.to_bytes()
 
         return self
 
-    def build(self):
+    def build(self) -> bytearray:
         return self._data

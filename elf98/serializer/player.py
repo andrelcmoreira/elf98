@@ -5,7 +5,8 @@ from util.crypto import encrypt
 
 class PlayerSerializer(BaseSerializer):
 
-    def serialize(obj):
+    @staticmethod
+    def serialize(obj: str) -> bytearray:
         player = bytearray()
 
         player.append(0)

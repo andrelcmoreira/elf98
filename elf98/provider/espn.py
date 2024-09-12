@@ -15,7 +15,7 @@ class EspnProvider(BaseProvider):
         super().__init__('espn',
                          'https://www.espn.com.br/futebol/time/elenco/_/id/')
 
-    def fetch_team_data(self, team_id):
+    def fetch_team_data(self, team_id: str) -> list | None:
         headers = { 'User-Agent': 'elf98' }
         reply = get(self._base_url + team_id,
                     headers=headers,
@@ -33,17 +33,17 @@ class EspnProvider(BaseProvider):
         except IndexError:
             return None
 
-    def _get_player_name(self, player):
+    def _get_player_name(self, player: dict) -> str:
         return player['name'] \
             if len(player['name']) <= self.MAX_NAME_SIZE \
             else player['shortName']
 
-    def _get_player_appearances(self, player):
+    def _get_player_appearances(self, player: dict) -> int:
         return player.get('appearances') \
             if player.get('appearances') is not None \
             else 0
 
-    def _parse_players(self, data):
+    def _parse_players(self, data: list) -> list:
         players = []
 
         for player in data:

@@ -5,7 +5,7 @@ from command.command import Command
 
 class ViewEquipa(Command):
 
-    def __init__(self, equipa_file):
+    def __init__(self, equipa_file: str):
         self._equipa = equipa_file
 
     def run(self):

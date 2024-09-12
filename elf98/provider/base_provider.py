@@ -8,15 +8,15 @@ from error.data_not_available import EquipaDataNotAvailable
 
 class BaseProvider(ABC):
 
-    def __init__(self, provider_name, base_url):
+    def __init__(self, provider_name: str, base_url: str):
         self.name = provider_name
         self._base_url = base_url
 
     @abstractmethod
-    def fetch_team_data(self, team_id):
+    def fetch_team_data(self, team_id: str) -> list:
         pass
 
-    def get_team_id(self, equipa_file):
+    def get_team_id(self, equipa_file: str) -> str:
         with open(f'data/{self.name}.json', encoding='utf-8') as f:
             mapping = load(f)
 
@@ -26,13 +26,13 @@ class BaseProvider(ABC):
 
             return ''
 
-    def get_teams(self):
+    def get_teams(self) -> list:
         with open(f'data/{self.name}.json', encoding='utf-8') as f:
             mapping = load(f)
 
             return mapping
 
-    def get_players(self, equipa_file):
+    def get_players(self, equipa_file: str) -> list:
         team_id = self.get_team_id(equipa_file)
         if team_id == '':
             raise EquipaNotProvided(equipa_file)
@@ -43,7 +43,7 @@ class BaseProvider(ABC):
 
         return self._select_players(players)
 
-    def _select_players(self, player_list):
+    def _select_players(self, player_list: list) -> list:
         players = []
         gk = []
         df = []

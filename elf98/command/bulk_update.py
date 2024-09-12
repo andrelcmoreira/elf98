@@ -6,7 +6,7 @@ from error.unknown_provider import UnknownProvider
 
 class BulkUpdate(Command):
 
-    def __init__(self, provider, equipa_dir):
+    def __init__(self, provider: str, equipa_dir: str):
         self._prov = ProviderFactory.create(provider)
         self._dir = equipa_dir
 

@@ -8,12 +8,12 @@ from entity.player import Player
 
 class PlayersParser(BaseParser):
 
-    def __init__(self, data, players_offs, count_offs):
+    def __init__(self, data: bytes, players_offs: int, count_offs: int):
         self._data = data
         self._players_offs = players_offs
         self._count_offs = count_offs
 
-    def parse(self):
+    def parse(self) -> list:
         number_players = self._data[self._count_offs]
         players = []
 
