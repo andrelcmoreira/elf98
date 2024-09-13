@@ -13,7 +13,7 @@ class BaseProvider(ABC):
         self._base_url = base_url
 
     @abstractmethod
-    def fetch_team_data(self, team_id: str) -> list:
+    def fetch_team_data(self, team_id: str) -> list | None:
         pass
 
     def get_team_id(self, equipa_file: str) -> str:

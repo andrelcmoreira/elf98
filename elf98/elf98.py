@@ -1,12 +1,12 @@
 from sys import argv
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Namespace
 
 from command.factory import CommandFactory
 from error.unknown_provider import UnknownProvider
 from error.not_found import EquipaNotFound
 
 
-def parse_args():
+def parse_args() -> Namespace | None:
     parser = ArgumentParser(prog=argv[0])
 
     parser.add_argument('-b', '--bulk-update', action='store_true',

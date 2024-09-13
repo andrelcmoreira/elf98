@@ -38,11 +38,6 @@ class EspnProvider(BaseProvider):
             if len(player['name']) <= self.MAX_NAME_SIZE \
             else player['shortName']
 
-    def _get_player_appearances(self, player: dict) -> int:
-        return player.get('appearances') \
-            if player.get('appearances') is not None \
-            else 0
-
     def _parse_players(self, data: list) -> list:
         players = []
 
@@ -55,7 +50,8 @@ class EspnProvider(BaseProvider):
                     name=self._get_player_name(player),
                     position=player['position'],
                     country=get_country(player['ctz']),
-                    appearances=self._get_player_appearances(player)                )
+                    appearances=player.get('appearances', 0)
+                )
             )
 
         return players
