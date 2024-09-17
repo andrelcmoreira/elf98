@@ -129,15 +129,14 @@ encrypted coach's name itself.
 3. The encryption algorithm
 
 Text based fields as mentioned earlier on 2.2, 2.5, 2.8 and 2.9 are encrypted.
-The algorithm used to do it converts a human readable string (e.g the equipa
-name) into a ciphered binary array, using a pretty straightfoward algorithm:
-given an input string (e.g 'elf98'), the output of the encryption process is
-consists of an array that starts with the input length, followed by the encoded
-input itself. Such encoding is made by iterating over the input string and
-picking up the less significant byte resulting of the sum of each character of
-it and the last byte of the binary array. The result of each iteration is
-appended to the output. For example, the encrypted version of the string 'elf98'
-is '056ad63c75ad':
+The algorithm used converts a human readable string (e.g the equipa name) into
+a ciphered binary array, using a pretty straightfoward algorithm: given an input
+string (e.g 'elf98'), the output of the encryption process consists of an array
+that starts with the input length, followed by the encoded input itself. Such
+encoding is made by iterating over the input string and picking up the less
+significant byte resulting of the sum of each character of it and the last byte
+of the binary array. The result of each iteration is appended to the output. For
+example, the encrypted version of the string 'elf98' is '056ad63c75ad':
 
 05 = input string length
 65 ('e' in ascii) + 5  = 6a
