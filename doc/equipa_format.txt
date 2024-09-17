@@ -128,22 +128,23 @@ encrypted coach's name itself.
 
 3. The encryption algorithm
 
-Text based fields as mentioned earlier on 2.2, 2.5, 2.8 and 2.9 are encrypted
-into a binary string using a pretty straightfoward algorithm: given an input
-string 'elf98', the output of the encryption process is composed by a binary
-string that starts with the input length, followed by the encoded input itself.
-Such encoding is made by iterating over the input string and picking up the less
-significant byte resulting of the sum of each character of it and the last byte
-of the binary string. The result of each iteration is appended to the output
-binary string. For example, the encrypted version of the string 'elf98' is
-'056ad63c75ad':
+Text based fields as mentioned earlier on 2.2, 2.5, 2.8 and 2.9 are encrypted.
+The algorithm used to do it converts a human readable string (e.g the equipa
+name) into a ciphered binary array, using a pretty straightfoward algorithm:
+given an input string (e.g 'elf98'), the output of the encryption process is
+consists of an array that starts with the input length, followed by the encoded
+input itself. Such encoding is made by iterating over the input string and
+picking up the less significant byte resulting of the sum of each character of
+it and the last byte of the binary array. The result of each iteration is
+appended to the output. For example, the encrypted version of the string 'elf98'
+is '056ad63c75ad':
 
-          high byte            low byte
-6a -  5 = 00000000 (discarded) 01100101 (65) = ('e' in ascii)
-d6 - 6a = 00000000 (discarded) 01101100 (6c) = ('l' in ascii)
-3c - d6 = 11111111 (discarded) 01100110 (66) = ('f' in ascii)
-75 - 3c = 00000000 (discarded) 00111001 (39) = ('9' in ascii)
-ad - 75 = 00000000 (discarded) 00111000 (38) = ('8' in ascii)
+05 = input string length
+65 ('e' in ascii) + 5  = 6a
+6c ('l' in ascii) + 6a = d6
+66 ('f' in ascii) + d6 = 3c (discarding the most significant byte)
+39 ('9' in ascii) + 3c = 75
+38 ('8' in ascii) + 75 = ad
 
 A simple 'pythonic' version of this algorithm can be implemented as follows:
 
