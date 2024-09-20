@@ -26,9 +26,8 @@ class EquipaParser(BaseParser):
 
     def parse_short_name(self, data: bytes, ext_len: int) -> str:
         offs = OffsetCalculator.get_short_name(ext_len)
-        size = data[offs]
 
-        return decrypt(data, offs + 1, size)
+        return decrypt(data, offs + 1, data[offs])
 
     def parse_colors(self, data: bytes, ext_len: int, short_len: int) -> str:
         offs = OffsetCalculator.get_colors(ext_len, short_len)
@@ -58,9 +57,10 @@ class EquipaParser(BaseParser):
 
     def parse_coach(self, data: bytes, ext_len: int, short_len: int) -> str:
         offs = OffsetCalculator.get_coach(data, ext_len, short_len)
-        size = data[offs]
+        if offs > len(data): # no coach information available
+            return ''
 
-        return decrypt(data, offs + 1, size)
+        return decrypt(data, offs + 1, data[offs])
 
     def parse(self) -> Equipa:
         with open(self._file, 'rb') as f:
