@@ -1,4 +1,4 @@
-Simple tool to view and update elifoot98 equipas.
+Tool to view/patch elifoot98 equipas.
 
 ```
 usage: elf98.py [-h] [-b] [-d directory] [-f file] [-p provider] [-u] [-v]
