@@ -5,13 +5,13 @@ usage: elf98.py [-h] [-b] [-d directory] [-f file] [-p provider] [-u] [-v]
 
 options:
   -h, --help            show this help message and exit
-  -b, --bulk-update     Update all the game equipas
+  -b, --bulk-update     update all the game equipas
   -d directory, --equipas-dir directory
-                        Elifoot equipa's directory
+                        elifoot equipa's directory
   -f file, --equipa-file file
-                        Elifoot equipa file name
+                        elifoot equipa file name
   -p provider, --provider provider
-                        Team data provider (currently only "espn" is supported)
-  -u, --update-equipa   Update an equipa specified by '-f' option
-  -v, --view-equipa     Print the equipa's data
+                        team data provider (currently only "espn" is supported)
+  -u, --update-equipa   update an equipa specified by '-f' option
+  -v, --view-equipa     print the equipa's data
 ```
