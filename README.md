@@ -1,17 +1,16 @@
 Tool to view/patch elifoot98 equipas.
 
 ```
-usage: elf98.py [-h] [-b] [-d directory] [-f file] [-p provider] [-u] [-v]
+usage: elf98.py [-h] [-b equipas-directory] [-p provider] [-u equipa-file] [-v equipa-file]
 
 options:
   -h, --help            show this help message and exit
-  -b, --bulk-update     update all the game equipas
-  -d directory, --equipas-dir directory
-                        elifoot equipa's directory
-  -f file, --equipa-file file
-                        elifoot equipa file name
+  -b equipas-directory, --bulk-update equipas-directory
+                        update the equipas placed at the input directory
   -p provider, --provider provider
                         team data provider (currently only "espn" is supported)
-  -u, --update-equipa   update an equipa specified by '-f' option
-  -v, --view-equipa     print the equipa's data
+  -u equipa-file, --update-equipa equipa-file
+                        update an equipa
+  -v equipa-file, --view-equipa equipa-file
+                        print the equipa data
 ```

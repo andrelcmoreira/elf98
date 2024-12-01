@@ -9,20 +9,16 @@ from error.not_found import EquipaNotFound
 def parse_args() -> Namespace | None:
     parser = ArgumentParser(prog=argv[0])
 
-    parser.add_argument('-b', '--bulk-update', action='store_true',
-                        help='update all the game equipas')
-    parser.add_argument('-d', '--equipas-dir', metavar='directory',
-                        help="elifoot equipa's directory")
-    parser.add_argument('-f', '--equipa-file', metavar='file',
-                        help='elifoot equipa file name')
+    parser.add_argument('-b', '--bulk-update', metavar='equipas-directory',
+                        help='update the equipas placed at the input directory')
     parser.add_argument('-p', '--provider', metavar='provider',
                         choices=['espn'],
                         help='team data provider (currently only "espn" is \
                                 supported)')
-    parser.add_argument('-u', '--update-equipa', action='store_true',
-                        help="update an equipa specified by '-f' option")
-    parser.add_argument('-v', '--view-equipa', action='store_true',
-                        help="print the equipa's data")
+    parser.add_argument('-u', '--update-equipa', metavar='equipa-file',
+                        help="update an equipa")
+    parser.add_argument('-v', '--view-equipa', metavar='equipa-file',
+                        help="print the equipa data")
 
     # no arguments provided
     if len(argv) == 1:

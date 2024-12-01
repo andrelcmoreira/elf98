@@ -12,10 +12,10 @@ class CommandFactory:
         args: Namespace
     ) -> ViewEquipa | UpdateEquipa | BulkUpdate | None:
         if args.view_equipa:
-            return ViewEquipa(args.equipa_file)
+            return ViewEquipa(args.view_equipa)
         if args.update_equipa:
-            return UpdateEquipa(args.equipa_file, args.provider)
+            return UpdateEquipa(args.update_equipa, args.provider)
         if args.bulk_update:
-            return BulkUpdate(args.provider, args.equipas_dir)
+            return BulkUpdate(args.provider, args.bulk_update)
 
         return None
