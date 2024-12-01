@@ -10,17 +10,19 @@ def parse_args() -> Namespace | None:
     parser = ArgumentParser(prog=argv[0])
 
     parser.add_argument('-b', '--bulk-update', action='store_true',
-                        help='Update all the game equipas')
+                        help='update all the game equipas')
     parser.add_argument('-d', '--equipas-dir', metavar='directory',
-                        help="Elifoot equipa's directory")
+                        help="elifoot equipa's directory")
     parser.add_argument('-f', '--equipa-file', metavar='file',
-                        help='Elifoot equipa file name')
+                        help='elifoot equipa file name')
     parser.add_argument('-p', '--provider', metavar='provider',
-                        help='Team data provider (currently only "espn" is supported)')
+                        choices=['espn'],
+                        help='team data provider (currently only "espn" is \
+                                supported)')
     parser.add_argument('-u', '--update-equipa', action='store_true',
-                        help="Update an equipa specified by '-f' option")
+                        help="update an equipa specified by '-f' option")
     parser.add_argument('-v', '--view-equipa', action='store_true',
-                        help="Print the equipa's data")
+                        help="print the equipa's data")
 
     # no arguments provided
     if len(argv) == 1:
