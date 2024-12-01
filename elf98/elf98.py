@@ -16,7 +16,7 @@ def parse_args() -> Namespace | None:
     parser.add_argument('-f', '--equipa-file', metavar='file',
                         help='Elifoot equipa file name')
     parser.add_argument('-p', '--provider', metavar='provider',
-                        help='Team data provider')
+                        help='Team data provider (currently only "espn" is supported)')
     parser.add_argument('-u', '--update-equipa', action='store_true',
                         help="Update an equipa specified by '-f' option")
     parser.add_argument('-v', '--view-equipa', action='store_true',
