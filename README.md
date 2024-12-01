@@ -11,7 +11,7 @@ options:
   -f file, --equipa-file file
                         Elifoot equipa file name
   -p provider, --provider provider
-                        Team data provider
+                        Team data provider (currently only "espn" is supported)
   -u, --update-equipa   Update an equipa specified by '-f' option
   -v, --view-equipa     Print the equipa's data
 ```
