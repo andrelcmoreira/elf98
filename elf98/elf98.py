@@ -12,7 +12,7 @@ def parse_args() -> Namespace | None:
     parser.add_argument('-b', '--bulk-update', metavar='equipas-directory',
                         help='update the equipas placed at the input directory')
     parser.add_argument('-p', '--provider', metavar='provider',
-                        choices=['espn'],
+                        choices=['espn'], default='espn',
                         help='team data provider (currently only "espn" is \
                                 supported)')
     parser.add_argument('-u', '--update-equipa', metavar='equipa-file',
