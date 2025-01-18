@@ -39,7 +39,7 @@ class BaseProvider(ABC):
 
         players = self.fetch_team_data(team_id, season)
         if not players:
-            raise EquipaDataNotAvailable(team_id)
+            raise EquipaDataNotAvailable(equipa_file)
 
         return self._select_players(players)
 
