@@ -11,6 +11,9 @@ class CommandFactory:
     def create(
         args: Namespace
     ) -> ViewEquipa | UpdateEquipa | BulkUpdate | None:
+        if not args:
+            return None
+
         if args.view_equipa:
             return ViewEquipa(args.view_equipa)
         if args.update_equipa:
