@@ -2,7 +2,6 @@ from sys import argv
 from argparse import ArgumentParser, Namespace
 
 from command.factory import CommandFactory
-from error.unknown_provider import UnknownProvider
 from error.not_found import EquipaNotFound
 
 
@@ -35,13 +34,11 @@ def main():
         cmd = CommandFactory.create(args)
         if cmd:
             cmd.run()
-    except (UnknownProvider, EquipaNotFound) as e:
+    except EquipaNotFound as e:
         print(e)
 
 
 # TODO: improve error handling
-# TODO: fetch coach name
-# TODO: improve UI
 # TODO: improve the code quality
 
 
