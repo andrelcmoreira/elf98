@@ -6,7 +6,8 @@ from error.not_found import EquipaNotFound
 
 
 def parse_args() -> Namespace | None:
-    parser = ArgumentParser(prog=argv[0])
+    parser = ArgumentParser(prog=argv[0],
+                            description='Tool to view/patch elifoot98 equipas.')
 
     parser.add_argument('-b', '--bulk-update', metavar='equipas-directory',
                         help='update the equipas placed at the input directory')
