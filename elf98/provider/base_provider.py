@@ -13,7 +13,7 @@ class BaseProvider(ABC):
         self._base_url = base_url
 
     @abstractmethod
-    def fetch_team_data(self, team_id: str) -> list | None:
+    def fetch_team_data(self, team_id: str, season: str) -> list | None:
         pass
 
     def get_team_id(self, equipa_file: str) -> str:
@@ -32,12 +32,12 @@ class BaseProvider(ABC):
 
             return mapping
 
-    def get_players(self, equipa_file: str) -> list:
+    def get_players(self, equipa_file: str, season: str) -> list:
         team_id = self.get_team_id(equipa_file)
         if team_id == '':
             raise EquipaNotProvided(equipa_file)
 
-        players = self.fetch_team_data(team_id)
+        players = self.fetch_team_data(team_id, season)
         if not players:
             raise EquipaDataNotAvailable(team_id)
 

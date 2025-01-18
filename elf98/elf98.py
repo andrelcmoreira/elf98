@@ -15,6 +15,8 @@ def parse_args() -> Namespace | None:
                         choices=['espn'], default='espn',
                         help='team data provider (currently only "espn" is \
                                 supported)')
+    parser.add_argument('-s', '--season', metavar='year',
+                        help="the season's year to fetch the data")
     parser.add_argument('-u', '--update-equipa', metavar='equipa-file',
                         help="update an equipa")
     parser.add_argument('-v', '--view-equipa', metavar='equipa-file',

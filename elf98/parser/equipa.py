@@ -1,10 +1,10 @@
-from util.sizes import Sizes
-from util.offset import (Offsets, OffsetCalculator)
-from util.crypto import decrypt
-from parser.base_parser import BaseParser
-from parser.player import PlayersParser
 from entity.equipa import Equipa
 from error.header_not_found import EquipaHeaderNotFound
+from parser.base_parser import BaseParser
+from parser.player import PlayersParser
+from util.crypto import decrypt
+from util.offset import (Offsets, OffsetCalculator)
+from util.sizes import Sizes
 
 
 class EquipaParser(BaseParser):

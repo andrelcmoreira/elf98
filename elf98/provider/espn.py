@@ -15,11 +15,12 @@ class EspnProvider(BaseProvider):
         super().__init__('espn',
                          'https://www.espn.com.br/futebol/time/elenco/_/id/')
 
-    def fetch_team_data(self, team_id: str) -> list | None:
+    def fetch_team_data(self, team_id: str, season: str) -> list | None:
+        uri = self._base_url + team_id + f'/season/{season}' if season else \
+            self._base_url + team_id
         headers = { 'User-Agent': 'elf98' }
-        reply = get(self._base_url + team_id,
-                    headers=headers,
-                    timeout=5)
+
+        reply = get(uri, headers=headers, timeout=5)
 
         ret = findall(r'(\"athletes\":[\'\[\{"\w:,\/\.\d~\-\s\}\\p{L}\(\)]+\])',
                       reply.text)

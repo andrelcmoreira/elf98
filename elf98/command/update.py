@@ -11,9 +11,10 @@ class UpdateEquipa(Command):
 
     PATCH_PREFIX = 'PATCHED_'
 
-    def __init__(self, equipa_file: str, provider: str):
+    def __init__(self, equipa_file: str, provider: str, season: str = ''):
         self._equipa = equipa_file
         self._prov = ProviderFactory.create(provider)
+        self._season = season
 
     def run(self):
         equipa_file = self._equipa.split(sep)[-1]
@@ -21,7 +22,7 @@ class UpdateEquipa(Command):
         builder = EquipaBuilder(out_file)
 
         try:
-            players = self._prov.get_players(equipa_file)
+            players = self._prov.get_players(equipa_file, self._season)
 
             with open(out_file, 'wb') as f:
                 # TODO: fill the coach name
