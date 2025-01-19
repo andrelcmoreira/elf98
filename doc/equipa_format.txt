@@ -13,8 +13,8 @@
 1. Introduction
 
 This document aims to provide a technical description of the equipa's file
-format of elifoot98, focusing on how the team data is arranged into the file
-and how it's interpred by the game.
+format of elifoot98, focusing on how the team data is arranged into the equipa
+file and how it's interpreted by the game.
 
 2. The equipa format
 
