@@ -24,7 +24,7 @@ class UpdateEquipa(Command):
         try:
             equipa_file = self._equipa.split(sep)[-1]
             out_file = self.PATCH_PREFIX + equipa_file
-            builder = EquipaBuilder(out_file)
+            builder = EquipaBuilder()
             players = self._prov.get_players(equipa_file, self._season)
 
             with open(out_file, 'wb') as f:

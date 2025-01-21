@@ -6,8 +6,7 @@ from util.offset import OffsetCalculator
 
 class EquipaBuilder:
 
-    def __init__(self, equipa_file: str):
-        self._equipa = equipa_file
+    def __init__(self):
         self._data = bytearray()
         self._default_coach = '' # to be used as default coach name when the
                                  # data is not available
