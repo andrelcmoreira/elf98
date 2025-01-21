@@ -12,7 +12,7 @@ class UpdateEquipa(Command):
 
     PATCH_PREFIX = 'PATCHED_'
 
-    def __init__(self, equipa_file: str, provider: str, season: str = ''):
+    def __init__(self, equipa_file: str, provider: str, season: str):
         self._equipa = equipa_file
         self._prov = ProviderFactory.create(provider)
         self._season = season

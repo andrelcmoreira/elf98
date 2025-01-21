@@ -5,9 +5,9 @@ from provider.factory import ProviderFactory
 
 class BulkUpdate(Command):
 
-    def __init__(self, equipa_dir: str, provider: str, season: str = ''):
-        self._prov = ProviderFactory.create(provider)
+    def __init__(self, equipa_dir: str, provider: str, season: str):
         self._dir = equipa_dir
+        self._prov = ProviderFactory.create(provider)
         self._season = season
 
     def run(self):
