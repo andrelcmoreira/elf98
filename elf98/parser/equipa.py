@@ -1,5 +1,6 @@
 from entity.equipa import Equipa
 from error.header_not_found import EquipaHeaderNotFound
+from error.not_found import EquipaNotFound
 from parser.base_parser import BaseParser
 from parser.player import PlayersParser
 from util.crypto import decrypt

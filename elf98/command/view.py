@@ -1,6 +1,9 @@
-from error.header_not_found import EquipaHeaderNotFound
-from parser.equipa import EquipaParser
+from os.path import exists
+
 from command.command import Command
+from error.header_not_found import EquipaHeaderNotFound
+from error.not_found import EquipaNotFound
+from parser.equipa import EquipaParser
 
 
 class ViewEquipa(Command):
@@ -9,6 +12,9 @@ class ViewEquipa(Command):
         self._equipa = equipa_file
 
     def run(self):
+        if not exists(self._equipa):
+            raise EquipaNotFound(self._equipa)
+
         try:
             ep = EquipaParser(self._equipa)
 

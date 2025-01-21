@@ -33,6 +33,9 @@ def parse_args() -> Namespace | None:
 def main():
     args = parse_args()
 
+    if not args:
+        return
+
     try:
         cmd = CommandFactory.create(args)
         if cmd:
@@ -43,6 +46,7 @@ def main():
 
 # TODO: improve error handling
 # TODO: improve the code quality
+# TODO: move the presentation of command results to the views
 
 
 if __name__ == "__main__":

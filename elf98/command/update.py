@@ -1,10 +1,11 @@
-from os.path import sep
+from os.path import exists, sep
 
 from command.command import Command
-from provider.factory import ProviderFactory
-from error.not_provided import EquipaNotProvided
 from error.data_not_available import EquipaDataNotAvailable
+from error.not_found import EquipaNotFound
+from error.not_provided import EquipaNotProvided
 from equipa.builder import EquipaBuilder
+from provider.factory import ProviderFactory
 
 
 class UpdateEquipa(Command):
@@ -17,11 +18,13 @@ class UpdateEquipa(Command):
         self._season = season
 
     def run(self):
-        equipa_file = self._equipa.split(sep)[-1]
-        out_file = self.PATCH_PREFIX + equipa_file
-        builder = EquipaBuilder(out_file)
+        if not exists(self._equipa):
+            raise EquipaNotFound(self._equipa)
 
         try:
+            equipa_file = self._equipa.split(sep)[-1]
+            out_file = self.PATCH_PREFIX + equipa_file
+            builder = EquipaBuilder(out_file)
             players = self._prov.get_players(equipa_file, self._season)
 
             with open(out_file, 'wb') as f:

@@ -1,6 +1,6 @@
 from parser.equipa import EquipaParser
-from serializer.player import PlayerSerializer
 from serializer.coach import CoachSerializer
+from serializer.player import PlayerSerializer
 from util.offset import OffsetCalculator
 
 
