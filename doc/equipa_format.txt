@@ -90,7 +90,7 @@ The 'colors' field has 8 bytes of size, 4 bytes for each color. Both background
 and text colors has the same structure: 3 bytes for the color itself (in RGB
 format) followed by 1 unused byte.
 
-2.5 The country
+2.4 The country
 
 The 'country' field contains the initial letters (in portuguese) of the equipa's
 country and has 4 bytes of size. The first byte contains the field size (which
@@ -100,27 +100,27 @@ show the equipa's country flag correctly. Thus, the value of this field must to
 correspond to a bitmap entry on "FLAGS" directory, placed at the root directory
 of the game.
 
-2.6 The level
+2.5 The level
 
 The 'level' field contains 1 byte of size and defines the level of equipa in hex
 format.
 
-2.7 The number of players
+2.6 The number of players
 
 This field contains 1 byte of size and defines the number of players who
 composes the equipa, in hex format.
 
-2.8 The player list
+2.7 The player list
 
 The 'player list' field defines the list of players who composes the equipa.
 This field has 'n' entries, where 'n' is defined according to the prior field
-(2.7). The first 4 bytes of each entry of the list defines the player's
-nationality, according to the format described on section 2.5. The next 1 byte
+(2.6). The first 4 bytes of each entry of the list defines the player's
+nationality, according to the format described on section 2.4. The next 1 byte
 contains the player's name size followed by the encrypted player's name itself.
 The last byte defines the player's position code: 0 to goalkeeper, 1 to
 defender, 2 to midfielder and 3 to forward.
 
-2.9 The coach
+2.8 The coach
 
 The 'coach' field defines the equipa's coach and has the same structure of the
 other fields with variable size, starting with 1 size byte followed by the
@@ -128,7 +128,7 @@ encrypted coach's name itself.
 
 3. The encryption algorithm
 
-Text based fields as mentioned earlier on 2.2, 2.5, 2.8 and 2.9 are encrypted.
+Text based fields as mentioned earlier on 2.2, 2.4, 2.7 and 2.8 are encrypted.
 The algorithm used converts a human readable string (e.g the equipa name) into
 a ciphered binary array, using a pretty straightfoward algorithm: given an input
 string (e.g 'elf98'), the output of the encryption process consists of an array
