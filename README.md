@@ -1,5 +1,5 @@
 ```
-usage: elf98/elf98.py [-h] [-b equipas-directory] [-p provider] [-s year] [-u equipa-file] [-v equipa-file]
+usage: elf98.py [-h] [-b equipas-directory] [-p provider] [-s year] [-u equipa-file] [-v equipa-file]
 
 Tool to view/patch elifoot98 equipas.
 
