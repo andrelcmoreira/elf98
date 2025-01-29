@@ -1,15 +1,15 @@
 from abc import abstractmethod, ABC
 from json import load
 
-from util.player_position import PlayerPosition
-from error.not_provided import EquipaNotProvided
 from error.data_not_available import EquipaDataNotAvailable
+from error.not_provided import EquipaNotProvided
+from util.player_position import PlayerPosition
 
 
 class BaseProvider(ABC):
 
     def __init__(self, provider_name: str, base_url: str):
-        self.name = provider_name
+        self._name = provider_name
         self._base_url = base_url
 
     @abstractmethod
@@ -17,7 +17,7 @@ class BaseProvider(ABC):
         pass
 
     def get_team_id(self, equipa_file: str) -> str:
-        with open(f'data/{self.name}.json', encoding='utf-8') as f:
+        with open(f'data/{self._name}.json', encoding='utf-8') as f:
             mapping = load(f)
 
             for entry in mapping:
@@ -27,7 +27,7 @@ class BaseProvider(ABC):
             return ''
 
     def get_teams(self) -> list:
-        with open(f'data/{self.name}.json', encoding='utf-8') as f:
+        with open(f'data/{self._name}.json', encoding='utf-8') as f:
             mapping = load(f)
 
             return mapping

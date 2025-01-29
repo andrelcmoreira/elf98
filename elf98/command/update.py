@@ -1,10 +1,10 @@
 from os.path import exists, sep
 
 from command.command import Command
+from equipa.builder import EquipaBuilder
 from error.data_not_available import EquipaDataNotAvailable
 from error.not_found import EquipaNotFound
 from error.not_provided import EquipaNotProvided
-from equipa.builder import EquipaBuilder
 from provider.factory import ProviderFactory
 
 

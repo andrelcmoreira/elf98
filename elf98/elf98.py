@@ -3,6 +3,7 @@ from argparse import ArgumentParser, Namespace
 
 from command.factory import CommandFactory
 from error.not_found import EquipaNotFound
+from view.cli import CliView
 
 
 def parse_args() -> Namespace | None:
@@ -36,12 +37,17 @@ def main():
     if not args:
         return
 
-    try:
-        cmd = CommandFactory.create(args)
-        if cmd:
-            cmd.run()
-    except EquipaNotFound as e:
-        print(e)
+    view = CliView(args)
+    view.show()
+    #try:
+    #    # TODO: instantiate the view
+    #    # TODO: the view will be responsible to create and execute the command
+    #    cmd = CommandFactory.create(args)
+
+    #    if cmd:
+    #        cmd.run()
+    #except EquipaNotFound as e:
+    #    print(e)
 
 
 # TODO: improve error handling

@@ -1,8 +1,8 @@
 from argparse import Namespace
 
-from command.view import ViewEquipa
-from command.update import UpdateEquipa
 from command.bulk_update import BulkUpdate
+from command.update import UpdateEquipa
+from command.view import ViewEquipa
 
 
 class CommandFactory:
