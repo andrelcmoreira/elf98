@@ -3,7 +3,7 @@ from argparse import ArgumentParser, Namespace
 
 from command.factory import CommandFactory
 from error.not_found import EquipaNotFound
-from view.cli import CliView
+from view.view_factory import ViewFactory
 
 
 def parse_args() -> Namespace | None:
@@ -37,7 +37,7 @@ def main():
     if not args:
         return
 
-    view = CliView(args)
+    view = ViewFactory.create(args)
     view.show()
     #try:
     #    # TODO: instantiate the view

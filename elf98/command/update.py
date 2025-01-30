@@ -21,20 +21,17 @@ class UpdateEquipa(Command):
         if not exists(self._equipa):
             raise EquipaNotFound(self._equipa)
 
-        try:
-            equipa_file = self._equipa.split(sep)[-1]
-            out_file = self.PATCH_PREFIX + equipa_file
-            builder = EquipaBuilder()
-            players = self._prov.get_players(equipa_file, self._season)
+        equipa_file = self._equipa.split(sep)[-1]
+        out_file = self.PATCH_PREFIX + equipa_file
+        builder = EquipaBuilder()
+        players = self._prov.get_players(equipa_file, self._season)
 
-            with open(out_file, 'wb') as f:
-                # TODO: fill the coach name
-                data = builder.create_base_equipa(self._equipa) \
-                    .add_player_number(len(players)) \
-                    .add_players(players) \
-                    .add_coach('') \
-                    .build()
+        with open(out_file, 'wb') as f:
+            # TODO: fill the coach name
+            data = builder.create_base_equipa(self._equipa) \
+                .add_player_number(len(players)) \
+                .add_players(players) \
+                .add_coach('') \
+                .build()
 
-                f.write(data)
-        except (EquipaNotProvided, EquipaDataNotAvailable) as e:
-            print(e)
+            f.write(data)
