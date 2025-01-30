@@ -1,8 +1,6 @@
 from sys import argv
 from argparse import ArgumentParser, Namespace
 
-from command.factory import CommandFactory
-from error.not_found import EquipaNotFound
 from view.view_factory import ViewFactory
 
 
@@ -39,15 +37,6 @@ def main():
 
     view = ViewFactory.create(args)
     view.show()
-    #try:
-    #    # TODO: instantiate the view
-    #    # TODO: the view will be responsible to create and execute the command
-    #    cmd = CommandFactory.create(args)
-
-    #    if cmd:
-    #        cmd.run()
-    #except EquipaNotFound as e:
-    #    print(e)
 
 
 # TODO: improve error handling

@@ -10,6 +10,7 @@ class BulkUpdateView(BaseView):
         self._season = season
 
     def show(self):
+        pass
         #try:
         #    pass
         #except (EquipaNotFound, EquipaDataNotAvailable) as e:
