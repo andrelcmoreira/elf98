@@ -1,9 +1,6 @@
 from command.update import UpdateEquipa
 from view.base_view import BaseView
 
-from error.not_provided import EquipaNotProvided
-from error.data_not_available import EquipaDataNotAvailable
-
 
 class UpdateEquipaView(BaseView):
 
@@ -13,9 +10,12 @@ class UpdateEquipaView(BaseView):
         self._season = season
 
     def show(self):
-        try:
-            cmd = UpdateEquipa(self._equipa, self._prov, self._season)
+        cmd = UpdateEquipa(self._equipa, self._prov, self._season, self)
 
-            cmd.run()
-        except (EquipaNotProvided, EquipaDataNotAvailable) as e:
-            print(e)
+        cmd.run()
+
+    def on_update_equipa(self, equipa_name: str):
+        pass
+
+    def on_update_equipa_error(self, error: str):
+        print(error)

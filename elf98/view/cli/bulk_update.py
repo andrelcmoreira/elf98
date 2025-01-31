@@ -10,11 +10,12 @@ class BulkUpdateView(BaseView):
         self._season = season
 
     def show(self):
-        pass
-        #try:
-        #    pass
-        #except (EquipaNotFound, EquipaDataNotAvailable) as e:
-        #    raise e
-        #cmd = BulkUpdate(self._equipa_dir, self._prov, self._season)
+        cmd = BulkUpdate(self._equipa_dir, self._prov, self._season, self)
 
-        #cmd.run()
+        cmd.run()
+
+    def on_update_equipa(self, equipa_name: str):
+        pass
+
+    def on_update_equipa_error(self, error: str):
+        print(error)

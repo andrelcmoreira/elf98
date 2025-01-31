@@ -1,3 +1,5 @@
+from os.path import exists
+
 from entity.equipa import Equipa
 from error.header_not_found import EquipaHeaderNotFound
 from error.not_found import EquipaNotFound
@@ -64,6 +66,9 @@ class EquipaParser(BaseParser):
         return decrypt(data, offs + 1, data[offs])
 
     def parse(self) -> Equipa:
+        if not exists(self._file):
+            raise EquipaNotFound(self._file)
+
         with open(self._file, 'rb') as f:
             data = f.read()
 

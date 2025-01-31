@@ -1,6 +1,4 @@
 from command.view import ViewEquipa
-from error.header_not_found import EquipaHeaderNotFound
-from error.not_found import EquipaNotFound
 from view.base_view import BaseView
 
 
@@ -10,9 +8,12 @@ class ShowEquipa(BaseView):
         self._equipa = equipa_file
 
     def show(self):
-        try:
-            cmd = ViewEquipa(self._equipa)
+        cmd = ViewEquipa(self._equipa, self)
 
-            print(cmd.run())
-        except (EquipaHeaderNotFound, EquipaNotFound) as e:
-            print(e)
+        cmd.run()
+
+    def on_view_equipa(self, equipa_data):
+        print(equipa_data)
+
+    def on_view_equipa_error(self, error):
+        print(error)

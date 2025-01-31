@@ -41,7 +41,6 @@ def main():
 
 # TODO: improve error handling
 # TODO: improve the code quality
-# TODO: move the presentation of command results to the views
 
 
 if __name__ == "__main__":
