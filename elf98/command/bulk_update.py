@@ -13,7 +13,7 @@ class BulkUpdate(Command):
         self._season = season
         self._view = view
 
-    def run(self):
+    def run(self) -> None:
         teams = self._prov.get_teams()
 
         for team in teams:

@@ -1,5 +1,6 @@
 from command.view import ViewEquipa
 from view.base_view import BaseView
+from entity.equipa import Equipa
 
 
 class ShowEquipa(BaseView):
@@ -12,8 +13,8 @@ class ShowEquipa(BaseView):
 
         cmd.run()
 
-    def on_view_equipa(self, equipa_data):
+    def on_view_equipa(self, equipa_data: Equipa):
         print(equipa_data)
 
-    def on_view_equipa_error(self, error):
+    def on_view_equipa_error(self, error: str):
         print(error)

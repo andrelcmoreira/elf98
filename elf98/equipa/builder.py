@@ -1,3 +1,5 @@
+from typing import Self
+
 from parser.equipa import EquipaParser
 from serializer.coach import CoachSerializer
 from serializer.player import PlayerSerializer
@@ -11,7 +13,7 @@ class EquipaBuilder:
         self._default_coach = '' # to be used as default coach name when the
                                  # data is not available
 
-    def create_base_equipa(self, in_file: str):
+    def create_base_equipa(self, in_file: str) -> Self:
         ep = EquipaParser(in_file)
 
         with open(in_file, 'rb') as f:
@@ -27,19 +29,19 @@ class EquipaBuilder:
 
         return self
 
-    def add_players(self, players: list):
+    def add_players(self, players: list) -> Self:
         for player in players:
             self._data += PlayerSerializer.serialize(player)
 
         return self
 
-    def add_coach(self, coach: str):
+    def add_coach(self, coach: str) -> Self:
         self._data += CoachSerializer.serialize(coach) if coach else \
             CoachSerializer.serialize(self._default_coach)
 
         return self
 
-    def add_player_number(self, players_number: int):
+    def add_player_number(self, players_number: int) -> Self:
         self._data += players_number.to_bytes()
 
         return self

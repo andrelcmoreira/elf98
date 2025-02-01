@@ -20,7 +20,7 @@ class UpdateEquipa(Command):
         self._season = season
         self._view = view
 
-    def run(self):
+    def run(self) -> None:
         try:
             equipa_file = self._equipa.split(sep)[-1]
             out_file = self.PATCH_PREFIX + equipa_file

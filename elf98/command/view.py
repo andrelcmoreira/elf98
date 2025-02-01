@@ -12,7 +12,7 @@ class ViewEquipa(Command):
         self._equipa = equipa_file
         self._view = view
 
-    def run(self) -> str:
+    def run(self) -> None:
         try:
             ep = EquipaParser(self._equipa)
 
