@@ -31,12 +31,12 @@ def parse_args() -> Namespace | None:
 
 def main() -> None:
     args = parse_args()
-
     if not args:
         return
 
     view = ViewFactory.create(args)
-    view.show()
+    if view:
+        view.show()
 
 
 # TODO: improve error handling

@@ -9,13 +9,13 @@ class UpdateEquipaView(BaseView):
         self._prov = provider
         self._season = season
 
-    def show(self):
+    def show(self) -> None:
         cmd = UpdateEquipa(self._equipa, self._prov, self._season, self)
 
         cmd.run()
 
-    def on_update_equipa(self, equipa_name: str):
+    def on_update_equipa(self, equipa_name: str) -> None:
         pass
 
-    def on_update_equipa_error(self, error: str):
+    def on_update_equipa_error(self, error: str) -> None:
         print(error)
