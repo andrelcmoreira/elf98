@@ -16,5 +16,5 @@ class ViewEquipa(Command):
             ep = EquipaParser(self._equipa)
 
             self._listener.on_view_equipa(ep.parse())
-        except (EquipaHeaderNotFound, EquipaNotFound, EquipaNotFound) as e:
+        except (EquipaHeaderNotFound, EquipaNotFound) as e:
             self._listener.on_view_equipa_error(e)
