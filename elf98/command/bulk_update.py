@@ -17,7 +17,7 @@ class BulkUpdate(Command):
         teams = self._prov.get_teams()
 
         for team in teams:
-            cmd = UpdateEquipa(self._dir + team['file'], self._prov.name,
+            cmd = UpdateEquipa(self._dir + '/' + team['file'], self._prov.name,
                                self._season, self._view)
 
             cmd.run()
