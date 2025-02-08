@@ -5,18 +5,15 @@ from view.cli.update_equipa import UpdateEquipaView
 from view.cli.view_equipa import ViewEquipaView
 
 
-class ViewFactory:
+def create(
+    args: Namespace
+) -> ViewEquipaView | UpdateEquipaView | BulkUpdateView | None:
+    if args.view_equipa:
+        return ViewEquipaView(args.view_equipa)
+    if args.update_equipa:
+        return UpdateEquipaView(args.update_equipa, args.provider,
+                                args.season)
+    if args.bulk_update:
+        return BulkUpdateView(args.bulk_update, args.provider, args.season)
 
-    @staticmethod
-    def create(
-        args: Namespace
-    ) -> ViewEquipaView | UpdateEquipaView | BulkUpdateView | None:
-        if args.view_equipa:
-            return ViewEquipaView(args.view_equipa)
-        if args.update_equipa:
-            return UpdateEquipaView(args.update_equipa, args.provider,
-                                    args.season)
-        if args.bulk_update:
-            return BulkUpdateView(args.bulk_update, args.provider, args.season)
-
-        return None
+    return None

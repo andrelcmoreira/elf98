@@ -1,7 +1,7 @@
 from sys import argv
 from argparse import ArgumentParser, Namespace
 
-from view.view_factory import ViewFactory
+from view import view_factory
 
 
 def parse_args() -> Namespace | None:
@@ -34,7 +34,7 @@ def main() -> None:
     if not args:
         return
 
-    view = ViewFactory.create(args)
+    view = view_factory.create(args)
     if view:
         view.show()
 
