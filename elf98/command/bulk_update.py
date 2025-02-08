@@ -1,13 +1,13 @@
 from command.command import Command
 from command.update import UpdateEquipa
-from event.bulk_update_listener import BulkUpdateEventListener
+from event.update_equipa_listener import UpdateEquipaListener
 from provider import provider_factory
 
 
 class BulkUpdate(Command):
 
     def __init__(self, equipa_dir: str, provider: str, season: str,
-                 listener: BulkUpdateEventListener):
+                 listener: UpdateEquipaListener):
         self._dir = equipa_dir
         self._prov = provider_factory.create(provider)
         self._season = season
