@@ -12,8 +12,9 @@ def create(
         return ViewEquipaView(args.view_equipa)
     if args.update_equipa:
         return UpdateEquipaView(args.update_equipa, args.provider,
-                                args.season)
+                                args.season, args.output_directory)
     if args.bulk_update:
-        return BulkUpdateView(args.bulk_update, args.provider, args.season)
+        return BulkUpdateView(args.bulk_update, args.provider, args.season,
+                              args.output_directory)
 
     return None

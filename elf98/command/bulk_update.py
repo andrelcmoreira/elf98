@@ -7,10 +7,11 @@ from provider import provider_factory
 class BulkUpdate(Command):
 
     def __init__(self, equipa_dir: str, provider: str, season: str,
-                 listener: UpdateEquipaListener):
+                 output_directory: str, listener: UpdateEquipaListener):
         self._dir = equipa_dir
         self._prov = provider_factory.create(provider)
         self._season = season
+        self._out_dir = output_directory
         self._listener = listener
 
     def run(self) -> None:
@@ -18,6 +19,6 @@ class BulkUpdate(Command):
 
         for team in teams:
             cmd = UpdateEquipa(self._dir + '/' + team['file'], self._prov.name,
-                               self._season, self._listener)
+                               self._season, self._out_dir, self._listener)
 
             cmd.run()
