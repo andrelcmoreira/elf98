@@ -1,5 +1,5 @@
 ```
-usage: elf98.py [-h] [-b equipas-directory] [-u equipa-file] [-v equipa-file] [-s year] [-p provider]
+usage: elf98.py [-h] [-b equipas-directory] [-u equipa-file] [-v equipa-file] [-s year] [-p provider] [-o directory]
 
 Tool to view/patch elifoot98 equipas.
 
@@ -14,4 +14,6 @@ options:
   -s, --season year     the season's year to fetch the data
   -p, --provider provider
                         team data provider (currently only "espn" is supported)
+  -o, --output-directory directory
+                        output directory to put the patches on
 ```
