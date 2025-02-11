@@ -15,6 +15,7 @@ _COUNTRIES = {
     'Costa do Marfim': 'CMF',
     'Costa Rica': 'CRC',
     'Chile': 'CHL',
+    'China': 'CHN',
     'Chipre': 'CHP',
     'Czechia': 'RCH',
     'Coreia do Sul': 'CRS',

@@ -9,15 +9,19 @@ from util.player_position import PlayerPosition
 class BaseProvider(ABC):
 
     def __init__(self, provider_name: str, base_url: str):
-        self.name = provider_name
+        self._name = provider_name
         self._base_url = base_url
+
+    @property
+    def name(self):
+        return self._name
 
     @abstractmethod
     def fetch_team_data(self, team_id: str, season: str) -> list | None:
         pass
 
     def get_team_id(self, equipa_file: str) -> str:
-        with open(f'data/{self.name}.json', encoding='utf-8') as f:
+        with open(f'data/{self._name}.json', encoding='utf-8') as f:
             mapping = load(f)
 
             for entry in mapping:
@@ -27,7 +31,7 @@ class BaseProvider(ABC):
             return ''
 
     def get_teams(self) -> list:
-        with open(f'data/{self.name}.json', encoding='utf-8') as f:
+        with open(f'data/{self._name}.json', encoding='utf-8') as f:
             mapping = load(f)
 
             return mapping
