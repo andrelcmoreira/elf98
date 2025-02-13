@@ -9,7 +9,7 @@ from util.country import get_country
 
 class EspnProvider(BaseProvider):
 
-    MAX_NAME_SIZE = 18
+    _MAX_NAME_SIZE = 18
 
     def __init__(self):
         super().__init__('espn',
@@ -20,6 +20,7 @@ class EspnProvider(BaseProvider):
             self._base_url + team_id
         headers = { 'User-Agent': 'elf98' }
 
+        # TODO: handle timeout
         reply = get(uri, headers=headers, timeout=5)
 
         ret = findall(r'(\"athletes\":[\'\[\{"\w:,\/\.\d~\-\s\}\\p{L}\(\)]+\])',
@@ -36,7 +37,7 @@ class EspnProvider(BaseProvider):
 
     def _get_player_name(self, player: dict) -> str:
         return player['name'] \
-            if len(player['name']) <= self.MAX_NAME_SIZE \
+            if len(player['name']) <= self._MAX_NAME_SIZE \
             else player['shortName']
 
     def _parse_players(self, data: list) -> list:
