@@ -13,7 +13,7 @@ class BaseProvider(ABC):
         self._base_url = base_url
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self._name
 
     @abstractmethod
