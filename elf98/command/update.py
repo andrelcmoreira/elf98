@@ -12,8 +12,6 @@ from provider import provider_factory
 
 class UpdateEquipa(Command):
 
-    PATCH_PREFIX = 'PATCHED_'
-
     def __init__(self, equipa_file: str, provider: str, season: str,
                  output_directory: str, listener: UpdateEquipaListener):
         self._equipa = equipa_file
@@ -24,7 +22,6 @@ class UpdateEquipa(Command):
 
     def run(self) -> None:
         equipa_file = self._equipa.split(sep)[-1]
-        out_file = self.PATCH_PREFIX + equipa_file
         builder = EquipaBuilder()
 
         try:
@@ -33,7 +30,7 @@ class UpdateEquipa(Command):
 
             players = self._prov.get_players(equipa_file, self._season)
 
-            with open(self._out_dir + '/' + out_file, 'wb') as f:
+            with open(self._out_dir + '/' + equipa_file, 'wb') as f:
                 # TODO: fill the coach name
                 data = builder.create_base_equipa(self._equipa) \
                     .add_player_number(len(players)) \
