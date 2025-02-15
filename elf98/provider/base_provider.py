@@ -1,5 +1,6 @@
 from abc import abstractmethod, ABC
 from json import load
+from requests import exceptions, get
 from unidecode import unidecode
 
 from error.data_not_available import EquipaDataNotAvailable
@@ -8,6 +9,8 @@ from util.player_position import PlayerPosition
 
 
 class BaseProvider(ABC):
+
+    _REQUEST_TIMEOUT = 10
 
     def __init__(self, provider_name: str, base_url: str, country_map: dict):
         self._name = provider_name
@@ -18,14 +21,29 @@ class BaseProvider(ABC):
     def name(self) -> str:
         return self._name
 
+    @abstractmethod
+    def assemble_uri(self, team_id: str, season: str) -> str:
+        pass
+
+    @abstractmethod
+    def parse_reply(self, reply: str) -> list | None:
+        pass
+
     def get_country(self, country: str) -> str:
         return self._country_map[country] \
             if country in self._country_map \
             else unidecode(country[0:3]).upper()
 
-    @abstractmethod
     def fetch_team_data(self, team_id: str, season: str) -> list | None:
-        pass
+        uri = self.assemble_uri(team_id, season)
+        headers = { 'User-Agent': 'elf98' }
+
+        try:
+            reply = get(uri, headers=headers, timeout=self._REQUEST_TIMEOUT)
+
+            return self.parse_reply(reply)
+        except exceptions.ConnectionError:
+            return None
 
     def get_team_id(self, equipa_file: str) -> str:
         with open(f'data/{self._name}.json', encoding='utf-8') as f:

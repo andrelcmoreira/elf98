@@ -1,6 +1,5 @@
 from json import loads
 from re import findall
-from requests import get
 
 from entity.player import Player
 from provider.base_provider import BaseProvider
@@ -65,14 +64,11 @@ class EspnProvider(BaseProvider):
                          'https://www.espn.com.br/futebol/time/elenco/_/id/',
                          self._COUNTRIES)
 
-    def fetch_team_data(self, team_id: str, season: str) -> list | None:
-        uri = self._base_url + team_id + f'/season/{season}' if season else \
+    def assemble_uri(self, team_id: str, season: str) -> str:
+        return f'{self._base_url}{team_id}/season/{season}' if season else \
             self._base_url + team_id
-        headers = { 'User-Agent': 'elf98' }
 
-        # TODO: handle timeout
-        reply = get(uri, headers=headers, timeout=5)
-
+    def parse_reply(self, reply: str) -> list | None:
         ret = findall(r'(\"athletes\":[\'\[\{"\w:,\/\.\d~\-\s\}\\p{L}\(\)]+\])',
                       reply.text)
 
