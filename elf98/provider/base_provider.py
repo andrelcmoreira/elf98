@@ -5,21 +5,21 @@ from unidecode import unidecode
 
 from error.data_not_available import EquipaDataNotAvailable
 from error.not_provided import EquipaNotProvided
-from util.player_position import PlayerPosition
 
 
 class BaseProvider(ABC):
 
     _REQUEST_TIMEOUT = 10
+    _MAX_GK_PLAYERS = 3
+    _MAX_DEF_PLAYERS = 6
+    _MAX_MD_PLAYERS = 6
+    _MAX_FW_PLAYERS = 6
+    _MAX_NAME_SIZE = 18
 
     def __init__(self, provider_name: str, base_url: str, country_map: dict):
         self._name = provider_name
         self._base_url = base_url
         self._country_map = country_map
-
-    @property
-    def name(self) -> str:
-        return self._name
 
     @abstractmethod
     def assemble_uri(self, team_id: str, season: str) -> str:
@@ -29,14 +29,22 @@ class BaseProvider(ABC):
     def parse_reply(self, reply: str) -> list | None:
         pass
 
+    @abstractmethod
+    def select_players(self, player_list: list) -> list:
+        pass
+
+    @property
+    def name(self) -> str:
+        return self._name
+
     def get_country(self, country: str) -> str:
         return self._country_map[country] \
             if country in self._country_map \
             else unidecode(country[0:3]).upper()
 
     def fetch_team_data(self, team_id: str, season: str) -> list | None:
-        uri = self.assemble_uri(team_id, season)
         headers = { 'User-Agent': 'elf98' }
+        uri = self.assemble_uri(team_id, season)
 
         try:
             reply = get(uri, headers=headers, timeout=self._REQUEST_TIMEOUT)
@@ -70,31 +78,4 @@ class BaseProvider(ABC):
         if not players:
             raise EquipaDataNotAvailable(equipa_file)
 
-        return self._select_players(players)
-
-    def _select_players(self, player_list: list) -> list:
-        players = []
-        gk = []
-        df = []
-        mf = []
-        fw = []
-
-        for player in player_list:
-            match player.position:
-                case PlayerPosition.G.name: gk.append(player)
-                case PlayerPosition.D.name: df.append(player)
-                case PlayerPosition.M.name: mf.append(player)
-                case PlayerPosition.A.name: fw.append(player)
-
-        gk.sort(key=lambda p: int(p.appearances), reverse=True)
-        df.sort(key=lambda p: int(p.appearances), reverse=True)
-        mf.sort(key=lambda p: int(p.appearances), reverse=True)
-        fw.sort(key=lambda p: int(p.appearances), reverse=True)
-
-        # TODO: check the maximum number of players allowed by the game
-        players.extend(gk[0:3])
-        players.extend(df[0:6])
-        players.extend(mf[0:6])
-        players.extend(fw[0:6])
-
-        return players
+        return self.select_players(players)

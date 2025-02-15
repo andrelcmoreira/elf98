@@ -3,11 +3,13 @@ from re import findall
 
 from entity.player import Player
 from provider.base_provider import BaseProvider
+from util.player_position import PlayerPosition
 
 
 class EspnProvider(BaseProvider):
 
-    _MAX_NAME_SIZE = 18
+    # Cazaquistão, Curaçao, Eritreia, French Guiana, Gibraltar, Irã, Kosovo,
+    # Liechtenstein and Palestina are not mapped by the game
     _COUNTRIES = {
         'África do Sul': 'AFS',
         'Arábia Saudita': 'ASA',
@@ -17,7 +19,6 @@ class EspnProvider(BaseProvider):
         'Botsuana': 'BTW',
         'Cape Verde Islands': 'CAV',
         'Catar': 'QAT',
-        #'Cazaquistão': '',
         'Chade': 'CHD',
         'Comoros Islands': 'CMR',
         'Congo (Brazavile)': 'CNG',
@@ -27,27 +28,19 @@ class EspnProvider(BaseProvider):
         'China': 'CHN',
         'China PR': 'CHN',
         'Chipre': 'CHP',
-        #'Curaçao': '',
         'Czechia': 'RCH',
         'Coreia do Sul': 'CRS',
         'Egito': 'EGT',
-        #'Eritreia': '',
         'Eslováquia': 'EVQ',
         'Eslovênia': 'EVN',
-        #'French Guiana': '',
         'Gana': 'GNA',
         'Gâmbia': 'GMB',
-        #'Gibraltar': '',
         'Granada': 'GRN',
-        #'Irã': '',
-        #'Kosovo': '',
-        #'Liechtenstein': '',
         'Haiti': 'HTI',
         'Mauritânia': 'MRT',
         'Namíbia': 'NMI',
         'Nova Zelândia': 'NZE',
         'País de Gales': 'WAL',
-        #'Palestina': '',
         'Trinidad e Tobago': 'TND',
         'USA': 'EUA',
         'Venezuela': 'VNZ',
@@ -80,6 +73,33 @@ class EspnProvider(BaseProvider):
                                        others['athletes'])
         except IndexError:
             return None
+
+    def select_players(self, player_list: list) -> list:
+        players = []
+        gk = []
+        df = []
+        mf = []
+        fw = []
+
+        for player in player_list:
+            match player.position:
+                case PlayerPosition.G.name: gk.append(player)
+                case PlayerPosition.D.name: df.append(player)
+                case PlayerPosition.M.name: mf.append(player)
+                case PlayerPosition.A.name: fw.append(player)
+
+        gk.sort(key=lambda p: int(p.appearances), reverse=True)
+        df.sort(key=lambda p: int(p.appearances), reverse=True)
+        mf.sort(key=lambda p: int(p.appearances), reverse=True)
+        fw.sort(key=lambda p: int(p.appearances), reverse=True)
+
+        # TODO: check the maximum number of players allowed by the game
+        players.extend(gk[0:self._MAX_GK_PLAYERS])
+        players.extend(df[0:self._MAX_DEF_PLAYERS])
+        players.extend(mf[0:self._MAX_MD_PLAYERS])
+        players.extend(fw[0:self._MAX_FW_PLAYERS])
+
+        return players
 
     def _get_player_name(self, player: dict) -> str:
         return player['name'] \
