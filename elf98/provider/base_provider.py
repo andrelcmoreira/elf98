@@ -1,5 +1,6 @@
 from abc import abstractmethod, ABC
 from json import load
+from unidecode import unidecode
 
 from error.data_not_available import EquipaDataNotAvailable
 from error.not_provided import EquipaNotProvided
@@ -8,13 +9,19 @@ from util.player_position import PlayerPosition
 
 class BaseProvider(ABC):
 
-    def __init__(self, provider_name: str, base_url: str):
+    def __init__(self, provider_name: str, base_url: str, country_map: dict):
         self._name = provider_name
         self._base_url = base_url
+        self._country_map = country_map
 
     @property
     def name(self) -> str:
         return self._name
+
+    def get_country(self, country: str) -> str:
+        return self._country_map[country] \
+            if country in self._country_map \
+            else unidecode(country[0:3]).upper()
 
     @abstractmethod
     def fetch_team_data(self, team_id: str, season: str) -> list | None:
