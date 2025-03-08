@@ -62,7 +62,7 @@ class EspnProvider(BaseProvider):
 
     def assemble_uri(self, team_id: str, season: str) -> str:
         return f'{self._base_url}{team_id}/season/{season}' if season else \
-            self._base_url + team_id
+            f'{self._base_url}{team_id}'
 
     def parse_reply(self, reply: str) -> list | None:
         ret = findall(r'(\"athletes\":[\'\[\{"\w:,\/\.\d~\-\s\}\\p{L}\(\)]+\])',

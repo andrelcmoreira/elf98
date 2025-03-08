@@ -58,24 +58,25 @@ class TransfermarktProvider(BaseProvider):
                          self._COUNTRIES)
 
     def get_coach(self, equipa_file: str, season: str) -> list:
-        return '' # not available on espn provider
+        return '' # TODO
 
     def assemble_uri(self, team_id: str, season: str) -> str:
         return f'{self._base_url}/{team_id}/saison_id/{season}' if season else \
             self._base_url + team_id
 
-    def parse_reply(self, reply: str) -> list | None:
+    def parse_reply(self, reply: str) -> list:
+        bs = BeautifulSoup(reply.text, 'html.parser')
         players = []
-        soup = BeautifulSoup(reply.text, 'html.parser')
-        even = soup.find_all('tr', class_='even')
-        odd = soup.find_all('tr', class_='odd')
+
+        even_players = bs.find_all('tr', class_='even')
+        odd_players = bs.find_all('tr', class_='odd')
         #coach = soup.find_all('div', class_='container-main')
 
-        even.extend(odd)
+        even_players.extend(odd_players)
 
         #print('coach', coach[0].text.strip().split('\n'))
-        try:
-            for player in even:
+        for player in even_players:
+            try:
                 p = player.find('table') \
                     .text \
                     .strip() \
@@ -86,15 +87,17 @@ class TransfermarktProvider(BaseProvider):
                     .find_all('td', class_='zentriert')[2] \
                     .find('img')['title']
 
-                players.append({
-                    'name': name,
-                    'position': pos,
-                    'country': country
-                })
+                players.append(
+                    {
+                        'name': name,
+                        'position': pos,
+                        'country': country
+                    }
+                )
+            except IndexError:
+                continue
 
-            return self._parse_players(players)
-        except IndexError:
-            return None
+        return self._parse_players(players)
 
     def select_players(self, player_list: list) -> list:
         players = []
@@ -133,7 +136,7 @@ class TransfermarktProvider(BaseProvider):
 
             players.append(
                 Player(
-                    name=player['name'],
+                    name=self.get_name(player['name']),
                     position=self.get_position(player['position']),
                     country=self.get_country(player['country'])
                 )
@@ -141,9 +144,22 @@ class TransfermarktProvider(BaseProvider):
 
         return players
 
+    def get_name(self, name: str) -> str:
+        if len(name) > self._MAX_NAME_SIZE:
+            ret = name.split(' ')
+
+            return f'{ret[0][0]} {' '.join(ret[1:])}'
+
+        return name
+
     def get_position(self, position: str) -> str:
         match position:
-            case 'Goleiro': return PlayerPosition.G.name
-            case 'Zagueiro' | 'Lateral Esq.' | 'Lateral Dir.': return PlayerPosition.D.name
-            case 'Volante' | 'Meia Central' | 'Meia Direita' | 'Meia Esquerda': return PlayerPosition.M.name
-            case 'Ponta Direita' | 'Seg. Atacante' | 'Centroavante' | 'Ponta Esquerda': return PlayerPosition.A.name
+            case 'Goleiro':
+                return PlayerPosition.G.name
+            case 'Zagueiro' | 'Lateral Esq.' | 'Lateral Dir.':
+                return PlayerPosition.D.name
+            case 'Volante' | 'Meia Central' | 'Meia Direita' | 'Meia Esquerda':
+                return PlayerPosition.M.name
+            case 'Ponta Direita' | 'Seg. Atacante' | 'Centroavante' | \
+                'Ponta Esquerda':
+                return PlayerPosition.A.name
