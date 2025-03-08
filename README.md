@@ -13,7 +13,7 @@ options:
                         print the equipa data
   -s, --season year     the season's year to fetch the data
   -p, --provider provider
-                        team data provider (currently only "espn" is supported)
+                        team data provider
   -o, --output-directory directory
                         output directory to put the patches on
 ```
