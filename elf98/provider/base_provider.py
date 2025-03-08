@@ -54,7 +54,7 @@ class BaseProvider(ABC):
             reply = get(uri, headers=headers, timeout=self._REQUEST_TIMEOUT)
 
             return self.parse_reply(reply)
-        except exceptions.ConnectionError:
+        except (exceptions.ConnectionError, exceptions.ReadTimeout):
             return None
 
     def get_team_id(self, equipa_file: str) -> str:
