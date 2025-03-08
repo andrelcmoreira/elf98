@@ -5,6 +5,7 @@ class TransfermarktProvider(BaseProvider):
 
     # Cazaquistão, Curaçao, Eritreia, French Guiana, Gibraltar, Irã, Kosovo,
     # Liechtenstein and Palestina are not mapped by the game
+    # TODO
     _COUNTRIES = {
         'África do Sul': 'AFS',
         'Arábia Saudita': 'ASA',
@@ -49,11 +50,12 @@ class TransfermarktProvider(BaseProvider):
 
     def __init__(self):
         super().__init__('transfermarkt',
-                         'https://www.espn.com.br/futebol/time/elenco/_/id/',
+                         'https://www.transfermarkt.com.br/',
                          self._COUNTRIES)
 
     def assemble_uri(self, team_id: str, season: str) -> str:
-        pass
+        return f'{self._base_url}/{team_id}/saison_id/{season}' if season else \
+            self._base_url + team_id
 
     def parse_reply(self, reply: str) -> list | None:
         pass
