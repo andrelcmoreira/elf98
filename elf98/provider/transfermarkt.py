@@ -1,4 +1,8 @@
+from bs4 import BeautifulSoup
+
+from entity.player import Player
 from provider.base_provider import BaseProvider
+from util.player_position import PlayerPosition
 
 
 class TransfermarktProvider(BaseProvider):
@@ -58,7 +62,85 @@ class TransfermarktProvider(BaseProvider):
             self._base_url + team_id
 
     def parse_reply(self, reply: str) -> list | None:
-        pass
+        players = []
+        soup = BeautifulSoup(reply.text, 'html.parser')
+        even = soup.find_all('tr', class_='even')
+        odd = soup.find_all('tr', class_='odd')
+        #coach = soup.find_all('div', class_='container-main')
+
+        even.extend(odd)
+
+        #print('coach', coach[0].text.strip().split('\n'))
+        try:
+            for player in even:
+                p = player.find('table') \
+                    .text \
+                    .strip() \
+                    .split('\n')
+                name = p[0].strip()
+                pos = p[-1].strip()
+                country = player \
+                    .find_all('td', class_='zentriert')[2] \
+                    .find('img')['title']
+
+                players.append({
+                    'name': name,
+                    'position': pos,
+                    'country': country
+                })
+
+            return self._parse_players(players)
+        except IndexError:
+            return None
 
     def select_players(self, player_list: list) -> list:
-        pass
+        players = []
+        gk = []
+        df = []
+        mf = []
+        fw = []
+
+        for player in player_list:
+            match player.position:
+                case PlayerPosition.G.name: gk.append(player)
+                case PlayerPosition.D.name: df.append(player)
+                case PlayerPosition.M.name: mf.append(player)
+                case PlayerPosition.A.name: fw.append(player)
+
+        # TODO: sort by what?
+        #gk.sort(key=lambda p: int(p.appearances), reverse=True)
+        #df.sort(key=lambda p: int(p.appearances), reverse=True)
+        #mf.sort(key=lambda p: int(p.appearances), reverse=True)
+        #fw.sort(key=lambda p: int(p.appearances), reverse=True)
+
+        ## TODO: check the maximum number of players allowed by the game
+        players.extend(gk[0:self._MAX_GK_PLAYERS])
+        players.extend(df[0:self._MAX_DEF_PLAYERS])
+        players.extend(mf[0:self._MAX_MD_PLAYERS])
+        players.extend(fw[0:self._MAX_FW_PLAYERS])
+
+        return players
+
+    def _parse_players(self, data: list) -> list:
+        players = []
+
+        for player in data:
+            if not player['country']: # ignore players with unknown country
+                continue
+
+            players.append(
+                Player(
+                    name=player['name'],
+                    position=self.get_position(player['position']),
+                    country=self.get_country(player['country'])
+                )
+            )
+
+        return players
+
+    def get_position(self, position: str) -> str:
+        match position:
+            case 'Goleiro': return PlayerPosition.G.name
+            case 'Zagueiro' | 'Lateral Esq.' | 'Lateral Dir.': return PlayerPosition.D.name
+            case 'Volante' | 'Meia Central' | 'Meia Direita' | 'Meia Esquerda': return PlayerPosition.M.name
+            case 'Ponta Direita' | 'Seg. Atacante' | 'Centroavante' | 'Ponta Esquerda': return PlayerPosition.A.name

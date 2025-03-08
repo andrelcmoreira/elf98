@@ -18,7 +18,7 @@ def parse_args() -> Namespace | None:
     parser.add_argument('-s', '--season', metavar='year', default='',
                         help="the season's year to fetch the data")
     parser.add_argument('-p', '--provider', metavar='provider',
-                        choices=['espn'], default='espn',
+                        choices=['espn', 'transfermarkt'], default='espn',
                         help='team data provider (currently only "espn" is \
                                 supported)')
     parser.add_argument('-o', '--output-directory', metavar='directory',
