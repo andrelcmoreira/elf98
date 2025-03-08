@@ -1,0 +1,782 @@
+[
+  {
+    "id": "",
+    "file": "ACADEMIC.EFT"
+  },
+  {
+    "id": "",
+    "file": "ADMIRA.EFT"
+  },
+  {
+    "id": "",
+    "file": "AEK_LARN.EFT"
+  },
+  {
+    "id": "",
+    "file": "AJAX.EFT"
+  },
+  {
+    "id": "",
+    "file": "ALCANENE.EFT"
+  },
+  {
+    "id": "",
+    "file": "ALVERCA.EFT"
+  },
+  {
+    "id": "",
+    "file": "AL_AHLY.EFT"
+  },
+  {
+    "id": "",
+    "file": "AMAZULU.EFT"
+  },
+  {
+    "id": "",
+    "file": "AMERICA.EFT"
+  },
+  {
+    "id": "",
+    "file": "AMERI_SP.EFT"
+  },
+  {
+    "id": "",
+    "file": "AMORA.EFT"
+  },
+  {
+    "id": "",
+    "file": "ANADIA.EFT"
+  },
+  {
+    "id": "",
+    "file": "ANDERLEC.EFT"
+  },
+  {
+    "id": "",
+    "file": "ARAАA_BR.EFT"
+  },
+  {
+    "id": "",
+    "file": "ARSENAL.EFT"
+  },
+  {
+    "id": "",
+    "file": "ASTONVIL.EFT"
+  },
+  {
+    "id": "",
+    "file": "ATLET_MG.EFT"
+  },
+  {
+    "id": "",
+    "file": "ATLET_PR.EFT"
+  },
+  {
+    "id": "",
+    "file": "ATL_MADR.EFT"
+  },
+  {
+    "id": "",
+    "file": "AVES.EFT"
+  },
+  {
+    "id": "",
+    "file": "BAHIA.EFT"
+  },
+  {
+    "id": "",
+    "file": "BARCELON.EFT"
+  },
+  {
+    "id": "",
+    "file": "BAYERN.EFT"
+  },
+  {
+    "id": "",
+    "file": "BEIRAMAR.EFT"
+  },
+  {
+    "id": "",
+    "file": "BEITAR.EFT"
+  },
+  {
+    "id": "",
+    "file": "BELENENS.EFT"
+  },
+  {
+    "id": "",
+    "file": "BENFICA.EFT"
+  },
+  {
+    "id": "",
+    "file": "BETIS.EFT"
+  },
+  {
+    "id": "",
+    "file": "BILBAO.EFT"
+  },
+  {
+    "id": "",
+    "file": "BIRMINGH.EFT"
+  },
+  {
+    "id": "",
+    "file": "BK_COPEN.EFT"
+  },
+  {
+    "id": "",
+    "file": "BLACKBUR.EFT"
+  },
+  {
+    "id": "",
+    "file": "BOAVISTA.EFT"
+  },
+  {
+    "id": "",
+    "file": "BOTAFOGO.EFT"
+  },
+  {
+    "id": "",
+    "file": "BRAGA.EFT"
+  },
+  {
+    "id": "",
+    "file": "BRAGANTI.EFT"
+  },
+  {
+    "id": "",
+    "file": "BRENTFOR.EFT"
+  },
+  {
+    "id": "",
+    "file": "BURSASPO.EFT"
+  },
+  {
+    "id": "",
+    "file": "B_LEVERK.EFT"
+  },
+  {
+    "id": "",
+    "file": "CAMPOMAI.EFT"
+  },
+  {
+    "id": "",
+    "file": "CAPETOWN.EFT"
+  },
+  {
+    "id": "",
+    "file": "CASTVIDE.EFT"
+  },
+  {
+    "id": "",
+    "file": "CEARA.EFT"
+  },
+  {
+    "id": "",
+    "file": "CELTA.EFT"
+  },
+  {
+    "id": "",
+    "file": "CHAVES.EFT"
+  },
+  {
+    "id": "",
+    "file": "CHELSEA.EFT"
+  },
+  {
+    "id": "",
+    "file": "COLOCOLO.EFT"
+  },
+  {
+    "id": "",
+    "file": "COMPOSTE.EFT"
+  },
+  {
+    "id": "",
+    "file": "CORINTHI.EFT"
+  },
+  {
+    "id": "",
+    "file": "CORITIBA.EFT"
+  },
+  {
+    "id": "",
+    "file": "COVENTRY.EFT"
+  },
+  {
+    "id": "",
+    "file": "COVILHA.EFT"
+  },
+  {
+    "id": "",
+    "file": "CRICIUMA.EFT"
+  },
+  {
+    "id": "",
+    "file": "CRUZEIRO.EFT"
+  },
+  {
+    "id": "",
+    "file": "CRYSTAL.EFT"
+  },
+  {
+    "id": "",
+    "file": "DESPBEJA.EFT"
+  },
+  {
+    "id": "",
+    "file": "DESPORTI.EFT"
+  },
+  {
+    "id": "",
+    "file": "DKIEV.EFT"
+  },
+  {
+    "id": "",
+    "file": "DORTMUND.EFT"
+  },
+  {
+    "id": "",
+    "file": "ESPANOL.EFT"
+  },
+  {
+    "id": "",
+    "file": "ESPINHO.EFT"
+  },
+  {
+    "id": "",
+    "file": "ESTORIL.EFT"
+  },
+  {
+    "id": "",
+    "file": "ESTRELA.EFT"
+  },
+  {
+    "id": "",
+    "file": "EVERTON.EFT"
+  },
+  {
+    "id": "",
+    "file": "FARENSE.EFT"
+  },
+  {
+    "id": "",
+    "file": "FC_PORTO.EFT"
+  },
+  {
+    "id": "",
+    "file": "FEIRENSE.EFT"
+  },
+  {
+    "id": "",
+    "file": "FELGUEIR.EFT"
+  },
+  {
+    "id": "",
+    "file": "FERENCVA.EFT"
+  },
+  {
+    "id": "",
+    "file": "FERRO.EFT"
+  },
+  {
+    "id": "",
+    "file": "FIORENTI.EFT"
+  },
+  {
+    "id": "",
+    "file": "FLAMENGO.EFT"
+  },
+  {
+    "id": "",
+    "file": "FLUMINEN.EFT"
+  },
+  {
+    "id": "",
+    "file": "GALLEN.EFT"
+  },
+  {
+    "id": "",
+    "file": "GIJON.EFT"
+  },
+  {
+    "id": "",
+    "file": "GIL_VICE.EFT"
+  },
+  {
+    "id": "",
+    "file": "GLASGOW.EFT"
+  },
+  {
+    "id": "",
+    "file": "GOIAS.EFT"
+  },
+  {
+    "id": "",
+    "file": "GORNIK.EFT"
+  },
+  {
+    "id": "",
+    "file": "GREMIO.EFT"
+  },
+  {
+    "id": "",
+    "file": "GUARANI.EFT"
+  },
+  {
+    "id": "",
+    "file": "GUIMARAE.EFT"
+  },
+  {
+    "id": "",
+    "file": "HAJDUK.EFT"
+  },
+  {
+    "id": "",
+    "file": "HAMBURG.EFT"
+  },
+  {
+    "id": "",
+    "file": "HOABINH.EFT"
+  },
+  {
+    "id": "",
+    "file": "HONVED.EFT"
+  },
+  {
+    "id": "",
+    "file": "IFK_GOT.EFT"
+  },
+  {
+    "id": "",
+    "file": "INTER.EFT"
+  },
+  {
+    "id": "",
+    "file": "INTERNAC.EFT"
+  },
+  {
+    "id": "",
+    "file": "INTER_BR.EFT"
+  },
+  {
+    "id": "",
+    "file": "IPSWICH.EFT"
+  },
+  {
+    "id": "",
+    "file": "ITUAN_BR.EFT"
+  },
+  {
+    "id": "",
+    "file": "JUVENTUD.EFT"
+  },
+  {
+    "id": "",
+    "file": "JUVENTUS.EFT"
+  },
+  {
+    "id": "",
+    "file": "JUVEN_BR.EFT"
+  },
+  {
+    "id": "",
+    "file": "LACORUNA.EFT"
+  },
+  {
+    "id": "",
+    "file": "LECA.EFT"
+  },
+  {
+    "id": "",
+    "file": "LEEDS.EFT"
+  },
+  {
+    "id": "",
+    "file": "LEGIA.EFT"
+  },
+  {
+    "id": "",
+    "file": "LEICESTE.EFT"
+  },
+  {
+    "id": "",
+    "file": "LEIRIA.EFT"
+  },
+  {
+    "id": "",
+    "file": "LIVERPOO.EFT"
+  },
+  {
+    "id": "",
+    "file": "LONDRINA.EFT"
+  },
+  {
+    "id": "",
+    "file": "LUSAS_BR.EFT"
+  },
+  {
+    "id": "",
+    "file": "MACCABI.EFT"
+  },
+  {
+    "id": "",
+    "file": "MALINES.EFT"
+  },
+  {
+    "id": "",
+    "file": "MALLORCA.EFT"
+  },
+  {
+    "id": "",
+    "file": "MALMOE.EFT"
+  },
+  {
+    "id": "",
+    "file": "MANCHEST.EFT"
+  },
+  {
+    "id": "",
+    "file": "MANCITY.EFT"
+  },
+  {
+    "id": "",
+    "file": "MANNING.EFT"
+  },
+  {
+    "id": "",
+    "file": "MARITIMO.EFT"
+  },
+  {
+    "id": "",
+    "file": "MARSELHA.EFT"
+  },
+  {
+    "id": "",
+    "file": "MASSAMA.EFT"
+  },
+  {
+    "id": "",
+    "file": "MATON_BR.EFT"
+  },
+  {
+    "id": "",
+    "file": "MELGAR.EFT"
+  },
+  {
+    "id": "",
+    "file": "MEMPHIS.EFT"
+  },
+  {
+    "id": "",
+    "file": "MERIDA.EFT"
+  },
+  {
+    "id": "",
+    "file": "MIDDLESB.EFT"
+  },
+  {
+    "id": "",
+    "file": "MILAN.EFT"
+  },
+  {
+    "id": "",
+    "file": "MOGIM_BR.EFT"
+  },
+  {
+    "id": "",
+    "file": "MONTIJO.EFT"
+  },
+  {
+    "id": "",
+    "file": "MOREIREN.EFT"
+  },
+  {
+    "id": "",
+    "file": "MOROKA.EFT"
+  },
+  {
+    "id": "",
+    "file": "NAPOLES.EFT"
+  },
+  {
+    "id": "",
+    "file": "NEWCASTL.EFT"
+  },
+  {
+    "id": "",
+    "file": "NOTTINGH.EFT"
+  },
+  {
+    "id": "",
+    "file": "OLYMPIAK.EFT"
+  },
+  {
+    "id": "",
+    "file": "OVIEDO.EFT"
+  },
+  {
+    "id": "",
+    "file": "PACOSFER.EFT"
+  },
+  {
+    "id": "",
+    "file": "PALMEIRA.EFT"
+  },
+  {
+    "id": "",
+    "file": "PANATHIN.EFT"
+  },
+  {
+    "id": "",
+    "file": "PARANA.EFT"
+  },
+  {
+    "id": "",
+    "file": "PAREDES.EFT"
+  },
+  {
+    "id": "",
+    "file": "PARMA.EFT"
+  },
+  {
+    "id": "",
+    "file": "PARTIZAN.EFT"
+  },
+  {
+    "id": "",
+    "file": "PENAFIEL.EFT"
+  },
+  {
+    "id": "",
+    "file": "PICARICA.EFT"
+  },
+  {
+    "id": "",
+    "file": "PIRATES.EFT"
+  },
+  {
+    "id": "",
+    "file": "PONTE_PR.EFT"
+  },
+  {
+    "id": "",
+    "file": "PORTUGUE.EFT"
+  },
+  {
+    "id": "",
+    "file": "PSG.EFT"
+  },
+  {
+    "id": "",
+    "file": "PSV.EFT"
+  },
+  {
+    "id": "",
+    "file": "QPR.EFT"
+  },
+  {
+    "id": "",
+    "file": "QUIMIGAL.EFT"
+  },
+  {
+    "id": "",
+    "file": "QWA.EFT"
+  },
+  {
+    "id": "",
+    "file": "RABAT_AJ.EFT"
+  },
+  {
+    "id": "",
+    "file": "RAPID.EFT"
+  },
+  {
+    "id": "",
+    "file": "REAL_MAD.EFT"
+  },
+  {
+    "id": "",
+    "file": "REAL_SOC.EFT"
+  },
+  {
+    "id": "",
+    "file": "RECIFE.EFT"
+  },
+  {
+    "id": "",
+    "file": "RIGA.EFT"
+  },
+  {
+    "id": "",
+    "file": "RIOBR_BR.EFT"
+  },
+  {
+    "id": "",
+    "file": "RIO_AVE.EFT"
+  },
+  {
+    "id": "",
+    "file": "ROSENBOR.EFT"
+  },
+  {
+    "id": "",
+    "file": "SALAMANC.EFT"
+  },
+  {
+    "id": "",
+    "file": "SALGUEIR.EFT"
+  },
+  {
+    "id": "",
+    "file": "SAMORA.EFT"
+  },
+  {
+    "id": "",
+    "file": "SAMPDORI.EFT"
+  },
+  {
+    "id": "",
+    "file": "SANTACRZ.EFT"
+  },
+  {
+    "id": "",
+    "file": "SANTANDE.EFT"
+  },
+  {
+    "id": "",
+    "file": "SANTOS.EFT"
+  },
+  {
+    "id": "",
+    "file": "SAOJO_BR.EFT"
+  },
+  {
+    "id": "",
+    "file": "SAOPAULO.EFT"
+  },
+  {
+    "id": "",
+    "file": "SARAGOCA.EFT"
+  },
+  {
+    "id": "",
+    "file": "SEGESTA.EFT"
+  },
+  {
+    "id": "",
+    "file": "SETUBAL.EFT"
+  },
+  {
+    "id": "",
+    "file": "SHEFFIEL.EFT"
+  },
+  {
+    "id": "",
+    "file": "SOUTHAMP.EFT"
+  },
+  {
+    "id": "",
+    "file": "SPARTA.EFT"
+  },
+  {
+    "id": "",
+    "file": "SPCRISTA.EFT"
+  },
+  {
+    "id": "",
+    "file": "SPORTING.EFT"
+  },
+  {
+    "id": "",
+    "file": "STEAUA.EFT"
+  },
+  {
+    "id": "",
+    "file": "STOCKPOR.EFT"
+  },
+  {
+    "id": "",
+    "file": "SUNDERLA.EFT"
+  },
+  {
+    "id": "",
+    "file": "TAMPINES.EFT"
+  },
+  {
+    "id": "",
+    "file": "TENERIFE.EFT"
+  },
+  {
+    "id": "",
+    "file": "TIROL.EFT"
+  },
+  {
+    "id": "",
+    "file": "TIRSENSE.EFT"
+  },
+  {
+    "id": "",
+    "file": "TOTTENHA.EFT"
+  },
+  {
+    "id": "",
+    "file": "UNLAMAS.EFT"
+  },
+  {
+    "id": "",
+    "file": "UNMADEIR.EFT"
+  },
+  {
+    "id": "",
+    "file": "UNSJOAO.EFT"
+  },
+  {
+    "id": "",
+    "file": "VALENCIA.EFT"
+  },
+  {
+    "id": "",
+    "file": "VALLADOL.EFT"
+  },
+  {
+    "id": "",
+    "file": "VARZIM.EFT"
+  },
+  {
+    "id": "",
+    "file": "VENDAS.EFT"
+  },
+  {
+    "id": "",
+    "file": "VISEU.EFT"
+  },
+  {
+    "id": "",
+    "file": "VITOCHA.EFT"
+  },
+  {
+    "id": "",
+    "file": "VITORIA.EFT"
+  },
+  {
+    "id": "",
+    "file": "VSC_GAMA.EFT"
+  },
+  {
+    "id": "",
+    "file": "WESTHAM.EFT"
+  },
+  {
+    "id": "",
+    "file": "WIMBLEDO.EFT"
+  },
+  {
+    "id": "",
+    "file": "W_BREMEN.EFT"
+  },
+  {
+    "id": "",
+    "file": "ZAMALEK.EFT"
+  }
+]
