@@ -29,13 +29,13 @@ class UpdateEquipa(Command):
                 mkdir(self._out_dir)
 
             players = self._prov.get_players(equipa_file, self._season)
+            coach = self._prov.get_coach(equipa_file, self._season)
 
             with open(self._out_dir + '/' + equipa_file, 'wb') as f:
-                # TODO: fill the coach name
                 data = builder.create_base_equipa(self._equipa) \
                     .add_player_number(len(players)) \
                     .add_players(players) \
-                    .add_coach('') \
+                    .add_coach(coach) \
                     .build()
 
                 f.write(data)

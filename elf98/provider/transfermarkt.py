@@ -57,6 +57,9 @@ class TransfermarktProvider(BaseProvider):
                          'https://www.transfermarkt.com.br/',
                          self._COUNTRIES)
 
+    def get_coach(self, equipa_file: str, season: str) -> list:
+        return '' # not available on espn provider
+
     def assemble_uri(self, team_id: str, season: str) -> str:
         return f'{self._base_url}/{team_id}/saison_id/{season}' if season else \
             self._base_url + team_id

@@ -33,6 +33,10 @@ class BaseProvider(ABC):
     def select_players(self, player_list: list) -> list:
         pass
 
+    @abstractmethod
+    def get_coach(self, equipa_file: str, season: str) -> list:
+        pass
+
     @property
     def name(self) -> str:
         return self._name
