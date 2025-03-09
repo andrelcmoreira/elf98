@@ -83,15 +83,17 @@ class TransfermarktProvider(BaseProvider):
                     .split('\n')
                 name = p[0].strip()
                 pos = p[-1].strip()
-                country = player \
-                    .find_all('td', class_='zentriert')[2] \
+                country = player.find_all('td', class_='zentriert')[2] \
                     .find('img')['title']
+                value = player.find_all('td', class_='rechts hauptlink')[0] \
+                    .text
 
                 players.append(
                     {
                         'name': name,
                         'position': pos,
-                        'country': country
+                        'country': country,
+                        'value': value
                     }
                 )
             except IndexError:
@@ -113,11 +115,10 @@ class TransfermarktProvider(BaseProvider):
                 case PlayerPosition.M.name: mf.append(player)
                 case PlayerPosition.A.name: fw.append(player)
 
-        # TODO: sort by what?
-        #gk.sort(key=lambda p: int(p.appearances), reverse=True)
-        #df.sort(key=lambda p: int(p.appearances), reverse=True)
-        #mf.sort(key=lambda p: int(p.appearances), reverse=True)
-        #fw.sort(key=lambda p: int(p.appearances), reverse=True)
+        gk.sort(key=lambda p: int(p.value), reverse=True)
+        df.sort(key=lambda p: int(p.value), reverse=True)
+        mf.sort(key=lambda p: int(p.value), reverse=True)
+        fw.sort(key=lambda p: int(p.value), reverse=True)
 
         ## TODO: check the maximum number of players allowed by the game
         players.extend(gk[0:self._MAX_GK_PLAYERS])
@@ -138,11 +139,21 @@ class TransfermarktProvider(BaseProvider):
                 Player(
                     name=self.get_name(player['name']),
                     position=self.get_position(player['position']),
-                    country=self.get_country(player['country'])
+                    country=self.get_country(player['country']),
+                    value=self.get_value(player['value'])
                 )
             )
 
         return players
+
+    def get_value(self, value: str) -> int:
+        raw, mul, _ = value.replace(',', '.').split(' ')
+
+        match mul:
+            case 'mi.': return float(raw) * 1000000
+            case 'mil.': return float(raw) * 1000
+
+        return 0.0
 
     def get_name(self, name: str) -> str:
         if len(name) > self._MAX_NAME_SIZE:
@@ -153,13 +164,14 @@ class TransfermarktProvider(BaseProvider):
         return name
 
     def get_position(self, position: str) -> str:
-        match position:
+        match position.split(' ')[0]:
             case 'Goleiro':
                 return PlayerPosition.G.name
-            case 'Zagueiro' | 'Lateral Esq.' | 'Lateral Dir.':
+            case 'Zagueiro' | 'Lateral':
                 return PlayerPosition.D.name
-            case 'Volante' | 'Meia Central' | 'Meia Direita' | 'Meia Esquerda':
+            case 'Volante' | 'Meia':
                 return PlayerPosition.M.name
-            case 'Ponta Direita' | 'Seg. Atacante' | 'Centroavante' | \
-                'Ponta Esquerda':
+            case 'Ponta' | 'Seg.' | 'Centroavante':
                 return PlayerPosition.A.name
+
+        return ''
