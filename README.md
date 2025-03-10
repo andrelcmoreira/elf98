@@ -1,5 +1,5 @@
 ```
-usage: elf98.py [-h] [-b equipas-directory] [-u equipa-file] [-v equipa-file] [-s year] [-p provider] [-o directory]
+usage: elf98 [-h] [-b equipas-directory] [-u equipa-file] [-v equipa-file] [-s year] [-p provider] [-o directory]
 
 Tool to view/patch elifoot98 equipas.
 
@@ -11,7 +11,8 @@ options:
                         update an equipa
   -v, --view-equipa equipa-file
                         print the equipa data
-  -s, --season year     the season's year to fetch the data
+  -s, --season-year year
+                        the season's year to fetch the data
   -p, --provider provider
                         team data provider
   -o, --output-directory directory
