@@ -61,8 +61,8 @@ class TransfermarktProvider(BaseProvider):
         return '' # TODO
 
     def assemble_uri(self, team_id: str, season: str) -> str:
-        return f'{self._base_url}/{team_id}/saison_id/{season}' if season else \
-            self._base_url + team_id
+        return f'{self._base_url}{team_id}/saison_id/{season}' if season else \
+            f'{self._base_url}{team_id}'
 
     def parse_reply(self, reply: str) -> list:
         bs = BeautifulSoup(reply.text, 'html.parser')
@@ -147,11 +147,12 @@ class TransfermarktProvider(BaseProvider):
         return players
 
     def get_value(self, value: str) -> int:
-        raw, mul, _ = value.replace(',', '.').split(' ')
+        if value != '-':
+            raw, mul, _ = value.replace(',', '.').split(' ')
 
-        match mul:
-            case 'mi.': return float(raw) * 1000000
-            case 'mil.': return float(raw) * 1000
+            match mul:
+                case 'mi.': return float(raw) * 1000000
+                case 'mil.': return float(raw) * 1000
 
         return 0.0
 
