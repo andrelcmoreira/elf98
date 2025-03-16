@@ -10,5 +10,5 @@ def create(
             return EspnProvider()
         case 'transfermarkt':
             return TransfermarktProvider()
-        case _:
-            return None
+
+    return None
