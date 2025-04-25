@@ -32,7 +32,7 @@ class TransfermarktProvider(BaseProvider):
         'Coreia do Sul': 'CRS',
         'Egito': 'EGT',
         'Eslováquia': 'EVQ',
-        'Eslovênia': 'EVN',
+        'Eslovénia': 'EVN',
         'Gana': 'GNA',
         'Gâmbia': 'GMB',
         'Granada': 'GRN',
@@ -70,7 +70,7 @@ class TransfermarktProvider(BaseProvider):
 
         even_players = bs.find_all('tr', class_='even')
         odd_players = bs.find_all('tr', class_='odd')
-        #coach = soup.find_all('div', class_='container-main')
+        #coach = bs.find_all('div', class_='container-main')
 
         even_players.extend(odd_players)
 

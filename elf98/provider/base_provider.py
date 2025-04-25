@@ -46,7 +46,7 @@ class BaseProvider(ABC):
             if country in self._country_map \
             else unidecode(country[0:3]).upper()
 
-    def fetch_team_data(self, team_id: str, season: str) -> list | None:
+    def _fetch_team_data(self, team_id: str, season: str) -> list | None:
         headers = { 'User-Agent': 'elf98' }
         uri = self.assemble_uri(team_id, season)
 
@@ -57,7 +57,7 @@ class BaseProvider(ABC):
         except (exceptions.ConnectionError, exceptions.ReadTimeout):
             return None
 
-    def get_team_id(self, equipa_file: str) -> str:
+    def _get_team_id(self, equipa_file: str) -> str:
         with open(f'data/{self._name}.json', encoding='utf-8') as f:
             mapping = load(f)
 
@@ -74,11 +74,11 @@ class BaseProvider(ABC):
             return mapping
 
     def get_players(self, equipa_file: str, season: str) -> list:
-        team_id = self.get_team_id(equipa_file)
+        team_id = self._get_team_id(equipa_file)
         if team_id == '':
             raise EquipaNotProvided(equipa_file)
 
-        players = self.fetch_team_data(team_id, season)
+        players = self._fetch_team_data(team_id, season)
         if not players:
             raise EquipaDataNotAvailable(equipa_file)
 
