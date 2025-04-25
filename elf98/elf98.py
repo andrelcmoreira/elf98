@@ -2,7 +2,7 @@ from os import getcwd
 from sys import argv
 from argparse import ArgumentParser, Namespace
 
-from view import view_factory
+import view.factory
 
 
 def parse_args() -> Namespace | None:
@@ -37,9 +37,9 @@ def main() -> None:
     if not args:
         return
 
-    view = view_factory.create(args)
-    if view:
-        view.show()
+    view_instance = view.factory.create(args)
+    if view_instance:
+        view_instance.show()
 
 
 # TODO: improve error handling
