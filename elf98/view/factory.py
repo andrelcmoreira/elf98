@@ -1,20 +1,20 @@
 from argparse import Namespace
 
-from view.cli.bulk_update import BulkUpdateView
-from view.cli.update_equipa import UpdateEquipaView
-from view.cli.view_equipa import ViewEquipaView
+from view.cli.bulk_update import BulkUpdate
+from view.cli.update_equipa import UpdateEquipa
+from view.cli.view_equipa import ViewEquipa
 
 
 def create(
     args: Namespace
-) -> ViewEquipaView | UpdateEquipaView | BulkUpdateView | None:
+) -> ViewEquipa | UpdateEquipa | BulkUpdate | None:
     if args.view_equipa:
-        return ViewEquipaView(args.view_equipa)
+        return ViewEquipa(args.view_equipa)
     if args.update_equipa:
-        return UpdateEquipaView(args.update_equipa, args.provider,
-                                args.season_year, args.output_directory)
+        return UpdateEquipa(args.update_equipa, args.provider, args.season_year,
+                            args.output_directory)
     if args.bulk_update:
-        return BulkUpdateView(args.bulk_update, args.provider, args.season_year,
-                              args.output_directory)
+        return BulkUpdate(args.bulk_update, args.provider, args.season_year,
+                          args.output_directory)
 
     return None

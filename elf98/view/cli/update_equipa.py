@@ -1,9 +1,10 @@
-from command.update import UpdateEquipa
 from event.update_equipa_listener import UpdateEquipaListener
 from view.base_view import BaseView
 
+import command.update as command
 
-class UpdateEquipaView(BaseView, UpdateEquipaListener):
+
+class UpdateEquipa(BaseView, UpdateEquipaListener):
 
     def __init__(self, equipa_file: str, provider: str, season: str,
                  output_directory: str):
@@ -13,8 +14,8 @@ class UpdateEquipaView(BaseView, UpdateEquipaListener):
         self._out_dir = output_directory
 
     def show(self) -> None:
-        cmd = UpdateEquipa(self._equipa, self._prov, self._season,
-                           self._out_dir, self)
+        cmd = command.UpdateEquipa(self._equipa, self._prov, self._season,
+                                   self._out_dir, self)
 
         cmd.run()
 

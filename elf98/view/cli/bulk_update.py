@@ -1,9 +1,10 @@
-from command.bulk_update import BulkUpdate
 from event.update_equipa_listener import UpdateEquipaListener
 from view.base_view import BaseView
 
+import command.bulk_update as command
 
-class BulkUpdateView(BaseView, UpdateEquipaListener):
+
+class BulkUpdate(BaseView, UpdateEquipaListener):
 
     def __init__(self, equipa_dir: str, provider: str, season: str,
                  output_directory: str):
@@ -13,8 +14,8 @@ class BulkUpdateView(BaseView, UpdateEquipaListener):
         self._out_dir = output_directory
 
     def show(self) -> None:
-        cmd = BulkUpdate(self._equipa_dir, self._prov, self._season,
-                         self._out_dir, self)
+        cmd = command.BulkUpdate(self._equipa_dir, self._prov, self._season,
+                                 self._out_dir, self)
 
         cmd.run()
 
