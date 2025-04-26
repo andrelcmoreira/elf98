@@ -17,7 +17,7 @@ class TransfermarktProvider(BaseProvider):
         'Bangladesh': 'BGD',
         'Benim': 'BNI',
         'Botsuana': 'BTW',
-        'Cape Verde Islands': 'CAV',
+        'Cabo Verde': 'CAV',
         'Catar': 'QAT',
         'Chade': 'CHD',
         'Comoros Islands': 'CMR',
