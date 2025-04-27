@@ -9,7 +9,7 @@ from error.not_provided import EquipaNotProvided
 
 class BaseProvider(ABC):
 
-    _REQUEST_TIMEOUT = 10
+    _REQUEST_TIMEOUT = 30
     _MAX_GK_PLAYERS = 3
     _MAX_DEF_PLAYERS = 6
     _MAX_MD_PLAYERS = 6
