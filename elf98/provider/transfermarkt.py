@@ -9,7 +9,6 @@ class TransfermarktProvider(BaseProvider):
 
     # Cazaquistão, Curaçao, Eritreia, French Guiana, Gibraltar, Irã, Kosovo,
     # Neocaledonia, Liechtenstein and Palestina are not mapped by the game
-    # TODO
     _COUNTRIES = {
         'África do Sul': 'AFS',
         'Arábia Saudita': 'ASA',
@@ -21,7 +20,6 @@ class TransfermarktProvider(BaseProvider):
         'Catar': 'QAT',
         'Chade': 'CHD',
         'Comoros Islands': 'CMR',
-        'Congo (Brazavile)': 'CNG',
         'Costa do Marfim': 'CMF',
         'Costa Rica': 'CRC',
         'Chile': 'CHL',
@@ -49,6 +47,7 @@ class TransfermarktProvider(BaseProvider):
         'República Democrática do Congo': 'CNG',
         'República Centro-Africana': 'RCA',
         'República Dominicana': 'RDO',
+        'RD do Congo': 'CNG',
         'Zimbábue': 'ZBW'
     }
 
