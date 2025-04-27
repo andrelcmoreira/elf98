@@ -7,15 +7,16 @@ from error.data_not_available import EquipaDataNotAvailable
 from error.not_found import EquipaNotFound
 from error.not_provided import EquipaNotProvided
 from event.update_equipa_listener import UpdateEquipaListener
-from provider import provider_factory
+
+import provider.factory
 
 
 class UpdateEquipa(Command):
 
-    def __init__(self, equipa_file: str, provider: str, season: str,
+    def __init__(self, equipa_file: str, prov: str, season: str,
                  output_directory: str, listener: UpdateEquipaListener):
         self._equipa = equipa_file
-        self._prov = provider_factory.create(provider)
+        self._prov = provider.factory.create(prov)
         self._season = season
         self._out_dir = output_directory
         self._listener = listener
