@@ -20,6 +20,7 @@ class TransfermarktProvider(BaseProvider):
         'Catar': 'QAT',
         'Chade': 'CHD',
         'Comoros Islands': 'CMR',
+        'Congo': 'CNG',
         'Costa do Marfim': 'CMF',
         'Costa Rica': 'CRC',
         'Chile': 'CHL',
@@ -48,7 +49,9 @@ class TransfermarktProvider(BaseProvider):
         'República Centro-Africana': 'RCA',
         'República Dominicana': 'RDO',
         'RD do Congo': 'CNG',
-        'Zimbábue': 'ZBW'
+        'São Tomé and Príncipe': 'STP',
+        'Vietname': 'VTM',
+        'Zimbabué': 'ZBW'
     }
 
     def __init__(self):
