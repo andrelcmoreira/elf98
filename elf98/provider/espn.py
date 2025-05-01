@@ -8,8 +8,9 @@ from util.player_position import PlayerPosition
 
 class EspnProvider(BaseProvider):
 
-    # Cazaquistão, Curaçao, Eritreia, French Guiana, Gibraltar, Irã, Kosovo,
-    # Liechtenstein and Palestina are not mapped by the game
+    # Bielorrússia, Cazaquistão, Curaçao, Eritreia, French Guiana, Gibraltar,
+    # Irã, Kosovo, Neocaledonia, Liechtenstein and Palestina are not mapped by
+    # the game
     _COUNTRIES = {
         'África do Sul': 'AFS',
         'Arábia Saudita': 'ASA',
@@ -115,6 +116,8 @@ class EspnProvider(BaseProvider):
         for player in data:
             if not player['ctz']: # ignore players with unknown country
                 continue
+
+            # TODO: discard players with unmaped countries
 
             players.append(
                 Player(

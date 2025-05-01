@@ -4,22 +4,25 @@ from entity.player import Player
 from provider.base_provider import BaseProvider
 from util.player_position import PlayerPosition
 
+from os import listdir
+
 
 class TransfermarktProvider(BaseProvider):
 
-    # Cazaquistão, Curaçao, Eritreia, French Guiana, Gibraltar, Irã, Kosovo,
-    # Neocaledonia, Liechtenstein and Palestina are not mapped by the game
+    # Bielorrússia, Cazaquistão, Curaçao, Eritreia, French Guiana, Gibraltar,
+    # Irã, Kosovo, Neocaledonia, Liechtenstein and Palestina are not mapped by
+    # the game
     _COUNTRIES = {
         'África do Sul': 'AFS',
         'Arábia Saudita': 'ASA',
         'Azerbaijão': 'AZB',
-        'Bangladesh': 'BGD',
+        'Bangladeche': 'BGD',
         'Benim': 'BNI',
         'Botsuana': 'BTW',
         'Cabo Verde': 'CAV',
         'Catar': 'QAT',
         'Chade': 'CHD',
-        'Comoros Islands': 'CMR',
+        'Comores': 'CMR',
         'Congo': 'CNG',
         'Costa do Marfim': 'CMF',
         'Costa Rica': 'CRC',
@@ -27,6 +30,7 @@ class TransfermarktProvider(BaseProvider):
         'China': 'CHN',
         'China PR': 'CHN',
         'Chipre': 'CHP',
+        'Coreia do Norte': 'CRN',
         'Coreia do Sul': 'CRS',
         'Egito': 'EGT',
         'Eslováquia': 'EVQ',
@@ -35,10 +39,13 @@ class TransfermarktProvider(BaseProvider):
         'Gâmbia': 'GMB',
         'Granada': 'GRN',
         'Haiti': 'HTI',
+        'Iraque': 'IRQ',
+        'Maurícias': 'MRC',
         'Mauritânia': 'MRT',
         'Namíbia': 'NMI',
         'Nova Zelândia': 'NZE',
         'País de Gales': 'WAL',
+        'Santa Lúcia': 'SLU',
         'Trinidad e Tobago': 'TND',
         'USA': 'EUA',
         'Venezuela': 'VNZ',
@@ -46,7 +53,7 @@ class TransfermarktProvider(BaseProvider):
         'República da Sérvia': 'SER',
         'República Checa': 'RCH',
         'República Democrática do Congo': 'CNG',
-        'República Centro-Africana': 'RCA',
+        'República Central Africana': 'RCA',
         'República Dominicana': 'RDO',
         'RD do Congo': 'CNG',
         'São Tomé and Príncipe': 'STP',
@@ -137,6 +144,8 @@ class TransfermarktProvider(BaseProvider):
             if not player['country']: # ignore players with unknown country
                 continue
 
+            # TODO: discard players with unmaped countries
+
             players.append(
                 Player(
                     name=self.get_name(player['name']),
@@ -145,6 +154,10 @@ class TransfermarktProvider(BaseProvider):
                     value=self.get_value(player['value'])
                 )
             )
+
+            cnt = self.get_country(player['country']) + '.BMP'
+            if cnt not in listdir('/home/andre/downloads/elifoot98_/elifoot98/FLAGS'):
+                print(f"{player['country']} not mapped")
 
         return players
 

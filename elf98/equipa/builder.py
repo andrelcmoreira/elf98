@@ -30,6 +30,7 @@ class EquipaBuilder:
         return self
 
     def add_players(self, players: list) -> Self:
+        # TODO: check for the minimum number of players
         for player in players:
             self._data += PlayerSerializer.serialize(player)
 
