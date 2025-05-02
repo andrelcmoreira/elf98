@@ -7,9 +7,9 @@ from util.player_position import PlayerPosition
 
 class TransfermarktProvider(BaseProvider):
 
-    # Bielorrússia, Cazaquistão, Curaçao, Eritreia, El salvador, French Guiana,
-    # Gibraltar, Irã, Kosovo, Neocaledonia, Liechtenstein, Palestina and Sant
-    # Martin  are not mapped by the game
+    # Bielorrússia, Cazaquistão, Curaçao, Eritreia, El salvador, Eswatini,
+    # French Guiana, Gibraltar, Ilhas Caimão, Irã, Kosovo, Neocaledonia,
+    # Liechtenstein, Palestina and Sant Martin  are not mapped by the game
     _COUNTRIES = {
         'Afeganistão': 'AFG',
         'África do Sul': 'AFS',
@@ -60,6 +60,7 @@ class TransfermarktProvider(BaseProvider):
         'RD do Congo': 'CNG',
         'São Cristovão e Nevis': 'SKN',
         'São Tomé and Príncipe': 'STP',
+        'São Vicente e Granadinas': 'SVG',
         'Vietname': 'VTM',
         'Zimbabué': 'ZBW'
     }
