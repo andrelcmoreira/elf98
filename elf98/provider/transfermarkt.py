@@ -4,15 +4,14 @@ from entity.player import Player
 from provider.base_provider import BaseProvider
 from util.player_position import PlayerPosition
 
-from os import listdir
-
 
 class TransfermarktProvider(BaseProvider):
 
-    # Bielorrússia, Cazaquistão, Curaçao, Eritreia, French Guiana, Gibraltar,
-    # Irã, Kosovo, Neocaledonia, Liechtenstein and Palestina are not mapped by
-    # the game
+    # Bielorrússia, Cazaquistão, Curaçao, Eritreia, El salvador, French Guiana,
+    # Gibraltar, Irã, Kosovo, Neocaledonia, Liechtenstein, Palestina and Sant
+    # Martin  are not mapped by the game
     _COUNTRIES = {
+        'Afeganistão': 'AFG',
         'África do Sul': 'AFS',
         'Arábia Saudita': 'ASA',
         'Azerbaijão': 'AZB',
@@ -33,12 +32,15 @@ class TransfermarktProvider(BaseProvider):
         'Coreia do Norte': 'CRN',
         'Coreia do Sul': 'CRS',
         'Egito': 'EGT',
+        'Emirados Árabes Unidos': 'EAU',
         'Eslováquia': 'EVQ',
         'Eslovénia': 'EVN',
         'Gana': 'GNA',
         'Gâmbia': 'GMB',
         'Granada': 'GRN',
         'Haiti': 'HTI',
+        'Ilha de Man': 'MAN',
+        'Ilhas Faroe': 'FAR',
         'Iraque': 'IRQ',
         'Maurícias': 'MRC',
         'Mauritânia': 'MRT',
@@ -56,6 +58,7 @@ class TransfermarktProvider(BaseProvider):
         'República Central Africana': 'RCA',
         'República Dominicana': 'RDO',
         'RD do Congo': 'CNG',
+        'São Cristovão e Nevis': 'SKN',
         'São Tomé and Príncipe': 'STP',
         'Vietname': 'VTM',
         'Zimbabué': 'ZBW'
@@ -154,10 +157,6 @@ class TransfermarktProvider(BaseProvider):
                     value=self.get_value(player['value'])
                 )
             )
-
-            cnt = self.get_country(player['country']) + '.BMP'
-            if cnt not in listdir('/home/andre/downloads/elifoot98_/elifoot98/FLAGS'):
-                print(f"{player['country']} not mapped")
 
         return players
 
