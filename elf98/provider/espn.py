@@ -5,15 +5,14 @@ from entity.player import Player
 from provider.base_provider import BaseProvider
 from util.player_position import PlayerPosition
 
-from os import listdir
-
 
 class EspnProvider(BaseProvider):
 
     # Bielorrússia, Cazaquistão, Curaçao, Eritreia, El salvador, French Guiana,
-    # Gibraltar, Irã, Kosovo, Neocaledonia, Liechtenstein and Palestina are not
-    # mapped by the game
+    # Gibraltar, Irã, Kosovo, Neocaledonia, Liechtenstein, Palestina and Sant
+    # Martin  are not mapped by the game
     _COUNTRIES = {
+        'Afeganistão': 'AFG',
         'África do Sul': 'AFS',
         'Arábia Saudita': 'ASA',
         'Azerbaijão': 'AZB',
@@ -34,13 +33,16 @@ class EspnProvider(BaseProvider):
         'Czechia': 'RCH',
         'Coreia do Sul': 'CRS',
         'Egito': 'EGT',
+        'Emirados Árabes Unidos': 'EAU',
         'Eslováquia': 'EVQ',
         'Eslovênia': 'EVN',
         'Gana': 'GNA',
         'Gâmbia': 'GMB',
         'Granada': 'GRN',
         'Haiti': 'HTI',
+        'Iraque': 'IRQ',
         'Mauritânia': 'MRT',
+        'Maurício': 'MRC',
         'Namíbia': 'NMI',
         'Nova Zelândia': 'NZE',
         'País de Gales': 'WAL',
@@ -54,6 +56,7 @@ class EspnProvider(BaseProvider):
         'República Dominicana': 'RDO',
         'St Lucia': 'SLU',
         'St Kitts and Nevis': 'SKN',
+        'Vietnã': 'VTM',
         'Zimbábue': 'ZBW'
     }
 
@@ -131,9 +134,5 @@ class EspnProvider(BaseProvider):
                     appearances=player.get('appearances', 0)
                 )
             )
-
-            cnt = self.get_country(player['ctz']) + '.BMP'
-            if cnt not in listdir('/home/andre/downloads/elifoot98_/elifoot98/FLAGS'):
-                print(f"{player['ctz']} not mapped")
 
         return players
