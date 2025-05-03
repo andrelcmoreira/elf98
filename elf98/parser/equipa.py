@@ -1,8 +1,9 @@
 from os.path import exists
 
-from entity.equipa import Equipa
 from error.header_not_found import EquipaHeaderNotFound
 from error.not_found import EquipaNotFound
+from entity.color import Color
+from entity.equipa import Equipa
 from parser.base_parser import BaseParser
 from parser.player import PlayersParser
 from util.crypto import decrypt
@@ -38,7 +39,7 @@ class EquipaParser(BaseParser):
         txt = self.get_field(data, offs + Sizes.COLOR.value + 1,
                              Sizes.COLOR.value)
 
-        return '#' + bg.hex().upper() + ', #' + txt.hex().upper()
+        return Color(background=bg, text=txt)
 
     def parse_level(self, data: bytes, ext_len: int, short_len: int) -> int:
         offs = OffsetCalculator.get_level(ext_len, short_len)

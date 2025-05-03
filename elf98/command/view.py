@@ -1,6 +1,6 @@
 from command.command import Command
-from error.not_found import EquipaNotFound
 from error.header_not_found import EquipaHeaderNotFound
+from error.not_found import EquipaNotFound
 from event.view_equipa_listener import ViewEquipaListener
 from parser.equipa import EquipaParser
 
