@@ -80,8 +80,8 @@ class EspnProvider(BaseProvider):
             goalkeepers = loads('{' + ret[0] + '}')
             others = loads('{' + ret[1] + '}')
 
-            return self._parse_players(goalkeepers['athletes'] + \
-                                       others['athletes'])
+            return self._parse_players(goalkeepers.get('athletes') + \
+                                       others.get('athletes'))
         except IndexError:
             return None
 
@@ -113,15 +113,15 @@ class EspnProvider(BaseProvider):
         return players
 
     def _get_player_name(self, player: dict) -> str:
-        return player['name'] \
-            if len(player['name']) <= self._MAX_NAME_SIZE \
-            else player['shortName']
+        return player.get('name') \
+            if len(player.get('name')) <= self._MAX_NAME_SIZE \
+            else player.get('shortName')
 
     def _parse_players(self, data: list) -> list:
         players = []
 
         for player in data:
-            if not player['ctz']: # ignore players with unknown country
+            if not player.get('ctz'): # ignore players with unknown country
                 continue
 
             # TODO: discard players with unmaped countries
@@ -129,8 +129,8 @@ class EspnProvider(BaseProvider):
             players.append(
                 Player(
                     name=self._get_player_name(player),
-                    position=player['position'],
-                    country=self.get_country(player['ctz']),
+                    position=player.get('position'),
+                    country=self.get_country(player.get('ctz')),
                     appearances=player.get('appearances', 0)
                 )
             )

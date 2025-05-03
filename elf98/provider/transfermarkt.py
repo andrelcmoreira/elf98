@@ -94,10 +94,19 @@ class TransfermarktProvider(BaseProvider):
                     .text \
                     .strip() \
                     .split('\n')
+
+                if not p:
+                    continue
+
                 name = p[0].strip()
                 pos = p[-1].strip()
                 country = player.find_all('td', class_='zentriert')[2] \
-                    .find('img')['title']
+                    .find('img') \
+                    .get('title')
+
+                if not country:
+                    continue
+
                 value = player.find_all('td', class_='rechts hauptlink')[0] \
                     .text
 
@@ -145,23 +154,23 @@ class TransfermarktProvider(BaseProvider):
         players = []
 
         for player in data:
-            if not player['country']: # ignore players with unknown country
+            if not player.get('country'): # ignore players with unknown country
                 continue
 
             # TODO: discard players with unmaped countries
 
             players.append(
                 Player(
-                    name=self.get_name(player['name']),
-                    position=self.get_position(player['position']),
-                    country=self.get_country(player['country']),
-                    value=self.get_value(player['value'])
+                    name=self._get_name(player.get('name')),
+                    position=self._get_position(player.get('position')),
+                    country=self.get_country(player.get('country')),
+                    value=self._get_value(player.get('value'))
                 )
             )
 
         return players
 
-    def get_value(self, value: str) -> int:
+    def _get_value(self, value: str) -> int:
         if value != '-':
             raw, mul, _ = value.replace(',', '.').split(' ')
 
@@ -171,7 +180,7 @@ class TransfermarktProvider(BaseProvider):
 
         return 0.0
 
-    def get_name(self, name: str) -> str:
+    def _get_name(self, name: str) -> str:
         if len(name) > self._MAX_NAME_SIZE:
             ret = name.split(' ')
 
@@ -179,7 +188,7 @@ class TransfermarktProvider(BaseProvider):
 
         return name
 
-    def get_position(self, position: str) -> str:
+    def _get_position(self, position: str) -> str:
         match position.split(' ')[0]:
             case 'Goleiro':
                 return PlayerPosition.G.name
