@@ -7,9 +7,9 @@ from util.player_position import PlayerPosition
 
 class TransfermarktProvider(BaseProvider):
 
-    # Bielorrússia, Cazaquistão, Curaçao, Eritreia, El salvador, Eswatini,
-    # French Guiana, Gibraltar, Ilhas Caimão, Irã, Kosovo, Neocaledonia,
-    # Liechtenstein, Palestina and Sant Martin  are not mapped by the game
+    # Cazaquistão, Curaçao, Eritreia, El salvador, Eswatini, French Guiana,
+    # Gibraltar, Ilhas Caimão, Irã, Kosovo, Neocaledonia, Liechtenstein,
+    # Palestina and Sant Martin  are not mapped by the game
     _COUNTRIES = {
         'Afeganistão': 'AFG',
         'África do Sul': 'AFS',
@@ -17,6 +17,7 @@ class TransfermarktProvider(BaseProvider):
         'Azerbaijão': 'AZB',
         'Bangladeche': 'BGD',
         'Benim': 'BNI',
+        'Bielorrússia': 'BLR',
         'Botsuana': 'BTW',
         'Cabo Verde': 'CAV',
         'Catar': 'QAT',
@@ -101,8 +102,7 @@ class TransfermarktProvider(BaseProvider):
                 name = p[0].strip()
                 pos = p[-1].strip()
                 country = player.find_all('td', class_='zentriert')[2] \
-                    .find('img') \
-                    .get('title')
+                    .find('img')['title']
 
                 if not country:
                     continue

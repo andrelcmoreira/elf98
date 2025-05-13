@@ -14,21 +14,21 @@ import provider.factory
 class UpdateEquipa(Command):
 
     def __init__(self, equipa_file: str, prov: str, season: str,
-                 output_directory: str, listener: UpdateEquipaListener):
+                 output_dir: str, listener: UpdateEquipaListener):
         self._equipa = equipa_file
         self._prov = provider.factory.create(prov)
         self._season = season
-        self._out_dir = output_directory
+        self._out_dir = output_dir
         self._listener = listener
 
     def run(self) -> None:
         equipa_file = self._equipa.split(sep)[-1]
         builder = EquipaBuilder()
 
-        try:
-            if not exists(self._out_dir):
-                mkdir(self._out_dir)
+        if not exists(self._out_dir):
+            mkdir(self._out_dir)
 
+        try:
             players = self._prov.get_players(equipa_file, self._season)
             coach = self._prov.get_coach(equipa_file, self._season)
 

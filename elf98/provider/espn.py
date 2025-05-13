@@ -8,9 +8,9 @@ from util.player_position import PlayerPosition
 
 class EspnProvider(BaseProvider):
 
-    # Bielorrússia, Cazaquistão, Curaçao, Eritreia, El salvador, French Guiana,
-    # Gibraltar, Irã, Kosovo, Neocaledonia, Liechtenstein, Palestina and Sant
-    # Martin  are not mapped by the game
+    # Cazaquistão, Curaçao, Eritreia, El salvador, French Guiana, Gibraltar,
+    # Irã, Kosovo, Neocaledonia, Liechtenstein, Palestina and Saint Martin are
+    # not mapped by the game
     _COUNTRIES = {
         'Afeganistão': 'AFG',
         'África do Sul': 'AFS',

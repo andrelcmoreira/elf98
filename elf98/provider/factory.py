@@ -3,12 +3,11 @@ from provider.transfermarkt import TransfermarktProvider
 
 
 def create(
-    provider_name: str
+    prov_name: str
 ) -> EspnProvider | TransfermarktProvider | None:
-    match provider_name:
-        case 'espn':
-            return EspnProvider()
-        case 'transfermarkt':
-            return TransfermarktProvider()
+    if prov_name == 'espn':
+        return EspnProvider()
+    if prov_name == 'transfermarkt':
+        return TransfermarktProvider()
 
     return None

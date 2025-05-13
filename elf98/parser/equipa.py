@@ -33,7 +33,7 @@ class EquipaParser(BaseParser):
 
         return decrypt(data, offs + 1, data[offs])
 
-    def parse_colors(self, data: bytes, ext_len: int, short_len: int) -> str:
+    def parse_colors(self, data: bytes, ext_len: int, short_len: int) -> Color:
         offs = OffsetCalculator.get_colors(ext_len, short_len)
         bg = self.get_field(data, offs, Sizes.COLOR.value)
         txt = self.get_field(data, offs + Sizes.COLOR.value + 1,
