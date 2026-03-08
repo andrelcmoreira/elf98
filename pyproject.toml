@@ -1,0 +1,13 @@
+[project]
+name = "elf98"
+dynamic = ["version"]
+requires-python = ">=3.11"
+description = "Tool to view/patch Elifoot 98 equipas"
+authors = [{ name = "André L. C. Moreira", email = "andrelcmoreira@proton.me" }]
+license = "LGPL-3.0-only"
+license-files = ["LICEN[CS]E.*"]
+readme = { file = "README.md", content-type = "text/markdown" }
+dependencies = [
+    "PyQt5",
+    "libelifoot"
+]

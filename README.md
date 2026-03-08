@@ -1,20 +1,13 @@
-```
-usage: elf98 [-h] [-b equipas-directory] [-u equipa-file] [-v equipa-file] [-s year] [-p provider] [-o directory]
+# PyQt5 Base Application
 
-Tool to view/patch elifoot98 equipas.
+A base desktop application using PyQt5, with support for both GUI and CLI modes.
 
-options:
-  -h, --help            show this help message and exit
-  -b, --bulk-update equipas-directory
-                        update the equipas placed at the input directory
-  -u, --update-equipa equipa-file
-                        update an equipa
-  -v, --view-equipa equipa-file
-                        print the equipa data
-  -s, --season-year year
-                        the season's year to fetch the data
-  -p, --provider provider
-                        team data provider
-  -o, --output-directory directory
-                        output directory to put the patches on
-```
+## Requirements
+
+- Python 3.7+
+- [PyQt5](https://pypi.org/project/PyQt5/)
+
+## Installation
+
+```bash
+pip install .
